@@ -110,7 +110,7 @@ table.addEventListener("click",function(event){
         board_container.appendChild(b);
         b.innerText="WIN-WIN\nTap to Replay";
         document.onmousedown=function leftClick(){
-            location.replace(location.href);
+            location.replace("/");
         };
         square.style.backgroundColor="rgba(255,255,255,0.8)";
         done=1;
@@ -128,7 +128,7 @@ table.addEventListener("click",function(event){
         board_container.appendChild(b);
         b.innerText="LOSE\nTap to Replay";
         document.onmousedown=function leftClick(){
-            location.replace(location.href);
+            location.replace("/");
         };
         square.style.backgroundColor="rgba(255,255,255,0.8)";
         done=1;
