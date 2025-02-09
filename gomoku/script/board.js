@@ -81,7 +81,7 @@ function search(cnt,b,square,n){
         document.getElementsByClassName("loading")[0].style.opacity=0;
         return;
     }
-    for(let i=0;i<Math.ceil(cnt/100);i++){
+    for(let i=0;i<cnt;i++){
         MCTS(p,n,1);
         p.visit++;
     }
@@ -122,10 +122,14 @@ table.addEventListener("click",function(event){
         done=1;
         return;
     }
-    setTimeout(function(){
-        p={win:0,visit:0};
-        search(think,b,square,1);
-    },0);
+    let loadcnt=0;
+    img.onload=function(){
+        if(loadcnt++!=0)return;
+        setTimeout(function(){
+            p={win:0,visit:0};
+            search(think,b,square,1);
+        },0);
+    };
 });
 function start(){
     think=Number(document.getElementById('difficulty').value);
