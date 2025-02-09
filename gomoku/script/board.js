@@ -81,7 +81,7 @@ function search(cnt,b,square,n){
         document.getElementsByClassName("loading")[0].style.opacity=0;
         return;
     }
-    for(let i=0;i<Math.ceil(cnt/100);i++){
+    for(let i=0;i<cnt;i++){
         MCTS(p,n,1);
         p.visit++;
     }
