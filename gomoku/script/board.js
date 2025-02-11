@@ -4,12 +4,6 @@ let done=0,doing=0,think;
 let stone=["black","white"],rule="free";
 let track=[],track_cnt=0;
 let img=document.createElement("img");
-function getCookie(name){
-    let matches=document.cookie.match(new RegExp(
-        "(?:^|; )"+name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,'\\$1')+"=([^;]*)"
-    ));
-    return matches?decodeURIComponent(matches[1]):undefined;
-}
 let ssx=20,ssy=20,bbx=0,bby=0;
 function placeA(x,y,n){
     A[x][y]=n;
@@ -145,9 +139,9 @@ function start(){
         stone=["white","black"];
     }
     if(document.querySelector('input[name="rule"]:checked').value=="standard")rule="standard";
-    document.cookie=`difficulty=${think};`;
-    document.cookie=`stone=${stone[1]};`;
-    document.cookie=`rule=${rule};`;
+    localStorage.setItem("difficulty",think);
+    localStorage.setItem("stone",stone[1]);
+    localStorage.setItem("rule",rule);
     document.getElementsByClassName("trans-background")[0].remove();
     track_icon();
 }
@@ -237,6 +231,6 @@ let div=document.createElement("div");
 div.style="bottom:0;position:absolute;width:100%;justify-content: center;align-items: center;display: flex;";
 div.appendChild(advertisment);
 document.body.appendChild(div);
-document.getElementById(getCookie("stone")?getCookie("stone"):"black").checked=true;
-document.getElementById('difficulty').value=getCookie("difficulty")?getCookie("difficulty"):10000;
-document.getElementById(getCookie("rule")?getCookie("rule"):"free").checked=true;
+document.getElementById(localStorage.getItem("stone")?localStorage.getItem("stone"):"black").checked=true;
+document.getElementById('difficulty').value=localStorage.getItem("difficulty")?localStorage.getItem("difficulty"):10000;
+document.getElementById(localStorage.getItem("rule")?localStorage.getItem("rule"):"free").checked=true;
