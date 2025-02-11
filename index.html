@@ -25,24 +25,31 @@
             border: 1px solid rgba(0,0,0,0);
             padding: 0;
             margin: 0;
-            box-sizing: border-box;
+        }
+        .game{
             align-items: center;
             justify-items: center;
             width: 50vw;
             height: 50vw;
+            box-sizing: border-box;
         }
     </style>
 </head>
 <body>
     <div>
         <table>
-            <tr>
+            <tr style="border-bottom: 1px solid rgb(0,0,0);">
                 <th>
+                    <h1 style="text-indent: 4vw; font-size:6vh; color: #008959; text-align:left">Games</h1>
+                <th>
+            </tr>
+            <tr>
+                <th class="game">
                     <a href="./gomoku">
                         <img src="./gomoku/images/game.png" style="width: 40vw; height: 40vw;">
                     </a>
                 </th>
-                <th>
+                <th class="game">
                     <a href="./tic-tac-toe">
                         <img src="./tic-tac-toe/images/game.png" style="width: 40vw; height: 40vw;">
                     </a>

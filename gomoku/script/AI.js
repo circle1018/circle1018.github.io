@@ -28,8 +28,8 @@ function MCTS(P,num,depth){
             }
         }
     }else{
-        for(let i=0;i<N;i++){
-            for(let j=0;j<N;j++){
+        for(let i=ssx-2;i<bbx+2;i++){
+            for(let j=ssy-2;j<bbx+2;j++){
                 if(A[i][j])continue;
                 if(C[i][j]<1)continue;
                 let w=P[i*N+j]?P[i*N+j].win:0;

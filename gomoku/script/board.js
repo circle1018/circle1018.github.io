@@ -10,8 +10,13 @@ function getCookie(name){
     ));
     return matches?decodeURIComponent(matches[1]):undefined;
 }
+let ssx=20,ssy=20,bbx=0,bby=0;
 function placeA(x,y,n){
     A[x][y]=n;
+    ssx=Math.min(ssx,Math.max(x,2));
+    ssy=Math.min(ssy,Math.max(y,2));
+    bbx=Math.max(bbx,Math.min(x,12));
+    bby=Math.max(bby,Math.min(y,12));
     for(let i=-1;i<=1;i++){
         for(let j=-1;j<=1;j++){
             if(x+i<0||y+j<0||x+i>N-1||y+j>N-1)continue;
