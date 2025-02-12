@@ -38,6 +38,8 @@ function placeA(x,y,n){
         table.rows[x].cells[y].appendChild(img);
     }
 }
+function learn(win){
+}
 function search(cnt,b,square,n){
     if(cnt<=p.visit||think==100){
         let index=[{x:0,y:0}],win_rate=-Infinity;
@@ -65,6 +67,7 @@ function search(cnt,b,square,n){
         placeA(index.x,index.y,1);
         if(win(index.x,index.y,1)){
             b.innerText="LOSE\nTap to Replay";
+            learn(0);
             document.onmousedown=function leftClick(){
                 location.replace("/");
             };
@@ -114,6 +117,7 @@ table.addEventListener("click",function(event){
     document.getElementsByClassName("loading")[0].style.opacity=1;
     if(win(x,y,2)){
         b.innerText="WIN\nTap to Replay";
+        learn(1);
         document.onmousedown=function leftClick(){
             location.replace("/");
         };
