@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width", initial-scale=1>
+    <meta charset="utf-8">
+    <title>Games - Tetris</title>
+    <meta name="description" content="Play Games Alone!">
+    <meta name="keywords" content="games,tetris,game,board game,strategy game">
+
+    <meta property="og:title" content="Games - Tetris"/>
+    <meta property="og:description" content="Play Tetris in Games!"/>
+    <meta property="og:url" content="https//circle1018.github.io/"/>
+    <meta property="og:site_name" content="Games">
+    <meta property="og:locale" content="en_US">
+    <style>
+        body{
+            display: flex;
+            background-color: #C4E1F6;
+        }
+        html,body{
+            margin: 0;
+            padding: 0;
+        }
+        th{
+            border: 1px solid #000;
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            line-height: 0;
+        }
+        #game-container{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+        #table{
+            position: absolute;
+            background-color: #062736;
+            border-collapse : separate;
+        }
+        @keyframes fadeEffect{
+            0%{opacity: 1;}
+            50%{opacity: 0;}
+            100%{opacity: 1;}
+        }
+        @keyframes fade{
+            0%{opacity: 1;}
+            100%{opacity: 0;}
+        }
+        @keyframes countdownEffect{
+            0%{transform: scale(1); opacity: 1;}
+            50%{transform: scale(1.5); opacity: 0.5;}
+            100%{transform: scale(1); opacity: 1;}
+        }
+        #countdown{
+            font-size: 50px;
+            color: white;
+            font-weight: bold;
+            position: absolute;
+            animation: fadeEffect 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <table id="table">
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+        </table>
+        <div id="countdown">Tap to Play</div>
+    </div>
+    <script src="./script/board.js"></script>
+    <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
+</body>
+</html>

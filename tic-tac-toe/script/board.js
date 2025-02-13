@@ -4,12 +4,6 @@ let done=0,doing=0,think;
 let stone=["circle","cross"],rule="free";
 let track=[],track_cnt=0;
 let img=document.createElement("img");
-function getCookie(name){
-    let matches=document.cookie.match(new RegExp(
-        "(?:^|; )"+name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g,'\\$1')+"=([^;]*)"
-    ));
-    return matches?decodeURIComponent(matches[1]):undefined;
-}
 function getRandom(min,max){
     return Math.floor((Math.random()*(max-min+1))+min);
 }
@@ -149,8 +143,8 @@ function start(){
     }else{
         stone=["cross","circle"];
     }
-    document.cookie=`difficulty=${think};`;
-    document.cookie=`stone=${stone[1]};`;
+    localStorage.setItem("difficulty",think);
+    localStorage.setItem("stone",stone[1]);;
     document.getElementsByClassName("trans-background")[0].remove();
     track_icon();
 }
@@ -184,7 +178,7 @@ if(window.matchMedia("(min-width:728px)").matches){
     advertisment.setAttribute("data-ad-width","320");
     advertisment.setAttribute("data-ad-height","100");
     size=Math.min(window.innerHeight-100,window.innerWidth);
-    board.style.height=`${window.innerHeight-90}px`;
+    board.style.height=`${window.innerHeight-100}px`;
 }
 background.style.height=`${size*0.87}px`;
 background.style.width=`${size*0.87}px`;
@@ -221,5 +215,5 @@ let div=document.createElement("div");
 div.style="bottom:0;position:absolute;width:100%;justify-content: center;align-items: center;display: flex;";
 div.appendChild(advertisment);
 document.body.appendChild(div);
-document.getElementById(getCookie("stone")?getCookie("stone"):"cross").checked=true;
-document.getElementById('difficulty').value=getCookie("difficulty")?getCookie("difficulty"):50;
+document.getElementById(localStorage.getItem("stone")?localStorage.getItem("stone"):"cross").checked=true;
+document.getElementById('difficulty').value=localStorage.getItem("difficulty")?localStorage.getItem("difficulty"):50;

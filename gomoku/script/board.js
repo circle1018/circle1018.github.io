@@ -184,7 +184,7 @@ if(window.matchMedia("(min-width:728px)").matches){
     advertisment.setAttribute("data-ad-width","320");
     advertisment.setAttribute("data-ad-height","100");
     size=Math.min(window.innerHeight-100,window.innerWidth);
-    board.style.height=`${window.innerHeight-90}px`;
+    board.style.height=`${window.innerHeight-100}px`;
 }
 background.style.height=`${size*0.87}px`;
 background.style.width=`${size*0.87}px`;
