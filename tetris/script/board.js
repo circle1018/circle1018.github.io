@@ -13,13 +13,13 @@ let block=[],block_color,new_block=[
         [[0,5],[0,6],[1,4],[1,5]],4
     ],
     [
-        [[0,5],[1,5],[2,5],[2,4]],1
+        [[0,5],[1,5],[2,5],[2,4]],5
     ],
     [
-        [[0,4],[1,4],[2,4],[2,5]],5
+        [[0,4],[1,4],[2,4],[2,5]],6
     ],
     [
-        [[0,4],[0,5],[0,6],[1,5]],6
+        [[0,4],[0,5],[0,6],[1,5]],7
     ]
 ];
 let table=document.getElementById("table");
@@ -37,10 +37,9 @@ shuffle(block_list);
 function print_tetris(){
     for(let i=0;i<12;i++){
         for(let j=0;j<10;j++){
-            table.rows[i].cells[j].textContent=["\u2B1B","\uD83D\uDFE6","\uD83D\uDFE8","\uD83D\uDFE5","\uD83D\uDFE9","\uD83D\uDFE7","\uD83D\uDFEA"][tetris[i][j]];
+            table.rows[i].cells[j].style["background-color"]=["#000000","#87CEEB","#FFD700","#FF6347","#32CD32","#1E90FF","#FFA500","#800080"][tetris[i][j]];
         }
     }
-    return tetris_str;
 }
 function delete_line(){
     for(let i=3;i>=0;i--)tetris[block[i][0]][block[i][1]]=0;
@@ -66,7 +65,10 @@ function delete_line(){
 }
 function move(){
     if(block.length==0){
-        if(used_block==7)used_block=0;
+        if(used_block==7){
+            used_block=0;
+            shuffle(block_list);
+        }
         block=json(block_list[used_block][0]);
         block_color=block_list[used_block++][1];
         for(let i=0;i<4;i++){
