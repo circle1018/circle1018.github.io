@@ -163,22 +163,22 @@ const board=document.getElementById("game-container");
 const cells=document.querySelectorAll("th");
 const background=document.getElementById("background");
 const icon=document.getElementsByClassName("icon");
-const advertisment=document.createElement("ins");
-advertisment.setAttribute("class","kakao_ad_area");
-advertisment.style="display:none";
+// const advertisment=document.createElement("ins");
+// advertisment.setAttribute("class","kakao_ad_area");
+// advertisment.style="display:none";
 let size;
 if(window.matchMedia("(min-width:728px)").matches){
-    advertisment.setAttribute("data-ad-unit","DAN-IlKDM4p10tJd1i3l");
-    advertisment.setAttribute("data-ad-width","728");
-    advertisment.setAttribute("data-ad-height","90");
-    size=Math.min(window.innerHeight-90,window.innerWidth);
-    board.style.height=`${window.innerHeight-90}px`;
+    // advertisment.setAttribute("data-ad-unit","DAN-IlKDM4p10tJd1i3l");
+    // advertisment.setAttribute("data-ad-width","728");
+    // advertisment.setAttribute("data-ad-height","90");
+    size=Math.min(window.innerHeight,window.innerWidth);
+    board.style.height=`${window.innerHeight}px`;
 }else{
-    advertisment.setAttribute("data-ad-unit","DAN-QQ1Rd0zcFoD469HR");
-    advertisment.setAttribute("data-ad-width","320");
-    advertisment.setAttribute("data-ad-height","100");
-    size=Math.min(window.innerHeight-100,window.innerWidth);
-    board.style.height=`${window.innerHeight-100}px`;
+    // advertisment.setAttribute("data-ad-unit","DAN-QQ1Rd0zcFoD469HR");
+    // advertisment.setAttribute("data-ad-width","320");
+    // advertisment.setAttribute("data-ad-height","100");
+    size=Math.min(window.innerHeight,window.innerWidth);
+    board.style.height=`${window.innerHeight}px`;
 }
 background.style.height=`${size*0.87}px`;
 background.style.width=`${size*0.87}px`;
@@ -211,9 +211,9 @@ for(let i=0;i<icon.length;i++){
         track_icon();
     });
 };
-let div=document.createElement("div");
-div.style="bottom:0;position:absolute;width:100%;justify-content: center;align-items: center;display: flex;";
-div.appendChild(advertisment);
+// let div=document.createElement("div");
+// div.style="bottom:0;position:absolute;width:100%;justify-content: center;align-items: center;display: flex;";
+// div.appendChild(advertisment);
 document.body.appendChild(div);
 document.getElementById(localStorage.getItem("stone")?localStorage.getItem("stone"):"cross").checked=true;
 document.getElementById('difficulty').value=localStorage.getItem("difficulty")?localStorage.getItem("difficulty"):50;
