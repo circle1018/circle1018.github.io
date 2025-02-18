@@ -255,3 +255,4 @@ window.addEventListener('scroll', function() {
         upButton.style.pointerEvents="auto";
     }
 });
+window.scrollTo(0,0);
