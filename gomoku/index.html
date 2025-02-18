@@ -21,11 +21,19 @@
         body{
             display: flex;
             background-color: #C4E1F6;
+            flex-direction: column;
         }
         html,body{
             margin: 0;
             padding: 0;
+            scrollbar-width: none;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
         }
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
         b{
             font-size: 24px;
             text-align: center;
@@ -40,11 +48,43 @@
         label{
             font-size: 14px;
         }
+        h1 {
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        h2 {
+            font-size: clamp(20px, 5vw, 40px);
+            font-weight: bold;
+            line-height: 1.2;
+            text-indent: 4vw;
+        }
+        p {
+            font-size: clamp(14px, 2vw, 20px);
+            line-height: 1.6;
+            text-indent: 8vw;
+        }
+        hr{
+            border: none;
+            background-color: #808080;
+            height: 1px;
+            width: 100%;
+        }
         #game-container{
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
+        }
+        #description{
+            display: flex;
+            bottom: 0;
+            position: relative;
+            width: 100%;
+            flex-direction: column;
+            padding-left: 5vw;
+            padding-right: 5vw;
+            box-sizing: border-box;
         }
         #range-label{
             display: flex;
@@ -86,12 +126,41 @@
             width: 0px;
             height: 0px;
         }
+        .list{
+            font-size: clamp(14px, 2vw, 20px);
+        }
+        #up-button {
+            position: fixed;
+            opacity: 0;
+            bottom: 5vw;
+            right: 5vw;
+            width: 5vw;
+            height: 5vw;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            transition: opacity 1s ease;
+        }
+        #up-button:hover{
+            transform: scale(1.5);
+        }
         #selection-window{
             position: absolute;
             padding: 10px;
             width: 300px;
             height: 300px;
             background-color: #FFBD73;
+        }
+        #down{
+            transition: transform 0.3s ease-in-out;
+        }
+        #down:hover{
+            transform: scale(1.5);
         }
     </style>
 </head>
@@ -139,6 +208,46 @@
             <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
             <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
         </table>
+    </div>
+    <div id="description">
+        <div id="scroll-down" style="width:100%;">
+            <a href="#page2"><img alt="down" id="down" src="./images/down.png"></a>
+        </div>
+        <div id="page2">
+            <h1>Table of Contents</h1>
+            <hr style="height: 5px;">
+            <ol class="list">
+                <li>
+                    <a href="#Gomoku">Gomoku</a>
+                    <ol>
+                        <li>1. <a href="#Gomoku-Introduce">Introduce</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="#Rule">Rules</a>
+                    <ol>
+                        <li>1. <a href="#Rule-Freestyle">Freestyle Gomoku Rule</a></li>
+                        <li>2. <a href="#Rule-Standard">Standard Gomoku Rule</a></li>
+                    </ol>
+                </li>
+            </ol>
+            <h1 id="Gomoku">1. Gomoku</h1>
+            <hr style="height: 5px;">
+            <h2 id="Gomoku-Introduce">1. 1. Introduce</h2>
+            <hr>
+            <p>오목은 바둑에서 파생된된 추상 전략 게임으로, Gomoku, Five in a Row, Omok 등 다양한 이름으로 불립니다. 게임은 15×15 크기의 판 위에서 진행되며, 검은 돌을 가진 플레이어가 먼저 시작해 번갈아가며 돌을 놓습니다. 가로, 세로 또는 대각선 방향으로 연속해서서 5개의 돌을 완성하면 승리하게 됩니다. 기본적으로 검은 돌이 유리한 경향이 있어, 이를 보완하기 위해 여러 가지 규칙들이 적용됩니다.</p>
+            <h1 id="Rule">2. Rules</h1>
+            <hr style="height: 5px;">
+            <h2 id="Rule-Freestyle">2. 1. Freestyle Gomoku Rule</h2>
+            <hr>
+            <p>Freestyle Gomoku Rule은 특별한 제약 없이 15×15 크기의 판 위에서 진행되며, 흑색 돌에게 매우 유리합니다. 또한 6목 이상의 장목도 승리 조건으로 인정됩니다.</p>
+            <h2 id="Rule-Standard">2. 2. Standard Gomoku Rule</h2>
+            <hr>
+            <p>Standard Gomoku Rule은 별다른 제약 없이 15×15 크기의 판 위에서 진행되며, 흑색 돌에게 유리합니다. 하지만 6목 이상의 장목을 승리 조건으로 인정되지 않습니다.</p>
+        </div>
+    </div>
+    <div id="up-button">
+        <img src="./images/down.png" style="width:60%;transform: scale(-1);">
     </div>
     <div class="trans-background">
         <div id="selection-window">

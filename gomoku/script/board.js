@@ -177,14 +177,14 @@ if(window.matchMedia("(min-width:728px)").matches){
     // advertisment.setAttribute("data-ad-unit","DAN-IlKDM4p10tJd1i3l");
     // advertisment.setAttribute("data-ad-width","728");
     // advertisment.setAttribute("data-ad-height","90");
-    size=Math.min(window.innerHeight,window.innerWidth);
-    board.style.height=`${window.innerHeight}px`;
+    size=Math.min(window.innerHeight*0.95,window.innerWidth);
+    board.style.height=`${window.innerHeight*0.95}px`;
 }else{
     // advertisment.setAttribute("data-ad-unit","DAN-QQ1Rd0zcFoD469HR");
     // advertisment.setAttribute("data-ad-width","320");
     // advertisment.setAttribute("data-ad-height","100");
-    size=Math.min(window.innerHeight,window.innerWidth);
-    board.style.height=`${window.innerHeight}px`;
+    size=Math.min(window.innerHeight*0.95,window.innerWidth);
+    board.style.height=`${window.innerHeight*0.95}px`;
 }
 background.style.height=`${size*0.87}px`;
 background.style.width=`${size*0.87}px`;
@@ -235,6 +235,22 @@ for(let i=0;i<icon.length;i++){
 // div.style="bottom:0;position:absolute;width:100%;justify-content: center;align-items: center;display: flex;";
 // div.appendChild(advertisment);
 // document.body.appendChild(div);
+let down=document.getElementById("down");
+let div=document.getElementById("scroll-down");
+div.style.height=window.innerHeight*0.05+"px";
+div.style.justifyContent="center";
+div.style.display="flex";
+down.style.height=window.innerHeight*0.025+"px";
 document.getElementById(localStorage.getItem("stone")?localStorage.getItem("stone"):"black").checked=true;
 document.getElementById('difficulty').value=localStorage.getItem("difficulty")?localStorage.getItem("difficulty"):10000;
 document.getElementById(localStorage.getItem("rule")?localStorage.getItem("rule"):"free").checked=true;
+window.addEventListener('scroll', function() {
+    const upButton=document.querySelector('#up-button');
+    if(window.scrollY==0){
+        upButton.style.opacity=0;
+        upButton.style.pointerEvents="none";
+    }else{
+        upButton.style.opacity=1;
+        upButton.style.pointerEvents="auto";
+    }
+});
