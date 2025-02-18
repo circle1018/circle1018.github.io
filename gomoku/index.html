@@ -20,15 +20,8 @@
     function googleTranslateElementInit() {
         new google.translate.TranslateElement({
             pageLanguage: 'ko',
-            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+            autoDisplay: true
         }, 'google_translate_element');
-        document.addEventListener('load', function() {
-            const translate=document.querySelector('select.goog-te-combo');
-            if(translate){
-                translate.value='en';
-                translate.dispatchEvent(new Event('change'));
-            }
-        });
     }
     </script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
@@ -232,7 +225,9 @@
             <a href="#page2"><img alt="down" id="down" src="./images/down.png"></a>
         </div>
         <div id="page2">
-            <div id="google_translate_element"></div>
+            <div style="justify-content: left;display:flex;">
+                <div id="google_translate_element"></div>
+            </div>
             <h1>Table of Contents</h1>
             <hr style="height: 5px;">
             <ol class="list">
