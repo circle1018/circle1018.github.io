@@ -255,4 +255,26 @@ window.addEventListener('scroll', function() {
         upButton.style.pointerEvents="auto";
     }
 });
+window.addEventListener("resize",function(){
+    size=Math.min(window.innerHeight*0.95,window.innerWidth);
+    board.style.height=`${window.innerHeight*0.95}px`;
+    background.style.height=`${size*0.87}px`;
+    background.style.width=`${size*0.87}px`;
+    cells.forEach(cell=>{
+        cell.style.width=`${size*0.058}px`;
+        cell.style.height=`${size*0.058}px`;
+    });
+    document.getElementsByClassName("loading")[0].style.width=`${size*0.058}px`;
+    document.getElementsByClassName("loading")[0].style.height=`${size*0.058}px`;
+    document.getElementsByClassName("loading")[0].style.left=`${size*0.058*(0.5)}px`;
+    for(let i=0;i<icon.length;i++){
+        icon[i].style.width=`${size*0.058}px`;
+        icon[i].style.height=`${size*0.058}px`;
+        if(i<2){
+            icon[i].style.left=`${size*0.058*(i+0.5)}px`;
+            continue;
+        }
+        icon[i].style.left=`${size*0.058*(i+9.5)}px`;
+    }
+})
 window.scrollTo(0,0);
