@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta name="viewport" content="width=device-width", initial-scale=1>
     <meta charset="utf-8">
@@ -16,19 +16,37 @@
     <meta property="og:locale" content="en_US">
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
-    
+    <script type="text/javascript">
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({
+            pageLanguage: 'ko',
+            layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+        }, 'google_translate_element');
+        document.addEventListener('load', function() {
+            const translate=document.querySelector('select.goog-te-combo');
+            if(translate){
+                translate.value='en';
+                translate.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+    </script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <style>
         body{
             display: flex;
             background-color: #C4E1F6;
             flex-direction: column;
+            margin: 0;
+            padding: 0;
         }
-        html,body{
+        html{
             margin: 0;
             padding: 0;
             scrollbar-width: none;
             overflow-y: scroll;
             scroll-behavior: smooth;
+            overflow: hidden;
         }
         ::-webkit-scrollbar {
             display: none;
@@ -109,8 +127,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             background-color: rgba(0,0,0,0.5);
             z-index: 100;
         }
@@ -214,6 +232,7 @@
             <a href="#page2"><img alt="down" id="down" src="./images/down.png"></a>
         </div>
         <div id="page2">
+            <div id="google_translate_element"></div>
             <h1>Table of Contents</h1>
             <hr style="height: 5px;">
             <ol class="list">

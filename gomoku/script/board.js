@@ -147,6 +147,7 @@ function start(){
     localStorage.setItem("stone",stone[1]);
     localStorage.setItem("rule",rule);
     document.getElementsByClassName("trans-background")[0].remove();
+    document.getElementsByTagName("html")[0].style.overflow="visible";
     track_icon();
 }
 function track_icon(){
