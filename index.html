@@ -1,86 +1,335 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
     <meta name="viewport" content="width=device-width", initial-scale=1>
     <meta charset="utf-8">
-    <title>Games - Play Gomoku & Tic Tac Toe</title>
-    <meta name="description" content="Play free online Gomoku and Tic-Tac-Toe games against AI! Choose difficulty, first move, and enjoy both standard and freestyle Gomoku rules.">
-    <meta name="keywords" content="games,gomoku,tic tac toe,omok,game,board game,strategy game,AI,AI games">
+    <title>Games - Gomoku</title>
+    <meta name="description" content="Play Gomoku online against AI! Set difficulty, choose first or second move, and enjoy freestyle & standard rules. Improve your skills now!">
+    <meta name="keywords" content="games,gomoku,omok,game,board game,strategy game,AI,five in a row,standard gomoku,freestyle gomoku">
     <meta name="robots" content="index, follow">
-    <meta property="og:description" content="Challenge AI in Gomoku & Tic-Tac-Toe! Choose your difficulty, play first or second, and enjoy classic board games online.">
-    <meta property="og:title" content="Play Gomoku & Tic-Tac-Toe Online - AI Opponent Available!">
-    <meta property="og:url" content="https//circle1018.github.io/">
+
+    <meta property="og:title" content="Play Gomoku Online - AI Opponent Available">
+    <meta property="og:description" content="Enjoy Gomoku with AI! Choose difficulty, first move, and play freestyle or standard rules. Test your skills now!">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https//circle1018.github.io/gomoku/">
+    <meta property="og:image" content="./images/game.png">
+    <meta property="og:locale" content="en_US">
     <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
     <link rel="icon" href="./images/favicon.ico" type="image/x-icon">
+    <script type="text/javascript">
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'ko',
+                autoDisplay: true
+            }, 'google_translate_element');
+        }
+    </script>
     <style>
         body{
             display: flex;
             background-color: #C4E1F6;
+            flex-direction: column;
+            margin: 0;
+            padding: 0;
+            top: 0px !important;
+        }
+        html{
+            margin: 0;
+            padding: 0;
+            scrollbar-width: none;
+            overflow-y: scroll;
+            scroll-behavior: smooth;
             overflow: hidden;
         }
-        html,body{
-            margin: 0;
-            padding: 0;
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        b{
+            font-size: 24px;
+            text-align: center;
         }
         th{
-            border: 1px solid rgba(0,0,0,0);
+            border: 1px solid #000;
             padding: 0;
             margin: 0;
+            width: min(5.51vh,5.8vw);
+            height: min(5.51vh,5.8vw);
+            box-sizing: border-box;
+            line-height: 0;
         }
-        .game{
+        label{
+            font-size: 14px;
+        }
+        h1 {
+            font-size: clamp(28px, 5vw, 48px);
+            font-weight: bold;
+            line-height: 1.2;
+        }
+        h2 {
+            font-size: clamp(20px, 5vw, 40px);
+            font-weight: bold;
+            line-height: 1.2;
+            text-indent: 4vw;
+        }
+        p {
+            font-size: clamp(14px, 2vw, 20px);
+            line-height: 1.6;
+            text-indent: 8vw;
+        }
+        hr{
+            border: none;
+            background-color: #808080;
+            height: 1px;
+            width: 100%;
+        }
+        #game-container{
+            display: flex;
+            justify-content: center;
             align-items: center;
-            justify-items: center;
-            width: 50vw;
-            height: 50vw;
+            width: 100vw;
+            height: 95vh;
+        }
+        #description{
+            display: flex;
+            bottom: 0;
+            position: relative;
+            width: 100vw;
+            flex-direction: column;
+            padding-left: 5vw;
+            padding-right: 5vw;
             box-sizing: border-box;
         }
-        .description{
+        #range-label{
+            display: flex;
+            justify-content: space-between;
+        }
+        #table1{
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            font-size: 4vw;
-            font-weight: bold;
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
-            white-space: nowrap;
+            background-color: #FEEE91;
+            border-collapse : collapse;
+        }
+        #table2{
+            position: absolute;
+            background-color: rgba(0,0,0,0);
+            border-collapse: collapse;
+        }
+        #table2 th{
+            border: none;
+        }
+        #background{
+            position: absolute;
+            background-color: #FEEE91;
+            width: min(82.65vh,87vw);
+            height: min(82.65vh,87vw);
+        }
+        #scroll-down{
+            height: 5vh;
+            justify-content: center;
+            display: flex;
+        }
+        .VIpgJd-ZVi9od-ORHb-OEVmcd{
+            display: none;
+        }
+        .trans-background{
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+        .icon{
+            position: absolute;
+            bottom: 100%;
+            width: min(5.51vh,5.8vw);
+            height: min(5.51vh,5.8vw);
+        }
+        .loading{
+            position: absolute;
+            bottom: 100%;
+            width: min(5.51vh,5.8vw);
+            height: min(5.51vh,5.8vw);
+            opacity: 0;
+            left: calc(min(5.51vh,5.8vw)*0.5);
+        }
+        .list{
+            font-size: clamp(14px, 2vw, 20px);
+        }
+        #up-button {
+            position: fixed;
+            opacity: 0;
+            bottom: 5vw;
+            right: 5vw;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: white;
+            border: 2px solid #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            transition: opacity 1s ease;
+        }
+        #up-button:hover{
+            transform: scale(1.5);
+        }
+        #selection-window{
+            position: absolute;
+            padding: 10px;
+            width: 300px;
+            height: 220px;
+            background-color: #FFBD73;
+        }
+        #down{
+            transition: transform 0.3s ease-in-out;
+            height: 2.5vh;
+        }
+        #down:hover{
+            transform: scale(1.5);
         }
     </style>
 </head>
 <body>
-    <div>
-        <table>
-            <!-- <tr style="border-bottom: 1px solid rgb(0,0,0);">
-                <th>
-                    <h1 style="text-indent: 4vw; font-size:6vh; color: #008959; text-align:left">Games</h1>
-                <th>
-            </tr> -->
-            <tr>
-                <th class="game">
-                    <a href="./gomoku/" style="display: inline-block; position: relative; width: 40vw; height: 40vw;">
-                        <img src="./gomoku/images/game.png" alt="gomoku" style="width: 40vw; height: 40vw; position: absolute; top: 0; left: 0;">
-                        <img src="./images/opaque.png" alt="opaque" style="width: 40vw; height: 40vw; position: absolute; top: 0; left: 0;">
-                        <div class="description">
-                            <div>Gomoku Game</div>
-                            <div style="font-size: 3vw; margin-top: 5px;">Click to play!</div>
-                        </div>
-                    </a>
-                </th>
-                <th class="game">
-                    <a href="./tic-tac-toe/" style="display: inline-block; position: relative; width: 40vw; height: 40vw;">
-                        <img src="./tic-tac-toe/images/game.png" alt="tic tac toe" style="width: 40vw; height: 40vw; position: absolute; top: 0; left: 0;">
-                        <img src="./images/opaque.png" alt="opaque" style="width: 40vw; height: 40vw; position: absolute; top: 0; left: 0;">
-                        <div class="description">
-                            <div>Tic Tac Toe Game</div>
-                            <div style="font-size: 3vw; margin-top: 5px;">Click to play!</div>
-                        </div>
-                    </a>
-                </th>
-            </tr>
+    <div id="game-container">
+        <div id="background">
+            <img alt="robot" style="left: calc(min(5.51vh,5.8vw)*0.5)" class="icon" src="./images/robot.png">
+            <img alt="loading" style="left: calc(min(5.51vh,5.8vw)*0.5)" class="loading" src="./images/loading.gif">
+            <img alt="person"  style="left: calc(min(5.51vh,5.8vw)*1.5)"class="icon" src="./images/person_turn.png">
+            <img alt="fast_back" style="left: calc(min(5.51vh,5.8vw)*10.5)" class="icon" src="./images/fast_back_block.png">
+            <img alt="back" style="left: calc(min(5.51vh,5.8vw)*11.5)" class="icon" src="./images/back_block.png">
+            <img alt="front" style="left: calc(min(5.51vh,5.8vw)*12.5)" class="icon" src="./images/front_block.png">
+            <img alt="fast_front" style="left: calc(min(5.51vh,5.8vw)*13.5)" class="icon" src="./images/fast_front_block.png">
+        </div>
+        <table id="table1">
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
         </table>
-    <!-- </div>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7888764053462980"
+        <table id="table2">
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+            <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
+        </table>
+    </div>
+    <div id="description">
+        <div id="scroll-down">
+            <a href="#page2"><img alt="down" id="down" src="./images/down.png"></a>
+        </div>
+        <div id="page2">
+            <div style="justify-content: left;display:flex;">
+                <div id="google_translate_element"></div>
+            </div>
+            <h1>Table of Contents</h1>
+            <hr style="height: 5px;">
+            <ol class="list">
+                <li>
+                    <a href="#Gomoku">Gomoku</a>
+                    <ol>
+                        <li>1. <a href="#Gomoku-Introduce">Introduce</a></li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="#Rule">Rules</a>
+                    <ol>
+                        <li><a href="#Rule-Freestyle">Freestyle Gomoku Rule</a></li>
+                        <li><a href="#Rule-Standard">Standard Gomoku Rule</a></li>
+                        <li><a href="#Rule-Omok">Omok Rule</a></li>
+                    </ol>
+                </li>
+            </ol>
+            <h1 id="Gomoku">1. Gomoku</h1>
+            <hr style="height: 5px;">
+            <h2 id="Gomoku-Introduce">1. 1. Introduce</h2>
+            <hr>
+            <p>오목은 바둑에서 파생된 추상 전략 게임으로, Gomoku, Five in a Row, Omok 등 다양한 이름으로 불립니다. 게임은 15×15 크기의 판 위에서 진행되며, 검은 돌을 가진 플레이어가 먼저 시작해 번갈아가며 돌을 놓습니다. 가로, 세로 또는 대각선 방향으로 연속해서 5개의 돌을 놓으면 승리하게 됩니다. 기본적으로 검은 돌이 유리한 경향이 있어, 이를 보완하기 위해 여러 가지 규칙들이 적용됩니다.</p>
+            <h1 id="Rule">2. Rules</h1>
+            <hr style="height: 5px;">
+            <h2 id="Rule-Freestyle">2. 1. Freestyle Gomoku Rule</h2>
+            <hr>
+            <p>Freestyle Gomoku Rule은 특별한 제약 없이 15×15 크기의 판 위에서 진행되며, 흑돌에게 매우 유리합니다. 또한 6목 이상의 장목도 승리 조건으로 인정됩니다.</p>
+            <h2 id="Rule-Standard">2. 2. Standard Gomoku Rule</h2>
+            <hr>
+            <p>Standard Gomoku Rule은 별다른 제약 없이 15×15 크기의 판 위에서 진행되며, 흑돌에게 유리합니다. 하지만 6목 이상의 장목을 승리 조건으로 인정하지 않습니다.</p>
+            <h2 id="Rule-Omok">2. 3. Omok Rule</h2>
+            <hr>
+            <p>다른 규칙들과 달리, Omok Rule은 흑돌과 백돌 둘 다 33을 둘 수 없도록 제한되어 있습니다. 그럼에도 불구하고, 이 규칙은 여전히 흑돌에게 유리합니다. 또한 Omok Rule은 15×15 크기의 판 대신 19×19 크기의 판에서 진행하기도 합니다.</p>
+        </div>
+    </div>
+    <div id="up-button">
+        <img src="./images/down.png" alt="go_to_top" style="width:60%;transform: scale(-1);" onclick="window.scrollTo(0,0)">
+    </div>
+    <div class="trans-background">
+        <div id="selection-window">
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <b>Your Stone</b>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <form>
+                    <input type="radio" name="stone" id="black" value="Black" checked><label for="black">Black</label>
+                    <input type="radio" name="stone" id="white" value="White"><label for="white">White</label>
+                </form>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <b>Rule</b>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <select name="rule">
+                    <option id="free" value="free" checked>Freestyle Gomoku</option>
+                    <option id="standard" value="standard">Standard Gomoku</option>
+                    <option id="omok" value="omok">Omok</option>
+                </select>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <b>Difficulty</b>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <input type="range" id="difficulty" min="100" max="21000" value="10000" step="1" style="width: 100%;">
+            </div>
+            <div id="range-label">
+                <span>Easy</span>
+                <span>Hard</span>
+            </div>
+            <div style="display: flex; justify-content: center; width: 100%;">
+                <button type="button" style="border: none;" onclick="start();">Start</button>
+            </div>
+        </div>
+    </div>
+    <script src="./script/AI.js"></script>
+    <script src="./script/candidate.js"></script>
+    <script src="./script/win.js"></script>
+    <script src="./script/board.js"></script>
+    <script src="./script/33.js"></script>
+    <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7888764053462980"
      crossorigin="anonymous"></script> -->
+    <!-- <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script> -->
 </body>
 </html>

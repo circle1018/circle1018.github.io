@@ -202,50 +202,12 @@ function track_icon(){
     if(track_cnt==track.length)icon[5].src="./images/fast_front_block.png";
     else icon[5].src="./images/fast_front.png";
 }
-for(let i=0;i<N;i++){
-    for(let j=0;j<N;j++){
-        table.rows[i].cells[j].style.border='none';
-    }
-}
 const board=document.getElementById("game-container");
 const cells=document.querySelectorAll("th");
 const background=document.getElementById("background");
 const icon=document.getElementsByClassName("icon");
-// const advertisment=document.createElement("ins");
-// advertisment.setAttribute("class","kakao_ad_area");
-// advertisment.style="display:none";
-let size;
-if(window.matchMedia("(min-width:728px)").matches){
-    // advertisment.setAttribute("data-ad-unit","DAN-IlKDM4p10tJd1i3l");
-    // advertisment.setAttribute("data-ad-width","728");
-    // advertisment.setAttribute("data-ad-height","90");
-    size=Math.min(window.innerHeight*0.95,window.innerWidth);
-    board.style.height=`${window.innerHeight*0.95}px`;
-}else{
-    // advertisment.setAttribute("data-ad-unit","DAN-QQ1Rd0zcFoD469HR");
-    // advertisment.setAttribute("data-ad-width","320");
-    // advertisment.setAttribute("data-ad-height","100");
-    size=Math.min(window.innerHeight*0.95,window.innerWidth);
-    board.style.height=`${window.innerHeight*0.95}px`;
-}
-background.style.height=`${size*0.87}px`;
-background.style.width=`${size*0.87}px`;
-cells.forEach(cell=>{
-    cell.style.width=`${size*0.058}px`;
-    cell.style.height=`${size*0.058}px`;
-});
-document.getElementsByClassName("loading")[0].style.width=`${size*0.058}px`;
-document.getElementsByClassName("loading")[0].style.height=`${size*0.058}px`;
-document.getElementsByClassName("loading")[0].style.left=`${size*0.058*(0.5)}px`;
-document.getElementsByClassName("loading")[0].style.opacity=0;
 for(let i=0;i<icon.length;i++){
-    icon[i].style.width=`${size*0.058}px`;
-    icon[i].style.height=`${size*0.058}px`;
-    if(i<2){
-        icon[i].style.left=`${size*0.058*(i+0.5)}px`;
-        continue;
-    }
-    icon[i].style.left=`${size*0.058*(i+9.5)}px`;
+    if(i<2)continue;
     icon[i].addEventListener('click',function(){
         let turn=(stone[0]=="black"?0:1);
         if(icon[i].alt=="back")track_cnt=Math.max((turn+1)%2,track_cnt-2);
@@ -293,16 +255,6 @@ for(let i=0;i<icon.length;i++){
         }
     });
 };
-// let div=document.createElement("div");
-// div.style="bottom:0;position:absolute;width:100%;justify-content: center;align-items: center;display: flex;";
-// div.appendChild(advertisment);
-// document.body.appendChild(div);
-let down=document.getElementById("down");
-let div=document.getElementById("scroll-down");
-div.style.height=window.innerHeight*0.05+"px";
-div.style.justifyContent="center";
-div.style.display="flex";
-down.style.height=window.innerHeight*0.025+"px";
 document.getElementById(localStorage.getItem("stone")?localStorage.getItem("stone"):"black").checked=true;
 document.getElementById('difficulty').value=localStorage.getItem("difficulty")?localStorage.getItem("difficulty"):10000;
 let sel=document.querySelector("select[name=rule]").options;
@@ -319,26 +271,4 @@ window.addEventListener('scroll', function() {
         upButton.style.pointerEvents="auto";
     }
 });
-window.addEventListener("resize",function(){
-    size=Math.min(window.innerHeight*0.95,window.innerWidth);
-    board.style.height=`${window.innerHeight*0.95}px`;
-    background.style.height=`${size*0.87}px`;
-    background.style.width=`${size*0.87}px`;
-    cells.forEach(cell=>{
-        cell.style.width=`${size*0.058}px`;
-        cell.style.height=`${size*0.058}px`;
-    });
-    document.getElementsByClassName("loading")[0].style.width=`${size*0.058}px`;
-    document.getElementsByClassName("loading")[0].style.height=`${size*0.058}px`;
-    document.getElementsByClassName("loading")[0].style.left=`${size*0.058*(0.5)}px`;
-    for(let i=0;i<icon.length;i++){
-        icon[i].style.width=`${size*0.058}px`;
-        icon[i].style.height=`${size*0.058}px`;
-        if(i<2){
-            icon[i].style.left=`${size*0.058*(i+0.5)}px`;
-            continue;
-        }
-        icon[i].style.left=`${size*0.058*(i+9.5)}px`;
-    }
-})
 window.scrollTo(0,0);
