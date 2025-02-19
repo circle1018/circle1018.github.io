@@ -148,8 +148,8 @@
             opacity: 0;
             bottom: 5vw;
             right: 5vw;
-            width: 7vw;
-            height: 7vw;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             background-color: white;
             border: 2px solid #ccc;
@@ -245,6 +245,7 @@
                     <ol>
                         <li>1. <a href="#Rule-Freestyle">Freestyle Gomoku Rule</a></li>
                         <li>2. <a href="#Rule-Standard">Standard Gomoku Rule</a></li>
+                        <li>3. <a href="#Rule-Omok">Omok Rule</a></li>
                     </ol>
                 </li>
             </ol>
@@ -257,10 +258,13 @@
             <hr style="height: 5px;">
             <h2 id="Rule-Freestyle">2. 1. Freestyle Gomoku Rule</h2>
             <hr>
-            <p>Freestyle Gomoku Rule은 특별한 제약 없이 15×15 크기의 판 위에서 진행되며, 흑색 돌에게 매우 유리합니다. 또한 6목 이상의 장목도 승리 조건으로 인정됩니다.</p>
+            <p>Freestyle Gomoku Rule은 특별한 제약 없이 15×15 크기의 판 위에서 진행되며, 흑돌에게 매우 유리합니다. 또한 6목 이상의 장목도 승리 조건으로 인정됩니다.</p>
             <h2 id="Rule-Standard">2. 2. Standard Gomoku Rule</h2>
             <hr>
-            <p>Standard Gomoku Rule은 별다른 제약 없이 15×15 크기의 판 위에서 진행되며, 흑색 돌에게 유리합니다. 하지만 6목 이상의 장목을 승리 조건으로 인정하지 않습니다.</p>
+            <p>Standard Gomoku Rule은 별다른 제약 없이 15×15 크기의 판 위에서 진행되며, 흑돌에게 유리합니다. 하지만 6목 이상의 장목을 승리 조건으로 인정하지 않습니다.</p>
+            <h2 id="Rule-Omok">2. 2. Omok Rule</h2>
+            <hr>
+            <p>다른 규칙들과 달리, Omok Rule은 주로 19×19 크기의 판에서 진행됩니다. Omok Rule은 흑돌과 백돌 모두 다 33을 두는 것을 금지하지만 여전히 흑돌에게 유리합니다.</p>
         </div>
     </div>
     <div id="up-button">
@@ -281,10 +285,11 @@
                 <b>Rule</b>
             </div>
             <div style="display: flex; justify-content: center; width: 100%;">
-                <form>
-                    <input type="radio" name="rule" id="free" value="free" checked><label for="free">Freestyle Gomoku</label>
-                    <input type="radio" name="rule" id="standard" value="standard"><label for="standard">Standard Gomoku</label>
-                </form>
+                <select name="rule">
+                    <option id="free" value="free" checked>Freestyle Gomoku</option>
+                    <option id="standard" value="standard">Standard Gomoku</option>
+                    <option id="omok" value="omok">Omok</option>
+                </select>
             </div>
             <div style="display: flex; justify-content: center; width: 100%;">
                 <b>Difficulty</b>
@@ -305,9 +310,10 @@
     <script src="./script/candidate.js"></script>
     <script src="./script/win.js"></script>
     <script src="./script/board.js"></script>
+    <script src="./script/33.js"></script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7888764053462980"
-     crossorigin="anonymous"></script>
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7888764053462980"
+     crossorigin="anonymous"></script> -->
     <!-- <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script> -->
 </body>
 </html>

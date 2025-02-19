@@ -58,6 +58,6 @@ function win(x,y){
         if(W4[i*N+j]==5)_5ir++;
         if(t==W4[i*N+j]&&(i!=x&&j!=y))break;
     }
-    if(rule=="free")return m>4?1:0;
     if(rule=="standard")return _5ir-_6ir;
+    else return m>4?1:0;
 }

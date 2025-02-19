@@ -75,6 +75,26 @@ function search(cnt,b,square,n){
             done=1;
             return;
         }
+        if(rule=="omok"){
+            for(let i=0;i<N;i++){
+                for(let j=0;j<N;j++){
+                    if(A33[i][j]<2)continue;
+                    table.rows[i].cells[j].removeChild(table.rows[i].cells[j].firstChild);
+                }
+            }
+            chk33(2);
+            for(let i=0;i<N;i++){
+                for(let j=0;j<N;j++){
+                    if(A33[i][j]<2)continue;
+                    let forbid33=document.createElement("img");
+                    forbid33.alt=`forbid 33`;
+                    forbid33.src=`./images/33.png`;
+                    forbid33.style.width="100%";
+                    forbid33.style.height="100%";
+                    table.rows[i].cells[j].appendChild(forbid33);
+                }
+            }
+        }
         doing=0;
         square.remove();
         b.remove();
@@ -96,6 +116,7 @@ table.addEventListener("click",function(event){
     let y=event.target.cellIndex;
     if(!A[7][7])x=7,y=7;
     if(A[x][y]||y>N-1||x>N-1||y<0||x<0)return;
+    if(rule=="omok"&&A33[x][y]>=2)return;
     doing=1;
     placeA(x,y,2);
     track.length=track_cnt;
@@ -125,6 +146,26 @@ table.addEventListener("click",function(event){
         done=1;
         return;
     }
+    if(rule=="omok"){
+        for(let i=0;i<N;i++){
+            for(let j=0;j<N;j++){
+                if(A33[i][j]<2)continue;
+                table.rows[i].cells[j].removeChild(table.rows[i].cells[j].firstChild);
+            }
+        }
+        chk33(1);
+        for(let i=0;i<N;i++){
+            for(let j=0;j<N;j++){
+                if(A33[i][j]<2)continue;
+                let forbid33=document.createElement("img");
+                forbid33.alt=`forbid 33`;
+                forbid33.src=`./images/33.png`;
+                forbid33.style.width="100%";
+                forbid33.style.height="100%";
+                table.rows[i].cells[j].appendChild(forbid33);
+            }
+        }
+    }
     setTimeout(function(){
         p={win:0,visit:0};
         search(think,b,square,1);
@@ -142,7 +183,7 @@ function start(){
     }else{
         stone=["white","black"];
     }
-    if(document.querySelector('input[name="rule"]:checked').value=="standard")rule="standard";
+    rule=document.querySelector('select[name=rule] option:checked').value;
     localStorage.setItem("difficulty",think);
     localStorage.setItem("stone",stone[1]);
     localStorage.setItem("rule",rule);
@@ -230,6 +271,26 @@ for(let i=0;i<icon.length;i++){
             win(track[i][0],track[i][1])
         }
         track_icon();
+        if(rule=="omok"){
+            for(let i=0;i<N;i++){
+                for(let j=0;j<N;j++){
+                    if(A33[i][j]<2)continue;
+                    table.rows[i].cells[j].removeChild(table.rows[i].cells[j].firstChild);
+                }
+            }
+            chk33((turn+track_cnt-1)%2+1);
+            for(let i=0;i<N;i++){
+                for(let j=0;j<N;j++){
+                    if(A33[i][j]<2)continue;
+                    let forbid33=document.createElement("img");
+                    forbid33.alt=`forbid 33`;
+                    forbid33.src=`./images/33.png`;
+                    forbid33.style.width="100%";
+                    forbid33.style.height="100%";
+                    table.rows[i].cells[j].appendChild(forbid33);
+                }
+            }
+        }
     });
 };
 // let div=document.createElement("div");
@@ -244,7 +305,10 @@ div.style.display="flex";
 down.style.height=window.innerHeight*0.025+"px";
 document.getElementById(localStorage.getItem("stone")?localStorage.getItem("stone"):"black").checked=true;
 document.getElementById('difficulty').value=localStorage.getItem("difficulty")?localStorage.getItem("difficulty"):10000;
-document.getElementById(localStorage.getItem("rule")?localStorage.getItem("rule"):"free").checked=true;
+let sel=document.querySelector("select[name=rule]").options;
+for(let i=0;i<sel.length;i++){
+    if(sel[i].value==localStorage.getItem("rule"))sel[i].selected=true;
+}
 window.addEventListener('scroll', function() {
     const upButton=document.querySelector('#up-button');
     if(window.scrollY==0){
