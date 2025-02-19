@@ -53,6 +53,8 @@
             border: 1px solid #000;
             padding: 0;
             margin: 0;
+            width: min(5.51vh,5.8vw);
+            height: min(5.51vh,5.8vw);
             box-sizing: border-box;
             line-height: 0;
         }
@@ -85,13 +87,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 100%;
+            width: 100vw;
+            height: 95vh;
         }
         #description{
             display: flex;
             bottom: 0;
             position: relative;
-            width: 100%;
+            width: 100vw;
             flex-direction: column;
             padding-left: 5vw;
             padding-right: 5vw;
@@ -111,9 +114,19 @@
             background-color: rgba(0,0,0,0);
             border-collapse: collapse;
         }
+        #table2 th{
+            border: none;
+        }
         #background{
             position: absolute;
             background-color: #FEEE91;
+            width: min(82.65vh,87vw);
+            height: min(82.65vh,87vw);
+        }
+        #scroll-down{
+            height: 5vh;
+            justify-content: center;
+            display: flex;
         }
         .VIpgJd-ZVi9od-ORHb-OEVmcd{
             display: none;
@@ -131,14 +144,16 @@
         .icon{
             position: absolute;
             bottom: 100%;
-            width: 0px;
-            height: 0px;
+            width: min(5.51vh,5.8vw);
+            height: min(5.51vh,5.8vw);
         }
         .loading{
             position: absolute;
             bottom: 100%;
-            width: 0px;
-            height: 0px;
+            width: min(5.51vh,5.8vw);
+            height: min(5.51vh,5.8vw);
+            opacity: 0;
+            left: calc(min(5.51vh,5.8vw)*0.5);
         }
         .list{
             font-size: clamp(14px, 2vw, 20px);
@@ -167,11 +182,12 @@
             position: absolute;
             padding: 10px;
             width: 300px;
-            height: 300px;
+            height: 220px;
             background-color: #FFBD73;
         }
         #down{
             transition: transform 0.3s ease-in-out;
+            height: 2.5vh;
         }
         #down:hover{
             transform: scale(1.5);
@@ -181,13 +197,13 @@
 <body>
     <div id="game-container">
         <div id="background">
-            <img alt="robot" class="icon" src="./images/robot.png">
-            <img alt="loading" class="loading" src="./images/loading.gif">
-            <img alt="person" class="icon" src="./images/person_turn.png">
-            <img alt="fast_back" class="icon" src="./images/fast_back_block.png">
-            <img alt="back" class="icon" src="./images/back_block.png">
-            <img alt="front" class="icon" src="./images/front_block.png">
-            <img alt="fast_front" class="icon" src="./images/fast_front_block.png">
+            <img alt="robot" style="left: calc(min(5.51vh,5.8vw)*0.5)" class="icon" src="./images/robot.png">
+            <img alt="loading" style="left: calc(min(5.51vh,5.8vw)*0.5)" class="loading" src="./images/loading.gif">
+            <img alt="person"  style="left: calc(min(5.51vh,5.8vw)*1.5)"class="icon" src="./images/person_turn.png">
+            <img alt="fast_back" style="left: calc(min(5.51vh,5.8vw)*10.5)" class="icon" src="./images/fast_back_block.png">
+            <img alt="back" style="left: calc(min(5.51vh,5.8vw)*11.5)" class="icon" src="./images/back_block.png">
+            <img alt="front" style="left: calc(min(5.51vh,5.8vw)*12.5)" class="icon" src="./images/front_block.png">
+            <img alt="fast_front" style="left: calc(min(5.51vh,5.8vw)*13.5)" class="icon" src="./images/fast_front_block.png">
         </div>
         <table id="table1">
             <tr><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th><th></th></tr>
@@ -224,7 +240,7 @@
         </table>
     </div>
     <div id="description">
-        <div id="scroll-down" style="width:100%;">
+        <div id="scroll-down">
             <a href="#page2"><img alt="down" id="down" src="./images/down.png"></a>
         </div>
         <div id="page2">
@@ -243,9 +259,9 @@
                 <li>
                     <a href="#Rule">Rules</a>
                     <ol>
-                        <li>1. <a href="#Rule-Freestyle">Freestyle Gomoku Rule</a></li>
-                        <li>2. <a href="#Rule-Standard">Standard Gomoku Rule</a></li>
-                        <li>3. <a href="#Rule-Omok">Omok Rule</a></li>
+                        <li><a href="#Rule-Freestyle">Freestyle Gomoku Rule</a></li>
+                        <li><a href="#Rule-Standard">Standard Gomoku Rule</a></li>
+                        <li><a href="#Rule-Omok">Omok Rule</a></li>
                     </ol>
                 </li>
             </ol>
@@ -262,9 +278,9 @@
             <h2 id="Rule-Standard">2. 2. Standard Gomoku Rule</h2>
             <hr>
             <p>Standard Gomoku Rule은 별다른 제약 없이 15×15 크기의 판 위에서 진행되며, 흑돌에게 유리합니다. 하지만 6목 이상의 장목을 승리 조건으로 인정하지 않습니다.</p>
-            <h2 id="Rule-Omok">2. 2. Omok Rule</h2>
+            <h2 id="Rule-Omok">2. 3. Omok Rule</h2>
             <hr>
-            <p>다른 규칙들과 달리, Omok Rule은 주로 19×19 크기의 판에서 진행됩니다. Omok Rule은 흑돌과 백돌 모두 다 33을 두는 것을 금지하지만 여전히 흑돌에게 유리합니다.</p>
+            <p>다른 규칙들과 달리, Omok Rule은 흑돌과 백돌 둘 다 33을 둘 수 없도록 제한되어 있습니다. 그럼에도 불구하고, 이 규칙은 여전히 흑돌에게 유리합니다. 또한 Omok Rule은 15×15 크기의 판 대신 19×19 크기의 판에서 진행하기도 합니다.</p>
         </div>
     </div>
     <div id="up-button">
