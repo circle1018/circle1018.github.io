@@ -262,6 +262,7 @@
                         <li><a href="#Rule-Freestyle">Freestyle Gomoku Rule</a></li>
                         <li><a href="#Rule-Standard">Standard Gomoku Rule</a></li>
                         <li><a href="#Rule-Omok">Omok Rule</a></li>
+                        <li><a href="#Rule-Renju">Renju Rule</a></li>
                     </ol>
                 </li>
             </ol>
@@ -281,6 +282,9 @@
             <h2 id="Rule-Omok">2. 3. Omok Rule</h2>
             <hr>
             <p>다른 규칙들과 달리, Omok Rule은 흑돌과 백돌 둘 다 33을 둘 수 없도록 제한되어 있습니다. 그럼에도 불구하고, 이 규칙은 여전히 흑돌에게 유리합니다. 또한 Omok Rule은 15×15 크기의 판 대신 19×19 크기의 판에서 진행하기도 합니다.</p>
+            <h2 id="Rule-Omok">2. 4. Renju Rule</h2>
+            <hr>
+            <p>Renju Rule은 흑돌의 33과 44를 금지하지만, 오목을 완성시키기 위한 경우에는 허용됩니다. 또한 장목은 흑돌과 백돌 모두 장목을 착수할 수 있지만, 흑돌이 장목을 둘 경우 패배합니다.</p>
         </div>
     </div>
     <div id="up-button">
@@ -305,6 +309,7 @@
                     <option id="free" value="free" checked>Freestyle Gomoku</option>
                     <option id="standard" value="standard">Standard Gomoku</option>
                     <option id="omok" value="omok">Omok</option>
+                    <option id="omok" value="renju">Renju</option>
                 </select>
             </div>
             <div style="display: flex; justify-content: center; width: 100%;">
@@ -327,6 +332,7 @@
     <script src="./script/win.js"></script>
     <script src="./script/board.js"></script>
     <script src="./script/33.js"></script>
+    <script src="./script/44.js"></script>
     <script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7888764053462980"
      crossorigin="anonymous"></script> -->

@@ -58,6 +58,9 @@ function win(x,y){
         if(W4[i*N+j]==5)_5ir++;
         if(t==W4[i*N+j]&&(i!=x&&j!=y))break;
     }
-    if(rule=="standard")return _5ir-_6ir;
-    else return m>4?1:0;
+    if(rule=="standard")return (_5ir-_6ir)?1:0;
+    else if(rule=="renju"){
+        if(stone[A[x][y]-1]=="black"&&_6ir)return -1;
+        else return m>4?1:0;
+    }else return m>4?1:0;
 }

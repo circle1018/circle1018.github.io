@@ -5,6 +5,7 @@ let stone=["black","white"],rule="free";
 let track=[],track_cnt=0;
 let img=document.createElement("img");
 let ssx=20,ssy=20,bbx=0,bby=0;
+let forbid33_A=[];
 function placeA(x,y,n){
     A[x][y]=n;
     ssx=Math.min(ssx,Math.max(x,2));
@@ -38,8 +39,6 @@ function placeA(x,y,n){
         table.rows[x].cells[y].appendChild(img);
     }
 }
-function learn(win){
-}
 function search(cnt,b,square,n){
     if(cnt<=p.visit||think==100){
         let index=[{x:0,y:0}],win_rate=-Infinity;
@@ -65,9 +64,17 @@ function search(cnt,b,square,n){
         track.push([index.x,index.y]);
         track_icon();
         placeA(index.x,index.y,1);
-        if(win(index.x,index.y,1)){
+        let wt=win(index.x,index.y,1)
+        if(wt>0){
             b.innerText="LOSE\nTap to Replay";
-            learn(0);
+            document.onmousedown=function leftClick(){
+                location.replace("/");
+            };
+            square.style.backgroundColor="rgba(255,255,255,0.8)";
+            done=1;
+            return;
+        }else if(wt<0){
+            b.innerText="WIN\nTap to Replay";
             document.onmousedown=function leftClick(){
                 location.replace("/");
             };
@@ -75,23 +82,32 @@ function search(cnt,b,square,n){
             done=1;
             return;
         }
-        if(rule=="omok"){
-            for(let i=0;i<N;i++){
-                for(let j=0;j<N;j++){
-                    if(A33[i][j]<2)continue;
-                    table.rows[i].cells[j].removeChild(table.rows[i].cells[j].firstChild);
-                }
-            }
+        while(forbid33_A.length){
+            forbid33_A[forbid33_A.length-1].remove();
+            forbid33_A.pop();
+        }
+        if(rule=="omok"||(rule=="renju"&&stone[1]=="black")){
             chk33(2);
+            chk44(2);
             for(let i=0;i<N;i++){
                 for(let j=0;j<N;j++){
-                    if(A33[i][j]<2)continue;
-                    let forbid33=document.createElement("img");
-                    forbid33.alt=`forbid 33`;
-                    forbid33.src=`./images/33.png`;
-                    forbid33.style.width="100%";
-                    forbid33.style.height="100%";
-                    table.rows[i].cells[j].appendChild(forbid33);
+                    if(A33[i][j]>=2){
+                        let forbid33=document.createElement("img");
+                        forbid33.alt=`forbid 33`;
+                        forbid33.src=`./images/33.png`;
+                        forbid33.style.width="100%";
+                        forbid33.style.height="100%";
+                        table.rows[i].cells[j].appendChild(forbid33);
+                        forbid33_A.push(forbid33);
+                    }else if(A44[i][j]>=2){
+                        let forbid44=document.createElement("img");
+                        forbid44.alt=`forbid 44`;
+                        forbid44.src=`./images/44.png`;
+                        forbid44.style.width="100%";
+                        forbid44.style.height="100%";
+                        table.rows[i].cells[j].appendChild(forbid44);
+                        forbid33_A.push(forbid44);
+                    }
                 }
             }
         }
@@ -117,6 +133,7 @@ table.addEventListener("click",function(event){
     if(!A[7][7])x=7,y=7;
     if(A[x][y]||y>N-1||x>N-1||y<0||x<0)return;
     if(rule=="omok"&&A33[x][y]>=2)return;
+    if(rule=="renju"&&stone[1]=="black"&&A33[x][y]>=2)return;
     doing=1;
     placeA(x,y,2);
     track.length=track_cnt;
@@ -136,9 +153,17 @@ table.addEventListener("click",function(event){
     icon[0].src="./images/robot_turn.png";
     icon[1].src="./images/person.png";
     document.getElementsByClassName("loading")[0].style.opacity=1;
-    if(win(x,y,2)){
+    let wt=win(x,y,2);
+    if(wt>0){
         b.innerText="WIN\nTap to Replay";
-        learn(1);
+        document.onmousedown=function leftClick(){
+            location.replace("/");
+        };
+        square.style.backgroundColor="rgba(255,255,255,0.8)";
+        done=1;
+        return;
+    }else if(wt<0){
+        b.innerText="LOSE\nTap to Replay";
         document.onmousedown=function leftClick(){
             location.replace("/");
         };
@@ -146,23 +171,32 @@ table.addEventListener("click",function(event){
         done=1;
         return;
     }
-    if(rule=="omok"){
-        for(let i=0;i<N;i++){
-            for(let j=0;j<N;j++){
-                if(A33[i][j]<2)continue;
-                table.rows[i].cells[j].removeChild(table.rows[i].cells[j].firstChild);
-            }
-        }
+    while(forbid33_A.length){
+        forbid33_A[forbid33_A.length-1].remove();
+        forbid33_A.pop();
+    }
+    if(rule=="omok"||(rule=="renju"&&stone[0]=="black")){
         chk33(1);
+        chk44(1);
         for(let i=0;i<N;i++){
             for(let j=0;j<N;j++){
-                if(A33[i][j]<2)continue;
-                let forbid33=document.createElement("img");
-                forbid33.alt=`forbid 33`;
-                forbid33.src=`./images/33.png`;
-                forbid33.style.width="100%";
-                forbid33.style.height="100%";
-                table.rows[i].cells[j].appendChild(forbid33);
+                if(A33[i][j]>=2){
+                    let forbid33=document.createElement("img");
+                    forbid33.alt=`forbid 33`;
+                    forbid33.src=`./images/33.png`;
+                    forbid33.style.width="100%";
+                    forbid33.style.height="100%";
+                    table.rows[i].cells[j].appendChild(forbid33);
+                    forbid33_A.push(forbid33);
+                }else if(A44[i][j]>=2){
+                    let forbid44=document.createElement("img");
+                    forbid44.alt=`forbid 44`;
+                    forbid44.src=`./images/44.png`;
+                    forbid44.style.width="100%";
+                    forbid44.style.height="100%";
+                    table.rows[i].cells[j].appendChild(forbid44);
+                    forbid33_A.push(forbid44);
+                }
             }
         }
     }
@@ -233,23 +267,32 @@ for(let i=0;i<icon.length;i++){
             win(track[i][0],track[i][1])
         }
         track_icon();
-        if(rule=="omok"){
+        while(forbid33_A.length){
+            forbid33_A[forbid33_A.length-1].remove();
+            forbid33_A.pop();
+        }
+        if(rule=="omok"||(rule=="renju"&&stone[(turn+track_cnt)%2+1-1]=="black")){
+            chk33((turn+track_cnt)%2+1);
+            chk44((turn+track_cnt)%2+1);
             for(let i=0;i<N;i++){
                 for(let j=0;j<N;j++){
-                    if(A33[i][j]<2)continue;
-                    table.rows[i].cells[j].removeChild(table.rows[i].cells[j].firstChild);
-                }
-            }
-            chk33((turn+track_cnt-1)%2+1);
-            for(let i=0;i<N;i++){
-                for(let j=0;j<N;j++){
-                    if(A33[i][j]<2)continue;
-                    let forbid33=document.createElement("img");
-                    forbid33.alt=`forbid 33`;
-                    forbid33.src=`./images/33.png`;
-                    forbid33.style.width="100%";
-                    forbid33.style.height="100%";
-                    table.rows[i].cells[j].appendChild(forbid33);
+                    if(A33[i][j]>=2){
+                        let forbid33=document.createElement("img");
+                        forbid33.alt=`forbid 33`;
+                        forbid33.src=`./images/33.png`;
+                        forbid33.style.width="100%";
+                        forbid33.style.height="100%";
+                        table.rows[i].cells[j].appendChild(forbid33);
+                        forbid33_A.push(forbid33);
+                    }else if(A44[i][j]>=2){
+                        let forbid44=document.createElement("img");
+                        forbid44.alt=`forbid 44`;
+                        forbid44.src=`./images/44.png`;
+                        forbid44.style.width="100%";
+                        forbid44.style.height="100%";
+                        table.rows[i].cells[j].appendChild(forbid44);
+                        forbid33_A.push(forbid44);
+                    }
                 }
             }
         }

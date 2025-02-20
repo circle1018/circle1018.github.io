@@ -22,6 +22,7 @@ function candidate(depth,num,ni,nj){
             for(let j=0;j<N;j++){
                 if(A[i][j]||C[i][j]<1)continue;
                 if(rule=="omok"&&A33>=2)continue;
+                if(rule=="renju"&&stone[num-1]=="black"&&A33[i][j]>=2)continue;
                 A[i][j]=num;
                 for(let p=-1;p<=1;p++){
                     for(let q=-1;q<=1;q++){

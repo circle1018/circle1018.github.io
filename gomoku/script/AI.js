@@ -66,7 +66,9 @@ function MCTS(P,num,depth){
     }
     //Result
     let result;
-    if(win(x,y,num))result=num;
+    let wt=win(x,y,num);
+    if(wt>0)result=num;
+    else if(wt<0)result=(num==1?2:1);
     else result=MCTS(P[key],(num==1?2:1),depth+1);
     for(let i=-1;i<=1;i++){
         for(let j=-1;j<=1;j++){
