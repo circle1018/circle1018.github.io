@@ -1,8 +1,9 @@
 let A33=Array.from(Array(N),()=>Array(N).fill(0));
 let type=['00110','01010','01100','001010','010010','011000','000110','010100'];
 let loc3=[[1],[2],[3],[1],[2,3],[4],[1],[4]];
-function chk33(num){
-    A33=Array.from(Array(N),()=>Array(N).fill(0));
+let max3=0;
+function chk33(num,nod){
+    if(!nod)A33=Array.from(Array(N),()=>Array(N).fill(0));
     //가로
     for(let i=0;i<N;i++){
         let str="";
@@ -133,4 +134,12 @@ function chk33(num){
             }
         }
     }
+
+    max3=0;
+    for(let i=0;i<N;i++){
+        for(let j=0;j<N;j++){
+            max3=Math.max(max3,A33[i][j]);
+        }
+    }
+    if(nod)nod=JSON.parse(JSON.stringify(A44));
 }

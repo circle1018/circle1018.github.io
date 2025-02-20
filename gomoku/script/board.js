@@ -133,7 +133,7 @@ table.addEventListener("click",function(event){
     if(!A[7][7])x=7,y=7;
     if(A[x][y]||y>N-1||x>N-1||y<0||x<0)return;
     if(rule=="omok"&&A33[x][y]>=2)return;
-    if(rule=="renju"&&stone[1]=="black"&&A33[x][y]>=2)return;
+    if(rule=="renju"&&stone[1]=="black"&&(A33[x][y]>=2||A44[x][y]>=2))return;
     doing=1;
     placeA(x,y,2);
     track.length=track_cnt;
