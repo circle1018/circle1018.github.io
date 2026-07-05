@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>세부능력 및 특기사항 다운로드</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fa;
+      --surface: #ffffff;
+      --text: #172033;
+      --muted: #667085;
+      --line: #dfe5ee;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+    }
+
+    main {
+      width: min(900px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 48px 0;
+    }
+
+    header {
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.65;
+    }
+
+    .summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 26px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .group {
+      margin-top: 28px;
+    }
+
+    .group:first-of-type {
+      margin-top: 0;
+    }
+
+    .group-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+
+    .count {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .file-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .file {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      min-height: 74px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+    }
+
+    .file-name {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .file-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .download {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 96px;
+      min-height: 42px;
+      padding: 10px 14px;
+      border-radius: 7px;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      text-decoration: none;
+      transition: background 160ms ease, transform 160ms ease;
+    }
+
+    .download:hover {
+      background: var(--accent-dark);
+      transform: translateY(-1px);
+    }
+
+    .download:focus-visible {
+      outline: 3px solid rgb(37 99 235 / 26%);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 560px) {
+      main {
+        width: min(100% - 24px, 900px);
+        padding: 32px 0;
+      }
+
+      .file {
+        grid-template-columns: 1fr;
+      }
+
+      .download {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <p class="eyebrow">1학년 1학기</p>
+      <h1>세부능력 및 특기사항</h1>
+      <p class="lead">필요한 자료를 선택해서 다운로드하세요.</p>
+    </header>
+
+    <section class="summary" aria-label="파일 요약">
+      <span class="pill" id="file-count">파일 0개</span>
+      <span class="pill" id="file-size">전체 0 KB</span>
+    </section>
+
+    <section id="download-list" aria-label="다운로드 목록"></section>
+  </main>
+
+  <script>
+    const files = [
+      {
+        category: "국어",
+        name: "국어심화탐구보고서_11004 김동건.hwpx",
+        path: "국어/국어심화탐구보고서_11004 김동건.hwpx",
+        size: 27035
+      },
+      {
+        category: "국어",
+        name: "PPT_11004 김동건.pptx",
+        path: "국어/PPT_11004 김동건.pptx",
+        size: 1514453
+      },
+      {
+        category: "국어",
+        name: "PPT_11004 김동건.pdf",
+        path: "국어/PPT_11004 김동건.pdf",
+        size: 257205
+      },
+      {
+        category: "국어",
+        name: "PPT 대본(전체)_11004 김동건.hwpx",
+        path: "국어/PPT 대본(전체)_11004 김동건.hwpx",
+        size: 63463
+      },
+      {
+        category: "국어",
+        name: "PPT 대본(요약)_11004 김동건.hwpx",
+        path: "국어/PPT 대본(요약)_11004 김동건.hwpx",
+        size: 46500
+      },
+      {
+        category: "사회",
+        name: "[11004 김동건] 유전 알고리즘.pptx",
+        path: "사회/[11004 김동건] 유전 알고리즘.pptx",
+        size: 10641314
+      },
+      {
+        category: "사회",
+        name: "[11004 김동건] 유전 알고리즘.pdf",
+        path: "사회/[11004 김동건] 유전 알고리즘.pdf",
+        size: 930790
+      },
+      {
+        category: "사회",
+        name: "index.js",
+        path: "사회/index.js",
+        size: 1372
+      }
+    ];
+
+    const list = document.querySelector("#download-list");
+    const count = document.querySelector("#file-count");
+    const totalSize = document.querySelector("#file-size");
+    const groups = files.reduce((result, file) => {
+      result[file.category] ||= [];
+      result[file.category].push(file);
+      return result;
+    }, {});
+
+    const formatSize = (bytes) => {
+      if (bytes >= 1024 * 1024) {
+        return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+      }
+      return `${Math.max(1, Math.round(bytes / 1024))} KB`;
+    };
+
+    const encodePath = (path) => path
+      .split("/")
+      .map((part) => encodeURIComponent(part))
+      .join("/");
+
+    const getExtension = (name) => {
+      const dot = name.lastIndexOf(".");
+      return dot === -1 ? "FILE" : name.slice(dot + 1).toUpperCase();
+    };
+
+    count.textContent = `파일 ${files.length}개`;
+    totalSize.textContent = `전체 ${formatSize(files.reduce((sum, file) => sum + file.size, 0))}`;
+
+    Object.entries(groups).forEach(([category, items]) => {
+      const section = document.createElement("section");
+      section.className = "group";
+
+      const title = document.createElement("div");
+      title.className = "group-title";
+      title.innerHTML = `<h2>${category}</h2><span class="count">${items.length}개</span>`;
+
+      const ul = document.createElement("ul");
+      ul.className = "file-list";
+
+      items.forEach((file) => {
+        const li = document.createElement("li");
+        li.className = "file";
+
+        const info = document.createElement("div");
+        info.innerHTML = `
+          <p class="file-name">${file.name}</p>
+          <div class="file-meta">
+            <span>${getExtension(file.name)}</span>
+            <span>${formatSize(file.size)}</span>
+          </div>
+        `;
+
+        const link = document.createElement("a");
+        link.className = "download";
+        link.href = encodePath(file.path);
+        link.download = file.name;
+        link.textContent = "다운로드";
+        link.setAttribute("aria-label", `${file.name} 다운로드`);
+
+        li.append(info, link);
+        ul.append(li);
+      });
+
+      section.append(title, ul);
+      list.append(section);
+    });
+  </script>
+</body>
+</html>
