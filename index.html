@@ -14,6 +14,7 @@
       --line: #dfe5ee;
       --accent: #2563eb;
       --accent-dark: #1d4ed8;
+      --danger: #b42318;
     }
 
     * {
@@ -78,6 +79,28 @@
       color: var(--muted);
       font-size: 14px;
       font-weight: 600;
+    }
+
+    .status {
+      margin: 0 0 22px;
+      padding: 13px 15px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .status.error {
+      border-color: #fecdca;
+      color: var(--danger);
+      background: #fff6f5;
+    }
+
+    .status[hidden] {
+      display: none;
     }
 
     .group {
@@ -203,69 +226,31 @@
       <span class="pill" id="file-size">전체 0 KB</span>
     </section>
 
+    <p class="status" id="status">파일 목록을 불러오는 중입니다.</p>
     <section id="download-list" aria-label="다운로드 목록"></section>
   </main>
 
   <script>
-    const files = [
-      {
-        category: "국어",
-        name: "국어심화탐구보고서_11004 김동건.hwpx",
-        path: "국어/국어심화탐구보고서_11004 김동건.hwpx",
-        size: 27035
-      },
-      {
-        category: "국어",
-        name: "PPT_11004 김동건.pptx",
-        path: "국어/PPT_11004 김동건.pptx",
-        size: 1514453
-      },
-      {
-        category: "국어",
-        name: "PPT_11004 김동건.pdf",
-        path: "국어/PPT_11004 김동건.pdf",
-        size: 257205
-      },
-      {
-        category: "국어",
-        name: "PPT 대본(전체)_11004 김동건.hwpx",
-        path: "국어/PPT 대본(전체)_11004 김동건.hwpx",
-        size: 63463
-      },
-      {
-        category: "국어",
-        name: "PPT 대본(요약)_11004 김동건.hwpx",
-        path: "국어/PPT 대본(요약)_11004 김동건.hwpx",
-        size: 46500
-      },
-      {
-        category: "사회",
-        name: "[11004 김동건] 유전 알고리즘.pptx",
-        path: "사회/[11004 김동건] 유전 알고리즘.pptx",
-        size: 10641314
-      },
-      {
-        category: "사회",
-        name: "[11004 김동건] 유전 알고리즘.pdf",
-        path: "사회/[11004 김동건] 유전 알고리즘.pdf",
-        size: 930790
-      },
-      {
-        category: "사회",
-        name: "index.js",
-        path: "사회/index.js",
-        size: 1372
-      }
-    ];
+    const CONFIG = {
+      owner: "",
+      repo: "",
+      branch: "",
+      root: ""
+    };
+
+    const EXCLUDED_ROOT_FILES = new Set([
+      "main.html",
+      "index.html",
+      "readme.md",
+      "license",
+      "cname",
+      ".gitignore"
+    ]);
 
     const list = document.querySelector("#download-list");
     const count = document.querySelector("#file-count");
     const totalSize = document.querySelector("#file-size");
-    const groups = files.reduce((result, file) => {
-      result[file.category] ||= [];
-      result[file.category].push(file);
-      return result;
-    }, {});
+    const status = document.querySelector("#status");
 
     const formatSize = (bytes) => {
       if (bytes >= 1024 * 1024) {
@@ -279,52 +264,212 @@
       .map((part) => encodeURIComponent(part))
       .join("/");
 
+    const decodePathPart = (part) => {
+      try {
+        return decodeURIComponent(part);
+      } catch {
+        return part;
+      }
+    };
+
+    const normalizePath = (path) => path
+      .replace(/\\/g, "/")
+      .replace(/^\/+|\/+$/g, "");
+
     const getExtension = (name) => {
       const dot = name.lastIndexOf(".");
       return dot === -1 ? "FILE" : name.slice(dot + 1).toUpperCase();
     };
 
-    count.textContent = `파일 ${files.length}개`;
-    totalSize.textContent = `전체 ${formatSize(files.reduce((sum, file) => sum + file.size, 0))}`;
+    const getName = (path) => path.split("/").pop();
 
-    Object.entries(groups).forEach(([category, items]) => {
-      const section = document.createElement("section");
-      section.className = "group";
+    const getDirectory = (path) => {
+      const parts = path.split("/");
+      return parts.length > 1 ? parts.slice(0, -1).join("/") : "기타";
+    };
 
-      const title = document.createElement("div");
-      title.className = "group-title";
-      title.innerHTML = `<h2>${category}</h2><span class="count">${items.length}개</span>`;
+    const getTopGroup = (path) => {
+      const parts = path.split("/");
+      return parts.length > 1 ? parts[0] : "기타";
+    };
 
-      const ul = document.createElement("ul");
-      ul.className = "file-list";
+    const setStatus = (message, isError = false) => {
+      status.hidden = false;
+      status.textContent = message;
+      status.classList.toggle("error", isError);
+    };
 
-      items.forEach((file) => {
-        const li = document.createElement("li");
-        li.className = "file";
+    const clearStatus = () => {
+      status.hidden = true;
+      status.textContent = "";
+      status.classList.remove("error");
+    };
 
-        const info = document.createElement("div");
-        info.innerHTML = `
-          <p class="file-name">${file.name}</p>
-          <div class="file-meta">
-            <span>${getExtension(file.name)}</span>
-            <span>${formatSize(file.size)}</span>
-          </div>
-        `;
+    const inferGitHubInfo = () => {
+      const host = location.hostname;
+      const isGitHubPages = host.endsWith(".github.io");
+      const owner = CONFIG.owner || (isGitHubPages ? host.replace(/\.github\.io$/, "") : "");
+      const rawSegments = location.pathname.split("/").filter(Boolean).map(decodePathPart);
+      const firstSegmentLooksLikeFile = rawSegments.length === 1 && rawSegments[0].includes(".");
+      const inferredRepo = rawSegments.length === 0 || firstSegmentLooksLikeFile
+        ? `${owner}.github.io`
+        : rawSegments[0];
+      const repo = CONFIG.repo || (isGitHubPages ? inferredRepo : "");
+      const isUserSite = repo === `${owner}.github.io`;
+      const pageParts = isUserSite ? rawSegments : rawSegments.slice(1);
+      const inferredRoot = pageParts.length > 1 ? pageParts.slice(0, -1).join("/") : "";
+      const root = normalizePath(CONFIG.root || inferredRoot);
 
-        const link = document.createElement("a");
-        link.className = "download";
-        link.href = encodePath(file.path);
-        link.download = file.name;
-        link.textContent = "다운로드";
-        link.setAttribute("aria-label", `${file.name} 다운로드`);
+      return {
+        owner,
+        repo,
+        branch: CONFIG.branch,
+        root
+      };
+    };
 
-        li.append(info, link);
-        ul.append(li);
+    const fetchJson = async (url) => {
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/vnd.github+json"
+        }
       });
 
-      section.append(title, ul);
-      list.append(section);
-    });
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      return response.json();
+    };
+
+    const getDefaultBranch = async (owner, repo) => {
+      const repoInfo = await fetchJson(`https://api.github.com/repos/${owner}/${repo}`);
+      return repoInfo.default_branch;
+    };
+
+    const loadRepositoryFiles = async () => {
+      const info = inferGitHubInfo();
+
+      if (!info.owner || !info.repo) {
+        throw new Error("GitHub Pages 주소에서 저장소 정보를 찾을 수 없습니다.");
+      }
+
+      const branch = info.branch || await getDefaultBranch(info.owner, info.repo);
+      const treeUrl = `https://api.github.com/repos/${info.owner}/${info.repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`;
+      const tree = await fetchJson(treeUrl);
+      const prefix = info.root ? `${info.root}/` : "";
+
+      return tree.tree
+        .filter((item) => item.type === "blob")
+        .map((item) => ({
+          path: normalizePath(item.path),
+          size: item.size || 0
+        }))
+        .filter((file) => !prefix || file.path.startsWith(prefix))
+        .map((file) => ({
+          path: prefix ? file.path.slice(prefix.length) : file.path,
+          size: file.size
+        }))
+        .filter((file) => file.path && !file.path.includes("/."))
+        .filter((file) => {
+          const lower = file.path.toLowerCase();
+          return file.path.includes("/") || !EXCLUDED_ROOT_FILES.has(lower);
+        })
+        .map((file) => ({
+          ...file,
+          name: getName(file.path),
+          group: getTopGroup(file.path),
+          directory: getDirectory(file.path)
+        }))
+        .sort((a, b) => a.path.localeCompare(b.path, "ko"));
+    };
+
+    const renderFiles = (files) => {
+      list.textContent = "";
+      count.textContent = `파일 ${files.length}개`;
+      totalSize.textContent = `전체 ${formatSize(files.reduce((sum, file) => sum + file.size, 0))}`;
+
+      if (files.length === 0) {
+        setStatus("표시할 파일이 없습니다.", true);
+        return;
+      }
+
+      clearStatus();
+
+      const groups = files.reduce((result, file) => {
+        if (!result[file.group]) {
+          result[file.group] = [];
+        }
+        result[file.group].push(file);
+        return result;
+      }, {});
+
+      Object.entries(groups).forEach(([group, items]) => {
+        const section = document.createElement("section");
+        section.className = "group";
+
+        const title = document.createElement("div");
+        title.className = "group-title";
+
+        const heading = document.createElement("h2");
+        heading.textContent = group;
+
+        const groupCount = document.createElement("span");
+        groupCount.className = "count";
+        groupCount.textContent = `${items.length}개`;
+
+        const ul = document.createElement("ul");
+        ul.className = "file-list";
+
+        items.forEach((file) => {
+          const li = document.createElement("li");
+          li.className = "file";
+
+          const info = document.createElement("div");
+
+          const name = document.createElement("p");
+          name.className = "file-name";
+          name.textContent = file.name;
+
+          const meta = document.createElement("div");
+          meta.className = "file-meta";
+
+          const extension = document.createElement("span");
+          extension.textContent = getExtension(file.name);
+
+          const size = document.createElement("span");
+          size.textContent = formatSize(file.size);
+
+          const directory = document.createElement("span");
+          directory.textContent = file.directory;
+
+          meta.append(extension, size, directory);
+          info.append(name, meta);
+
+          const link = document.createElement("a");
+          link.className = "download";
+          link.href = encodePath(file.path);
+          link.download = file.name;
+          link.textContent = "다운로드";
+          link.setAttribute("aria-label", `${file.name} 다운로드`);
+
+          li.append(info, link);
+          ul.append(li);
+        });
+
+        title.append(heading, groupCount);
+        section.append(title, ul);
+        list.append(section);
+      });
+    };
+
+    loadRepositoryFiles()
+      .then(renderFiles)
+      .catch((error) => {
+        count.textContent = "파일 0개";
+        totalSize.textContent = "전체 0 KB";
+        setStatus(`파일 목록을 불러오지 못했습니다. ${error.message}`, true);
+      });
   </script>
 </body>
 </html>
