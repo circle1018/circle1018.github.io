@@ -9,7 +9,7 @@ from torch.utils.data import Dataset, DataLoader, random_split
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else ('mps' if torch.backends.mps.is_available() else 'cpu'))
 BATCH_SIZE = 32
 LEARNING_RATE = 0.001
-EPOCHS = 30
+EPOCHS = 100
 
 print(f"현재 연산 장치: {DEVICE}")
 
