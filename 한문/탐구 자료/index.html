@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한자 8급 CNN 데이터셋 수집기</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #2c3e50; margin-bottom: 5px; }
+        .container {
+            display: flex;
+            gap: 30px;
+            max-width: 1000px;
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .canvas-area, .control-area {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        canvas {
+            border: 3px solid #34495e;
+            border-radius: 6px;
+            background-color: black;
+            cursor: crosshair;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+        .btn:hover { background-color: #2980b9; }
+        .btn-danger { background-color: #e74c3c; }
+        .btn-danger:hover { background-color: #c0392b; }
+        .btn-success { background-color: #2ecc71; }
+        .btn-success:hover { background-color: #27ae60; }
+        
+        .label-select {
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 2px solid #bdc3c7;
+            margin-bottom: 15px;
+            width: 100%;
+            max-height: 200px;
+        }
+        .status-box {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #7f8c8d;
+            text-align: left;
+            width: 100%;
+            border-top: 1px solid #ecf0f1;
+            padding-top: 15px;
+        }
+        .counter-list {
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 5px 0;
+            padding-left: 20px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🎨 한자 8급 CNN 데이터셋 수집기</h1>
+    <p style="color:#7f8c8d; margin-top:0; margin-bottom:25px;">마우스로 한자를 그리고 엔터(Enter)를 눌러 등록하세요. (총 50개 글자)</p>
+
+    <div class="container">
+        <!-- 그리기 영역 -->
+        <div class="canvas-area">
+            <canvas id="paintCanvas" width="280" height="280"></canvas>
+            <div style="margin-top: 15px;">
+                <button class="btn btn-danger" onclick="clearCanvas()">지우기</button>
+                <button class="btn btn-success" onclick="saveData()">이 글자 등록 (Enter)</button>
+            </div>
+        </div>
+
+        <!-- 설정 및 데이터 관리 영역 -->
+        <div class="control-area" style="min-width: 340px;">
+            <label style="font-weight: bold; margin-bottom: 5px; align-self: flex-start;">1. 현재 그리는 한자 선택</label>
+            <select id="labelSelect" class="label-select" size="10" onchange="updateStatus()">
+                <option value="校" selected>校 (학교 교)</option>
+                <option value="敎">敎 (가르칠 교)</option>
+                <option value="九">九 (아홉 구)</option>
+                <option value="國">國 (나라 국)</option>
+                <option value="軍">軍 (군사 군)</option>
+                <option value="金">金 (쇠 금 / 성 김)</option>
+                <option value="南">南 (남녘 남)</option>
+                <option value="女">女 (계집 녀)</option>
+                <option value="年">年 (해 년)</option>
+                <option value="大">大 (큰 대)</option>
+                <option value="東">東 (동녘 동)</option>
+                <option value="六">六 (여섯 륙)</option>
+                <option value="萬">萬 (일만 만)</option>
+                <option value="母">母 (어미 모)</option>
+                <option value="木">木 (나무 목)</option>
+                <option value="門">門 (문 문)</option>
+                <option value="民">民 (백성 민)</option>
+                <option value="白">白 (흰 백)</option>
+                <option value="父">父 (아비 부)</option>
+                <option value="北">北 (북녘 북)</option>
+                <option value="四">四 (넉 사)</option>
+                <option value="山">山 (메 산)</option>
+                <option value="三">三 (석 삼)</option>
+                <option value="生">生 (날 생)</option>
+                <option value="西">西 (서녘 서)</option>
+                <option value="先">先 (먼저 선)</option>
+                <option value="小">小 (작을 소)</option>
+                <option value="水">水 (물 수)</option>
+                <option value="室">室 (집 실)</option>
+                <option value="十">十 (열 십)</option>
+                <option value="五">五 (다섯 오)</option>
+                <option value="王">王 (임금 왕)</option>
+                <option value="外">外 (바깥 외)</option>
+                <option value="月">月 (달 월)</option>
+                <option value="二">二 (두 이)</option>
+                <option value="人">人 (사람 인)</option>
+                <option value="一">一 (한 일)</option>
+                <option value="日">日 (날 일)</option>
+                <option value="長">長 (길 장)</option>
+                <option value="弟">弟 (아우 제)</option>
+                <option value="中">中 (가운데 중)</option>
+                <option value="靑">靑 (푸를 청)</option>
+                <option value="寸">寸 (마디 촌)</option>
+                <option value="七">七 (일곱 칠)</option>
+                <option value="土">土 (흙 토)</option>
+                <option value="八">八 (여덟 팔)</option>
+                <option value="學">學 (배울 학)</option>
+                <option value="韓">韓 (한국 한)</option>
+                <option value="兄">兄 (형 형)</option>
+                <option value="火">火 (불 화)</option>
+            </select>
+
+            <label style="font-weight: bold; margin-bottom: 5px; align-self: flex-start;">2. 데이터 목록 관리</label>
+            <button class="btn" style="width:100%; background-color:#9b59b6;" onclick="exportJSON()">JSON 데이터셋 다운로드 💾</button>
+
+            <div class="status-box">
+                <strong>📊 한자별 수집 현황</strong>
+                <ul id="counterList" class="counter-list"></ul>
+                <div id="totalCount" style="font-weight: bold; margin-top: 10px; color: #2c3e50;">총 저장된 데이터: 0개</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('paintCanvas');
+        const ctx = canvas.getContext('2d');
+        const labelSelect = document.getElementById('labelSelect');
+        const counterList = document.getElementById('counterList');
+        const totalCount = document.getElementById('totalCount');
+
+        let isDrawing = false;
+        let dataset = [];
+
+        // 초기 도화지 세팅
+        ctx.fillStyle = "black";
+        ctx.fillRect(0, 0, 280, 280);
+        ctx.lineWidth = 14;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = 'white';
+
+        canvas.onmousedown = (e) => { isDrawing = true; draw(e); };
+        canvas.onmouseup = () => { isDrawing = false; ctx.beginPath(); };
+        canvas.onmousemove = (e) => { if (isDrawing) draw(e); };
+        
+        canvas.ontouchstart = (e) => { isDrawing = true; draw(e.touches); e.preventDefault(); };
+        canvas.ontouchend = () => { isDrawing = false; ctx.beginPath(); };
+        canvas.ontouchmove = (e) => { if (isDrawing) draw(e.touches); e.preventDefault(); };
+
+        function draw(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+
+        function clearCanvas() {
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, 280, 280);
+        }
+
+        function saveData() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = 28;
+            tempCanvas.height = 28;
+            const tempCtx = tempCanvas.getContext('2d');
+            
+            tempCtx.drawImage(canvas, 0, 0, 28, 28);
+            
+            const imgData = tempCtx.getImageData(0, 0, 28, 28).data;
+            let pixelArray = [];
+
+            for (let i = 0; i < imgData.length; i += 4) {
+                let brightness = imgData[i] / 255.0;
+                pixelArray.push(Number(brightness.toFixed(4)));
+            }
+
+            const currentLabel = labelSelect.value;
+
+            dataset.push({
+                input: pixelArray,
+                output: currentLabel
+            });
+
+            clearCanvas();
+            updateStatus();
+        }
+
+        function updateStatus() {
+            let counts = {};
+            Array.from(labelSelect.options).forEach(opt => counts[opt.value] = 0);
+            
+            dataset.forEach(data => {
+                if(counts[data.output] !== undefined) counts[data.output]++;
+            });
+
+            counterList.innerHTML = "";
+            for (let key in counts) {
+                if (counts[key] > 0) {
+                    counterList.innerHTML += `<li><span style="color:#2ecc71; font-weight:bold;">${key}</span>: ${counts[key]}개</li>`;
+                } else {
+                    counterList.innerHTML += `<li>${key}: 0개</li>`;
+                }
+            }
+            totalCount.innerText = `총 저장된 데이터: ${dataset.length}개`;
+        }
+
+        function exportJSON() {
+            if (dataset.length === 0) {
+                alert("저장된 데이터가 없습니다! 한자를 먼저 그려주세요.");
+                return;
+            }
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(dataset, null, 2));
+            const downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "hanja_8grade_dataset.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                saveData();
+            }
+        });
+
+        updateStatus();
+    </script>
+</body>
+</html>
