@@ -7,14 +7,19 @@
   <style>
     :root {
       color-scheme: light;
-      --bg: #f5f7fa;
+      --bg: #f4f6fb;
       --surface: #ffffff;
+      --surface-soft: #f9fbfd;
       --text: #172033;
       --muted: #667085;
       --line: #dfe5ee;
       --accent: #2563eb;
       --accent-dark: #1d4ed8;
+      --folder: #d97706;
+      --file: #0f766e;
       --danger: #b42318;
+      --shadow: 0 16px 40px rgb(15 23 42 / 9%);
+      --ease: cubic-bezier(.2, .8, .2, 1);
     }
 
     * {
@@ -24,61 +29,95 @@
     body {
       margin: 0;
       min-height: 100vh;
-      background: var(--bg);
+      background:
+        radial-gradient(circle at top left, rgb(37 99 235 / 10%), transparent 34%),
+        linear-gradient(180deg, #fbfcff 0%, var(--bg) 46%, #eef3f8 100%);
       color: var(--text);
       font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
     }
 
     main {
-      width: min(900px, calc(100% - 32px));
+      width: min(1040px, calc(100% - 32px));
       margin: 0 auto;
       padding: 48px 0;
     }
 
     header {
       margin-bottom: 28px;
+      animation: pageIn 620ms var(--ease) both;
     }
 
     .eyebrow {
       margin: 0 0 8px;
       color: var(--accent);
       font-size: 14px;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(30px, 5vw, 48px);
-      line-height: 1.12;
+      font-size: clamp(30px, 5vw, 52px);
+      line-height: 1.1;
       letter-spacing: 0;
     }
 
     .lead {
-      max-width: 620px;
+      max-width: 680px;
       margin: 14px 0 0;
       color: var(--muted);
       font-size: 17px;
       line-height: 1.65;
     }
 
-    .summary {
+    .summary,
+    .toolbar {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin: 0 0 26px;
+      animation: pageIn 700ms var(--ease) 80ms both;
     }
 
-    .pill {
+    .summary {
+      margin: 0 0 12px;
+    }
+
+    .toolbar {
+      margin: 0 0 24px;
+    }
+
+    .pill,
+    .tool-button {
       display: inline-flex;
       align-items: center;
-      min-height: 34px;
-      padding: 7px 12px;
+      justify-content: center;
+      min-height: 36px;
+      padding: 8px 13px;
       border: 1px solid var(--line);
       border-radius: 999px;
-      background: var(--surface);
+      background: rgb(255 255 255 / 82%);
       color: var(--muted);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
+      backdrop-filter: blur(10px);
+    }
+
+    .tool-button {
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color 180ms var(--ease), box-shadow 180ms var(--ease), transform 180ms var(--ease);
+    }
+
+    .tool-button:hover {
+      border-color: rgb(37 99 235 / 42%);
+      box-shadow: 0 10px 24px rgb(37 99 235 / 12%);
+      transform: translateY(-1px);
+    }
+
+    .tool-button:focus-visible,
+    .node-toggle:focus-visible,
+    .action-link:focus-visible {
+      outline: 3px solid rgb(37 99 235 / 24%);
+      outline-offset: 2px;
     }
 
     .status {
@@ -89,126 +128,395 @@
       background: var(--surface);
       color: var(--muted);
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 700;
       line-height: 1.55;
+      animation: pulseStatus 1400ms ease-in-out infinite;
     }
 
     .status.error {
       border-color: #fecdca;
       color: var(--danger);
       background: #fff6f5;
+      animation: shakeIn 420ms var(--ease) both;
     }
 
     .status[hidden] {
       display: none;
     }
 
-    .group {
-      margin-top: 28px;
-    }
-
-    .group:first-of-type {
-      margin-top: 0;
-    }
-
-    .group-title {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 10px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: 20px;
-      letter-spacing: 0;
-    }
-
-    .count {
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 600;
-      white-space: nowrap;
-    }
-
-    .file-list {
+    .tree {
       display: grid;
       gap: 10px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
+      animation: pageIn 760ms var(--ease) 130ms both;
     }
 
-    .file {
+    .tree-item {
+      --indent: max(0px, calc((var(--depth) - 1) * 24px));
+      margin-left: var(--indent);
+      position: relative;
+      animation: itemIn 520ms var(--ease) both;
+      animation-delay: calc(min(var(--depth), 6) * 34ms);
+    }
+
+    .tree-item::before {
+      content: "";
+      position: absolute;
+      left: -13px;
+      top: 22px;
+      bottom: 12px;
+      width: 1px;
+      background: linear-gradient(180deg, rgb(37 99 235 / 0%), rgb(37 99 235 / 24%), rgb(37 99 235 / 0%));
+      opacity: 0;
+      transform: scaleY(.7);
+      transform-origin: top;
+      transition: opacity 220ms var(--ease), transform 260ms var(--ease);
+    }
+
+    .tree-item[data-depth="1"]::before {
+      display: none;
+    }
+
+    .tree-item.is-open::before {
+      opacity: 1;
+      transform: scaleY(1);
+    }
+
+    .node-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
-      gap: 14px;
-      min-height: 74px;
-      padding: 14px 16px;
+      gap: 12px;
+      min-height: 68px;
       border: 1px solid var(--line);
       border-radius: 8px;
-      background: var(--surface);
+      background: rgb(255 255 255 / 88%);
       box-shadow: 0 1px 2px rgb(15 23 42 / 5%);
+      overflow: hidden;
+      transition:
+        border-color 180ms var(--ease),
+        background 180ms var(--ease),
+        box-shadow 220ms var(--ease),
+        transform 180ms var(--ease);
+      backdrop-filter: blur(10px);
     }
 
-    .file-name {
-      margin: 0;
-      overflow-wrap: anywhere;
-      font-size: 16px;
-      font-weight: 700;
-      line-height: 1.45;
-    }
-
-    .file-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .download {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 96px;
-      min-height: 42px;
-      padding: 10px 14px;
-      border-radius: 7px;
-      background: var(--accent);
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 800;
-      text-decoration: none;
-      transition: background 160ms ease, transform 160ms ease;
-    }
-
-    .download:hover {
-      background: var(--accent-dark);
+    .node-row:hover {
+      border-color: rgb(37 99 235 / 28%);
+      box-shadow: var(--shadow);
       transform: translateY(-1px);
     }
 
-    .download:focus-visible {
-      outline: 3px solid rgb(37 99 235 / 26%);
-      outline-offset: 2px;
+    .folder-item.is-open > .node-row {
+      background: linear-gradient(90deg, rgb(255 255 255 / 96%), rgb(255 251 235 / 78%));
+      border-color: rgb(217 119 6 / 28%);
     }
 
-    @media (max-width: 560px) {
+    .file-item.is-open > .node-row {
+      background: linear-gradient(90deg, rgb(255 255 255 / 96%), rgb(240 253 250 / 82%));
+      border-color: rgb(15 118 110 / 24%);
+    }
+
+    .node-toggle {
+      display: grid;
+      grid-template-columns: 18px 28px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 66px;
+      padding: 12px 14px;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .chevron {
+      width: 10px;
+      height: 10px;
+      border-right: 2px solid var(--muted);
+      border-bottom: 2px solid var(--muted);
+      transform: rotate(-45deg);
+      transition: transform 260ms var(--ease), border-color 180ms var(--ease);
+    }
+
+    .tree-item.is-open > .node-row .chevron {
+      transform: rotate(45deg);
+      border-color: var(--accent);
+    }
+
+    .node-symbol {
+      position: relative;
+      width: 28px;
+      height: 24px;
+      flex: 0 0 auto;
+      transform: translateZ(0);
+    }
+
+    .folder-symbol::before {
+      content: "";
+      position: absolute;
+      left: 2px;
+      top: 7px;
+      width: 24px;
+      height: 15px;
+      border: 2px solid rgb(217 119 6 / 74%);
+      border-radius: 5px;
+      background: linear-gradient(180deg, #fff7df, #facc6b);
+      box-shadow: inset 0 -6px 12px rgb(217 119 6 / 18%);
+      transition: transform 260ms var(--ease), filter 260ms var(--ease);
+    }
+
+    .folder-symbol::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 3px;
+      width: 12px;
+      height: 7px;
+      border: 2px solid rgb(217 119 6 / 68%);
+      border-bottom: 0;
+      border-radius: 5px 5px 0 0;
+      background: #fde68a;
+    }
+
+    .file-symbol::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 2px;
+      width: 18px;
+      height: 22px;
+      border: 2px solid rgb(15 118 110 / 72%);
+      border-radius: 5px;
+      background: linear-gradient(180deg, #ffffff, #ccfbf1);
+      box-shadow: inset 0 -7px 14px rgb(15 118 110 / 12%);
+      transition: transform 260ms var(--ease), filter 260ms var(--ease);
+    }
+
+    .file-symbol::after {
+      content: "";
+      position: absolute;
+      right: 4px;
+      top: 3px;
+      width: 8px;
+      height: 8px;
+      border-left: 2px solid rgb(15 118 110 / 52%);
+      border-bottom: 2px solid rgb(15 118 110 / 52%);
+      border-radius: 0 4px 0 3px;
+      background: #f0fdfa;
+    }
+
+    .tree-item.is-open > .node-row .node-symbol::before {
+      filter: saturate(1.18);
+      transform: translateY(-1px);
+    }
+
+    .node-name {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.42;
+    }
+
+    .node-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 22px;
+      padding: 3px 8px;
+      border: 1px solid rgb(102 112 133 / 14%);
+      border-radius: 999px;
+      background: rgb(255 255 255 / 72%);
+    }
+
+    .node-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding-right: 14px;
+    }
+
+    .action-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 82px;
+      min-height: 38px;
+      padding: 9px 12px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      background: var(--accent);
+      color: #ffffff;
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        background 180ms var(--ease),
+        border-color 180ms var(--ease),
+        box-shadow 180ms var(--ease),
+        transform 180ms var(--ease);
+    }
+
+    .action-link:hover {
+      background: var(--accent-dark);
+      box-shadow: 0 10px 22px rgb(37 99 235 / 24%);
+      transform: translateY(-1px);
+    }
+
+    .action-link.secondary {
+      background: #ffffff;
+      color: var(--accent);
+      border-color: rgb(37 99 235 / 22%);
+    }
+
+    .action-link.secondary:hover {
+      background: #eff6ff;
+      border-color: rgb(37 99 235 / 34%);
+    }
+
+    .collapsible {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition:
+        max-height 430ms var(--ease),
+        opacity 300ms var(--ease),
+        transform 360ms var(--ease);
+      will-change: max-height, opacity, transform;
+    }
+
+    .tree-item.is-open > .collapsible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .children-inner {
+      display: grid;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .file-detail {
+      margin-top: 10px;
+      padding: 13px 15px 14px;
+      border: 1px solid rgb(15 118 110 / 16%);
+      border-radius: 8px;
+      background: linear-gradient(180deg, rgb(255 255 255 / 72%), rgb(240 253 250 / 72%));
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin: 0 0 12px;
+    }
+
+    .detail-label {
+      margin: 0 0 3px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .detail-value {
+      margin: 0;
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .detail-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes itemIn {
+      from {
+        opacity: 0;
+        transform: translateX(-10px) scale(.985);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes pulseStatus {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgb(37 99 235 / 0%);
+      }
+      50% {
+        box-shadow: 0 0 0 5px rgb(37 99 235 / 7%);
+      }
+    }
+
+    @keyframes shakeIn {
+      0% {
+        transform: translateX(-6px);
+      }
+      35% {
+        transform: translateX(4px);
+      }
+      70% {
+        transform: translateX(-2px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    @media (max-width: 720px) {
       main {
-        width: min(100% - 24px, 900px);
+        width: min(100% - 24px, 1040px);
         padding: 32px 0;
       }
 
-      .file {
+      .tree-item {
+        --indent: max(0px, calc((var(--depth) - 1) * 14px));
+      }
+
+      .node-row {
         grid-template-columns: 1fr;
       }
 
-      .download {
+      .node-actions {
         width: 100%;
+        padding: 0 14px 14px;
+      }
+
+      .action-link {
+        flex: 1;
+      }
+
+      .detail-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -218,16 +526,23 @@
     <header>
       <p class="eyebrow">1학년 1학기</p>
       <h1>세부능력 및 특기사항</h1>
-      <p class="lead">필요한 자료를 선택해서 다운로드하세요.</p>
+      <p class="lead">폴더를 열어 필요한 자료를 확인하고 다운로드하세요.</p>
     </header>
 
     <section class="summary" aria-label="파일 요약">
       <span class="pill" id="file-count">파일 0개</span>
+      <span class="pill" id="folder-count">폴더 0개</span>
       <span class="pill" id="file-size">전체 0 KB</span>
     </section>
 
+    <section class="toolbar" aria-label="폴더 조작">
+      <button class="tool-button" type="button" id="open-all">모두 열기</button>
+      <button class="tool-button" type="button" id="close-all">모두 닫기</button>
+      <button class="tool-button" type="button" id="open-first">과목만 열기</button>
+    </section>
+
     <p class="status" id="status">파일 목록을 불러오는 중입니다.</p>
-    <section id="download-list" aria-label="다운로드 목록"></section>
+    <section class="tree" id="download-list" aria-label="다운로드 목록"></section>
   </main>
 
   <script>
@@ -248,11 +563,20 @@
     ]);
 
     const list = document.querySelector("#download-list");
-    const count = document.querySelector("#file-count");
+    const fileCount = document.querySelector("#file-count");
+    const folderCount = document.querySelector("#folder-count");
     const totalSize = document.querySelector("#file-size");
     const status = document.querySelector("#status");
+    const openAllButton = document.querySelector("#open-all");
+    const closeAllButton = document.querySelector("#close-all");
+    const openFirstButton = document.querySelector("#open-first");
+
+    let renderedNodes = [];
 
     const formatSize = (bytes) => {
+      if (bytes >= 1024 * 1024 * 1024) {
+        return `${(bytes / 1024 / 1024 / 1024).toFixed(1)} GB`;
+      }
       if (bytes >= 1024 * 1024) {
         return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
       }
@@ -279,18 +603,6 @@
     const getExtension = (name) => {
       const dot = name.lastIndexOf(".");
       return dot === -1 ? "FILE" : name.slice(dot + 1).toUpperCase();
-    };
-
-    const getName = (path) => path.split("/").pop();
-
-    const getDirectory = (path) => {
-      const parts = path.split("/");
-      return parts.length > 1 ? parts.slice(0, -1).join("/") : "기타";
-    };
-
-    const getTopGroup = (path) => {
-      const parts = path.split("/");
-      return parts.length > 1 ? parts[0] : "기타";
     };
 
     const setStatus = (message, isError = false) => {
@@ -343,7 +655,7 @@
     };
 
     const getDefaultBranch = async (owner, repo) => {
-      const repoInfo = await fetchJson(`https://api.github.com/repos/${owner}/${repo}`);
+      const repoInfo = await fetchJson(`https://api.github.com/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`);
       return repoInfo.default_branch;
     };
 
@@ -355,7 +667,7 @@
       }
 
       const branch = info.branch || await getDefaultBranch(info.owner, info.repo);
-      const treeUrl = `https://api.github.com/repos/${info.owner}/${info.repo}/git/trees/${encodeURIComponent(branch)}?recursive=1`;
+      const treeUrl = `https://api.github.com/repos/${encodeURIComponent(info.owner)}/${encodeURIComponent(info.repo)}/git/trees/${encodeURIComponent(branch)}?recursive=1`;
       const tree = await fetchJson(treeUrl);
       const prefix = info.root ? `${info.root}/` : "";
 
@@ -375,98 +687,333 @@
           const lower = file.path.toLowerCase();
           return file.path.includes("/") || !EXCLUDED_ROOT_FILES.has(lower);
         })
-        .map((file) => ({
-          ...file,
-          name: getName(file.path),
-          group: getTopGroup(file.path),
-          directory: getDirectory(file.path)
-        }))
         .sort((a, b) => a.path.localeCompare(b.path, "ko"));
     };
 
-    const renderFiles = (files) => {
-      list.textContent = "";
-      count.textContent = `파일 ${files.length}개`;
-      totalSize.textContent = `전체 ${formatSize(files.reduce((sum, file) => sum + file.size, 0))}`;
+    const createFolder = (name, path, depth) => ({
+      type: "folder",
+      name,
+      path,
+      depth,
+      children: [],
+      folders: new Map(),
+      totalFiles: 0,
+      totalSize: 0
+    });
 
-      if (files.length === 0) {
+    const buildTree = (files) => {
+      const root = createFolder("root", "", 0);
+
+      files.forEach((file) => {
+        const parts = file.path.split("/");
+        let current = root;
+
+        parts.slice(0, -1).forEach((part, index) => {
+          const path = parts.slice(0, index + 1).join("/");
+          if (!current.folders.has(part)) {
+            const folder = createFolder(part, path, index + 1);
+            current.folders.set(part, folder);
+            current.children.push(folder);
+          }
+          current = current.folders.get(part);
+        });
+
+        current.children.push({
+          type: "file",
+          name: parts.at(-1),
+          path: file.path,
+          depth: parts.length,
+          size: file.size
+        });
+      });
+
+      const finalize = (folder) => {
+        let totalFiles = 0;
+        let totalSizeValue = 0;
+
+        folder.children.forEach((child) => {
+          if (child.type === "folder") {
+            finalize(child);
+            totalFiles += child.totalFiles;
+            totalSizeValue += child.totalSize;
+          } else {
+            totalFiles += 1;
+            totalSizeValue += child.size;
+          }
+        });
+
+        folder.totalFiles = totalFiles;
+        folder.totalSize = totalSizeValue;
+        folder.children.sort((a, b) => {
+          if (a.type !== b.type) {
+            return a.type === "folder" ? -1 : 1;
+          }
+          return a.name.localeCompare(b.name, "ko");
+        });
+      };
+
+      finalize(root);
+      return root;
+    };
+
+    const countFolders = (node) => node.children.reduce((sum, child) => {
+      if (child.type !== "folder") {
+        return sum;
+      }
+      return sum + 1 + countFolders(child);
+    }, 0);
+
+    const setExpanded = (item, expanded, animated = true) => {
+      const button = item.querySelector(":scope > .node-row .node-toggle");
+      const panel = item.querySelector(":scope > .collapsible");
+
+      if (!button || !panel) {
+        return;
+      }
+
+      item.classList.toggle("is-open", expanded);
+      button.setAttribute("aria-expanded", String(expanded));
+
+      if (!animated) {
+        panel.style.transition = "none";
+        panel.style.maxHeight = expanded ? "none" : "0px";
+        panel.style.opacity = expanded ? "1" : "0";
+        panel.style.transform = expanded ? "translateY(0)" : "translateY(-8px)";
+        requestAnimationFrame(() => {
+          panel.style.transition = "";
+        });
+        return;
+      }
+
+      if (expanded) {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+        panel.addEventListener("transitionend", function handleOpen(event) {
+          if (event.propertyName === "max-height") {
+            panel.style.maxHeight = "none";
+            panel.removeEventListener("transitionend", handleOpen);
+          }
+        });
+      } else {
+        panel.style.maxHeight = `${panel.scrollHeight}px`;
+        requestAnimationFrame(() => {
+          panel.style.maxHeight = "0px";
+        });
+      }
+    };
+
+    const toggleNode = (item) => {
+      setExpanded(item, !item.classList.contains("is-open"));
+    };
+
+    const makeMetaChip = (text) => {
+      const chip = document.createElement("span");
+      chip.className = "meta-chip";
+      chip.textContent = text;
+      return chip;
+    };
+
+    const renderFolder = (folder) => {
+      const item = document.createElement("article");
+      const isInitiallyOpen = folder.depth === 1;
+      item.className = `tree-item folder-item${isInitiallyOpen ? " is-open" : ""}`;
+      item.dataset.depth = folder.depth;
+      item.style.setProperty("--depth", folder.depth);
+
+      const row = document.createElement("div");
+      row.className = "node-row";
+
+      const toggle = document.createElement("button");
+      toggle.className = "node-toggle";
+      toggle.type = "button";
+      toggle.setAttribute("aria-expanded", String(isInitiallyOpen));
+
+      const chevron = document.createElement("span");
+      chevron.className = "chevron";
+      chevron.setAttribute("aria-hidden", "true");
+
+      const symbol = document.createElement("span");
+      symbol.className = "node-symbol folder-symbol";
+      symbol.setAttribute("aria-hidden", "true");
+
+      const text = document.createElement("div");
+      const name = document.createElement("p");
+      name.className = "node-name";
+      name.textContent = folder.name;
+
+      const meta = document.createElement("div");
+      meta.className = "node-meta";
+      meta.append(
+        makeMetaChip(`파일 ${folder.totalFiles}개`),
+        makeMetaChip(formatSize(folder.totalSize))
+      );
+
+      text.append(name, meta);
+      toggle.append(chevron, symbol, text);
+      toggle.addEventListener("click", () => toggleNode(item));
+
+      row.append(toggle);
+
+      const panel = document.createElement("div");
+      panel.className = "collapsible";
+      panel.style.maxHeight = isInitiallyOpen ? "none" : "0px";
+      panel.style.opacity = isInitiallyOpen ? "1" : "0";
+      panel.style.transform = isInitiallyOpen ? "translateY(0)" : "translateY(-8px)";
+
+      const inner = document.createElement("div");
+      inner.className = "children-inner";
+      folder.children.forEach((child) => inner.append(renderNode(child)));
+
+      panel.append(inner);
+      item.append(row, panel);
+      renderedNodes.push(item);
+      return item;
+    };
+
+    const renderFile = (file) => {
+      const item = document.createElement("article");
+      item.className = "tree-item file-item";
+      item.dataset.depth = file.depth;
+      item.style.setProperty("--depth", file.depth);
+
+      const encodedPath = encodePath(file.path);
+      const row = document.createElement("div");
+      row.className = "node-row";
+
+      const toggle = document.createElement("button");
+      toggle.className = "node-toggle";
+      toggle.type = "button";
+      toggle.setAttribute("aria-expanded", "false");
+
+      const chevron = document.createElement("span");
+      chevron.className = "chevron";
+      chevron.setAttribute("aria-hidden", "true");
+
+      const symbol = document.createElement("span");
+      symbol.className = "node-symbol file-symbol";
+      symbol.setAttribute("aria-hidden", "true");
+
+      const text = document.createElement("div");
+      const name = document.createElement("p");
+      name.className = "node-name";
+      name.textContent = file.name;
+
+      const meta = document.createElement("div");
+      meta.className = "node-meta";
+      meta.append(
+        makeMetaChip(getExtension(file.name)),
+        makeMetaChip(formatSize(file.size))
+      );
+
+      text.append(name, meta);
+      toggle.append(chevron, symbol, text);
+      toggle.addEventListener("click", () => toggleNode(item));
+
+      const actions = document.createElement("div");
+      actions.className = "node-actions";
+
+      const download = document.createElement("a");
+      download.className = "action-link";
+      download.href = encodedPath;
+      download.download = file.name;
+      download.textContent = "다운로드";
+      download.setAttribute("aria-label", `${file.name} 다운로드`);
+
+      actions.append(download);
+      row.append(toggle, actions);
+
+      const panel = document.createElement("div");
+      panel.className = "collapsible";
+
+      const detail = document.createElement("div");
+      detail.className = "file-detail";
+
+      const grid = document.createElement("div");
+      grid.className = "detail-grid";
+
+      const detailItems = [
+        ["파일명", file.name],
+        ["경로", file.path],
+        ["크기", formatSize(file.size)]
+      ];
+
+      detailItems.forEach(([label, value]) => {
+        const box = document.createElement("div");
+        const labelElement = document.createElement("p");
+        labelElement.className = "detail-label";
+        labelElement.textContent = label;
+
+        const valueElement = document.createElement("p");
+        valueElement.className = "detail-value";
+        valueElement.textContent = value;
+
+        box.append(labelElement, valueElement);
+        grid.append(box);
+      });
+
+      const detailActions = document.createElement("div");
+      detailActions.className = "detail-actions";
+
+      const open = document.createElement("a");
+      open.className = "action-link secondary";
+      open.href = encodedPath;
+      open.target = "_blank";
+      open.rel = "noopener";
+      open.textContent = "열기";
+      open.setAttribute("aria-label", `${file.name} 새 창에서 열기`);
+
+      const detailDownload = document.createElement("a");
+      detailDownload.className = "action-link";
+      detailDownload.href = encodedPath;
+      detailDownload.download = file.name;
+      detailDownload.textContent = "다운로드";
+      detailDownload.setAttribute("aria-label", `${file.name} 다운로드`);
+
+      detailActions.append(open, detailDownload);
+      detail.append(grid, detailActions);
+      panel.append(detail);
+      item.append(row, panel);
+      renderedNodes.push(item);
+      return item;
+    };
+
+    const renderNode = (node) => node.type === "folder"
+      ? renderFolder(node)
+      : renderFile(node);
+
+    const setAll = (predicate) => {
+      renderedNodes.forEach((item) => {
+        setExpanded(item, predicate(item), true);
+      });
+    };
+
+    const renderTree = (files) => {
+      const tree = buildTree(files);
+      renderedNodes = [];
+      list.textContent = "";
+      fileCount.textContent = `파일 ${tree.totalFiles}개`;
+      folderCount.textContent = `폴더 ${countFolders(tree)}개`;
+      totalSize.textContent = `전체 ${formatSize(tree.totalSize)}`;
+
+      if (tree.totalFiles === 0) {
         setStatus("표시할 파일이 없습니다.", true);
         return;
       }
 
       clearStatus();
-
-      const groups = files.reduce((result, file) => {
-        if (!result[file.group]) {
-          result[file.group] = [];
-        }
-        result[file.group].push(file);
-        return result;
-      }, {});
-
-      Object.entries(groups).forEach(([group, items]) => {
-        const section = document.createElement("section");
-        section.className = "group";
-
-        const title = document.createElement("div");
-        title.className = "group-title";
-
-        const heading = document.createElement("h2");
-        heading.textContent = group;
-
-        const groupCount = document.createElement("span");
-        groupCount.className = "count";
-        groupCount.textContent = `${items.length}개`;
-
-        const ul = document.createElement("ul");
-        ul.className = "file-list";
-
-        items.forEach((file) => {
-          const li = document.createElement("li");
-          li.className = "file";
-
-          const info = document.createElement("div");
-
-          const name = document.createElement("p");
-          name.className = "file-name";
-          name.textContent = file.name;
-
-          const meta = document.createElement("div");
-          meta.className = "file-meta";
-
-          const extension = document.createElement("span");
-          extension.textContent = getExtension(file.name);
-
-          const size = document.createElement("span");
-          size.textContent = formatSize(file.size);
-
-          const directory = document.createElement("span");
-          directory.textContent = file.directory;
-
-          meta.append(extension, size, directory);
-          info.append(name, meta);
-
-          const link = document.createElement("a");
-          link.className = "download";
-          link.href = encodePath(file.path);
-          link.download = file.name;
-          link.textContent = "다운로드";
-          link.setAttribute("aria-label", `${file.name} 다운로드`);
-
-          li.append(info, link);
-          ul.append(li);
-        });
-
-        title.append(heading, groupCount);
-        section.append(title, ul);
-        list.append(section);
-      });
+      tree.children.forEach((child) => list.append(renderNode(child)));
     };
 
+    openAllButton.addEventListener("click", () => setAll(() => true));
+    closeAllButton.addEventListener("click", () => setAll(() => false));
+    openFirstButton.addEventListener("click", () => {
+      setAll((item) => item.classList.contains("folder-item") && item.dataset.depth === "1");
+    });
+
     loadRepositoryFiles()
-      .then(renderFiles)
+      .then(renderTree)
       .catch((error) => {
-        count.textContent = "파일 0개";
+        fileCount.textContent = "파일 0개";
+        folderCount.textContent = "폴더 0개";
         totalSize.textContent = "전체 0 KB";
         setStatus(`파일 목록을 불러오지 못했습니다. ${error.message}`, true);
       });
