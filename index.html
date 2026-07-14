@@ -388,20 +388,27 @@
     }
 
     .collapsible {
-      max-height: 0;
+      display: grid;
+      grid-template-rows: 0fr;
       overflow: hidden;
       opacity: 0;
       transform: translateY(-8px);
       transition:
-        max-height 430ms var(--ease),
+        grid-template-rows 430ms var(--ease),
         opacity 300ms var(--ease),
         transform 360ms var(--ease);
-      will-change: max-height, opacity, transform;
+      will-change: grid-template-rows, opacity, transform;
     }
 
     .tree-item.is-open > .collapsible {
+      grid-template-rows: 1fr;
       opacity: 1;
       transform: translateY(0);
+    }
+
+    .collapsible > * {
+      min-height: 0;
+      overflow: hidden;
     }
 
     .children-inner {
@@ -763,42 +770,15 @@
       return sum + 1 + countFolders(child);
     }, 0);
 
-    const setExpanded = (item, expanded, animated = true) => {
+    const setExpanded = (item, expanded) => {
       const button = item.querySelector(":scope > .node-row .node-toggle");
-      const panel = item.querySelector(":scope > .collapsible");
 
-      if (!button || !panel) {
+      if (!button) {
         return;
       }
 
       item.classList.toggle("is-open", expanded);
       button.setAttribute("aria-expanded", String(expanded));
-
-      if (!animated) {
-        panel.style.transition = "none";
-        panel.style.maxHeight = expanded ? "none" : "0px";
-        panel.style.opacity = expanded ? "1" : "0";
-        panel.style.transform = expanded ? "translateY(0)" : "translateY(-8px)";
-        requestAnimationFrame(() => {
-          panel.style.transition = "";
-        });
-        return;
-      }
-
-      if (expanded) {
-        panel.style.maxHeight = `${panel.scrollHeight}px`;
-        panel.addEventListener("transitionend", function handleOpen(event) {
-          if (event.propertyName === "max-height") {
-            panel.style.maxHeight = "none";
-            panel.removeEventListener("transitionend", handleOpen);
-          }
-        });
-      } else {
-        panel.style.maxHeight = `${panel.scrollHeight}px`;
-        requestAnimationFrame(() => {
-          panel.style.maxHeight = "0px";
-        });
-      }
     };
 
     const toggleNode = (item) => {
@@ -855,9 +835,6 @@
 
       const panel = document.createElement("div");
       panel.className = "collapsible";
-      panel.style.maxHeight = isInitiallyOpen ? "none" : "0px";
-      panel.style.opacity = isInitiallyOpen ? "1" : "0";
-      panel.style.transform = isInitiallyOpen ? "translateY(0)" : "translateY(-8px)";
 
       const inner = document.createElement("div");
       inner.className = "children-inner";
