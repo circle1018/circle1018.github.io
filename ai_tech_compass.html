@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tech Compass - 고등학생용 인공지능 엔지니어 진로 탐색 플랫폼 (50개 직업군)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script>
+        // Custom Tailwind Color Extension matching requested colors (#9FA0FF, #D5E8E6, #FFF3E3, #FF7171)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            purple: '#9FA0FF',
+                            mint: '#D5E8E6',
+                            peach: '#FFF3E3',
+                            coral: '#FF7171',
+                            dark: '#1E1E2E'
+                        }
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+                            '50%': { opacity: 1, transform: 'scale(1.05)' }
+                        }
+                    },
+                    animation: {
+                        float: 'float 3s ease-in-out infinite',
+                        pulseGlow: 'pulseGlow 2s infinite'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #f8f9ff 0%, #fff3e3 50%, #d5e8e6 100%);
+            background-attachment: fixed;
+            color: #2d3748;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(213, 232, 230, 0.3);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #9FA0FF;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #FF7171;
+        }
+
+        /* Scroll Animation Classes */
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(35px);
+            transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal-element.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glassmorphism gradient styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+        }
+
+        .gradient-btn-primary {
+            background: linear-gradient(135deg, #9FA0FF 0%, #FF7171 100%);
+        }
+        .gradient-btn-primary:hover {
+            background: linear-gradient(135deg, #8b8cf5 0%, #f05a5a 100%);
+            box-shadow: 0 10px 20px -5px rgba(255, 113, 113, 0.4);
+        }
+
+        .gradient-header {
+            background: linear-gradient(135deg, #1E1E2E 0%, #312E81 50%, #9FA0FF 100%);
+        }
+
+        .gradient-card-header {
+            background: linear-gradient(135deg, #9FA0FF 0%, #D5E8E6 100%);
+        }
+
+        /* Typing cursor effect */
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Card Hover Effects */
+        .interactive-card {
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .interactive-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(159, 160, 255, 0.3), 0 10px 10px -5px rgba(255, 113, 113, 0.2);
+        }
+        .interactive-card:hover .icon-bounce {
+            transform: rotate(12deg) scale(1.2);
+        }
+        .icon-bounce {
+            transition: transform 0.3s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-brand-coral selection:text-white">
+
+    <!-- 상단 네비게이션 헤더 -->
+    <header class="gradient-header text-white shadow-xl sticky top-0 z-40 border-b border-white/10 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3 group cursor-pointer" onclick="switchTab('explorer')">
+                <div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded-2xl flex items-center justify-center text-2xl border border-white/20 shadow-inner group-hover:scale-110 transition-transform duration-300 animate-float">
+                    🤖
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-2xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-brand-peach to-brand-mint">
+                            AI Tech Compass
+                        </h1>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-brand-coral/90 font-bold text-white tracking-wider animate-pulse">50대 직업군 COMPASS</span>
+                    </div>
+                    <p class="text-xs text-brand-mint/90 font-medium">고등학생을 위한 인공지능 세부 진로 50선 및 입결 분석 플랫폼</p>
+                </div>
+            </div>
+
+            <!-- 네비게이션 탭 -->
+            <nav class="flex flex-wrap justify-center gap-1 p-1.5 rounded-2xl bg-black/20 backdrop-blur-md border border-white/10 shadow-inner">
+                <button onclick="switchTab('explorer')" id="tab-explorer" class="px-3.5 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 flex items-center gap-1.5 bg-white text-brand-dark shadow-md">
+                    <span>🔍</span> 직업 탐색 (50선)
+                </button>
+                <button onclick="switchTab('compare')" id="tab-compare" class="px-3.5 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 flex items-center gap-1.5 text-white/80 hover:text-white hover:bg-white/10">
+                    <span>⚖️</span> 1:1 비교
+                </button>
+                <button onclick="switchTab('roadmap')" id="tab-roadmap" class="px-3.5 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 flex items-center gap-1.5 text-white/80 hover:text-white hover:bg-white/10">
+                    <span>🗺️</span> 로드맵
+                </button>
+                <button onclick="switchTab('subject-ai')" id="tab-subject-ai" class="px-3.5 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 flex items-center gap-1.5 text-white/80 hover:text-white hover:bg-white/10">
+                    <span>💡</span> 생기부 추천기
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 컨텐츠 영역 -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- 히어로 Banner 섹션 -->
+        <section class="glass-card rounded-3xl p-6 sm:p-8 shadow-xl border border-white/80 relative overflow-hidden reveal-element active">
+            <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-brand-purple/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-10 -top-10 w-60 h-60 bg-brand-peach/40 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 max-w-3xl">
+                <span class="inline-block px-3 py-1 bg-brand-purple/20 text-brand-dark text-xs font-black rounded-full mb-3 border border-brand-purple/30">
+                    🚀 50 AI CAREER SPECIAL EDITIONS
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-slate-900 leading-tight">
+                    <span id="typingHeader" class="typing-cursor text-transparent bg-clip-text bg-gradient-to-r from-indigo-900 via-purple-800 to-brand-coral"></span>
+                </h2>
+                <p class="text-sm sm:text-base text-slate-600 mt-3 leading-relaxed">
+                    머신러닝부터 생성형 AI, 로보틱스, 양자 AI, 헬스케어, 리걸테크까지 확장된 50가지 인공지능 세부 직업군별 대학/학과 70% Cutoff 입결 및 세특 주제를 확인하세요.
+                </p>
+            </div>
+        </section>
+
+        <!-- [탭 1] 직업 카드 탐색 섹션 -->
+        <section id="section-explorer" class="space-y-6">
+            <!-- 검색 필터 Bar -->
+            <div class="glass-card p-5 rounded-2xl shadow-sm border border-white/60 reveal-element">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-8 bg-brand-purple rounded-full"></span>
+                        <h3 class="text-lg font-bold text-slate-900">AI 세부 직업 50선 탐색</h3>
+                    </div>
+                    
+                    <div class="flex flex-wrap sm:flex-nowrap gap-3 w-full md:w-auto">
+                        <select id="categoryFilter" onchange="filterCareers()" class="px-4 py-2.5 bg-white/80 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-brand-purple">
+                            <option value="ALL">전체 분야 보기 (50개)</option>
+                            <option value="핵심 알고리즘 및 모델링">핵심 알고리즘</option>
+                            <option value="시각 지능 및 영상 처리">시각 지능(Vision)</option>
+                            <option value="언어 지능 및 생성형 AI">언어 지능(NLP/LLM)</option>
+                            <option value="AI 엔지니어링 및 배포">엔지니어링/MLOps</option>
+                            <option value="인문·법률 융합 AI">인문/윤리 융합</option>
+                            <option value="하드웨어 융합 지능">로보틱스/하드웨어</option>
+                            <option value="헬스케어 및 바이오 AI">헬스케어/바이오</option>
+                            <option value="금융 및 비즈니스 AI">금융/퀀트</option>
+                            <option value="모빌리티 및 자율주행">모빌리티/물류</option>
+                            <option value="융합 응용 AI">융합 응용 (에듀/에너지 등)</option>
+                        </select>
+                        <div class="relative w-full sm:w-72">
+                            <input type="text" id="searchInput" placeholder="50개 직업명, 키워드 검색..." oninput="filterCareers()" class="w-full pl-10 pr-4 py-2.5 bg-white/80 border border-slate-200 rounded-xl text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-brand-purple transition-all">
+                            <span class="absolute left-3.5 top-2.5 text-slate-400 text-sm">🔍</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 직업 카드 그리드 -->
+            <div id="careerGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- JS 동적 채움 -->
+            </div>
+        </section>
+
+        <!-- [탭 2] 직업 비교 분석 섹션 -->
+        <section id="section-compare" class="hidden space-y-6">
+            <div class="glass-card p-6 rounded-2xl shadow-sm border border-white/60 reveal-element">
+                <div class="max-w-xl">
+                    <h3 class="text-xl font-extrabold text-slate-900 flex items-center gap-2">
+                        <span>⚖️</span> AI 직업군 50선 1:1 비교 분석
+                    </h3>
+                    <p class="text-xs text-slate-600 mt-1">비교하고 싶은 두 개의 AI 세부 직업을 선택하여 역량과 입결을 비교해 보세요.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 p-4 bg-white/50 rounded-2xl border border-slate-200/60">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">첫 번째 직업</label>
+                        <select id="compareSelect1" onchange="updateComparison()" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-brand-purple">
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">두 번째 직업</label>
+                        <select id="compareSelect2" onchange="updateComparison()" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-semibold focus:ring-2 focus:ring-brand-purple">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="comparisonResult" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            </div>
+        </section>
+
+        <!-- [탭 3] 진로 로드맵 섹션 -->
+        <section id="section-roadmap" class="hidden space-y-6">
+            <div class="glass-card p-6 rounded-2xl shadow-sm border border-white/60 reveal-element">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                            <span>🗺️</span> 단계별 인포그래픽 진로 로드맵
+                        </h3>
+                        <p class="text-xs text-slate-600 mt-1">고등학교부터 전문 아키텍트까지의 맞춤형 성장 단계입니다.</p>
+                    </div>
+                    <div class="w-full sm:w-64">
+                        <select id="roadmapSelect" onchange="renderRoadmap()" class="w-full p-2.5 bg-white border border-slate-300 rounded-xl text-xs sm:text-sm font-bold text-slate-800 focus:ring-2 focus:ring-brand-purple">
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="roadmapContainer" class="glass-card p-6 sm:p-10 rounded-3xl shadow-lg border border-white/80">
+            </div>
+        </section>
+
+        <!-- [탭 4] 생기부 탐구주제 생성기 -->
+        <section id="section-subject-ai" class="hidden space-y-6">
+            <div class="glass-card p-6 sm:p-8 rounded-3xl border border-white/80 shadow-xl reveal-element">
+                <div class="max-w-2xl">
+                    <span class="px-3 py-1 bg-brand-coral/20 text-brand-coral text-xs font-bold rounded-full">SPECIAL FEATURE</span>
+                    <h3 class="text-2xl font-black text-slate-900 mt-2 flex items-center gap-2">
+                        <span>💡</span> 교과 연계 생기부 세특 탐구주제 생성기
+                    </h3>
+                    <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                        고교 교과목과 50가지 AI 직업군을 조합하여 깊이 있는 세부능력 및 특기사항 탐구 주제를 생성합니다.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">관심 고교 교과목 선택</label>
+                        <select id="generatorSubject" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm font-semibold">
+                            <option value="수학(미적분/기하/확통)">수학 (미적분 / 기하 / 확률과 통계)</option>
+                            <option value="정보/프로그래밍">정보 / 프로그래밍 / 인공지능 기초</option>
+                            <option value="물리학 I·II">물리학 I · II</option>
+                            <option value="국어/언어와 매체">국어 / 언어와 매체 / 독서</option>
+                            <option value="생활과 윤리/사회문화">생활과 윤리 / 사회·문화 / 현대 사회와 법</option>
+                            <option value="영어 I·II">영어 I · II / 영어 독해와 작문</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1.5">목표 AI 직업 선택 (50선)</label>
+                        <select id="generatorCareer" class="w-full p-3 bg-white border border-slate-300 rounded-xl text-sm font-semibold">
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="generateProjectIdea()" class="w-full mt-5 py-3.5 gradient-btn-primary text-white font-extrabold rounded-2xl shadow-lg transition-all text-sm flex items-center justify-center gap-2">
+                    <span>✨</span> 맞춤형 탐구 주제 및 활동 가이드 생성
+                </button>
+
+                <div id="generatedIdeaResult" class="mt-6 hidden">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 상세 정보 모달 (Modal) -->
+    <div id="careerModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-md hidden transition-all duration-300">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto flex flex-col border border-white/40 transform scale-95 transition-all duration-300" id="modalContainer">
+            <div class="p-6 gradient-card-header text-slate-900 flex justify-between items-start sticky top-0 z-20 shadow-sm">
+                <div>
+                    <span id="modalCategory" class="text-[11px] font-black uppercase tracking-wider bg-white/80 text-indigo-900 px-3 py-1 rounded-full shadow-sm"></span>
+                    <h3 id="modalTitle" class="text-2xl font-black mt-2 text-slate-900"></h3>
+                </div>
+                <button onclick="closeModal()" class="text-slate-700 hover:text-black bg-white/60 hover:bg-white p-2 rounded-full transition-all shadow">
+                    ✕
+                </button>
+            </div>
+            <div id="modalBody" class="p-6 space-y-6 text-slate-700">
+            </div>
+            <div class="p-4 bg-slate-50 border-t border-slate-200 flex justify-end">
+                <button onclick="closeModal()" class="px-6 py-2.5 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition-all text-xs">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 커스텀 알림 토스트 (Toast) -->
+    <div id="msgBox" class="fixed bottom-6 right-6 z-50 bg-slate-900 text-white px-5 py-3.5 rounded-2xl shadow-2xl flex items-center space-x-3 transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none border border-white/20">
+        <span id="msgIcon" class="text-lg">🔔</span>
+        <span id="msgText" class="text-xs font-semibold"></span>
+    </div>
+
+    <!-- 푸터 -->
+    <footer class="bg-slate-900 text-white py-8 mt-16 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center space-y-3">
+            <div class="flex justify-center items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-brand-coral animate-ping"></span>
+                <p class="text-xs font-bold text-slate-300">AI Tech Compass 50 Platform &copy; 2026</p>
+            </div>
+            <p class="text-[11px] text-slate-500 max-w-2xl mx-auto leading-relaxed">
+                대학별 70% Cutoff 등급 데이터 출처: <a href="https://www.adiga.kr" target="_blank" rel="noopener noreferrer" class="text-brand-purple underline hover:text-white">대입정보포털 어디가 (adiga.kr)</a> 및 주요 대학 입학처 수시·정시 모집결과 공시 기준. 본 자료는 고등학생 진로 탐색 보조용입니다.
+            </p>
+        </div>
+    </footer>
+
+    <!-- 자바스크립트 로직 (50개 직업군 데이터베이스) -->
+    <script>
+        const careerData = [
+            {
+                id: "ml-engineer",
+                name: "머신러닝(ML) 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "📊",
+                summary: "데이터로부터 패턴을 학습하는 예측 모델을 설계하고 최적화하여 실제 서비스에 적용하는 전문가",
+                description: "방대한 데이터를 분석하고 적절한 머신러닝 알고리즘을 선택·학습시켜 기업의 비즈니스 문제를 해결합니다. 추천 시스템, 금융 사기 탐지(FDS), 수요 예측 등에 핵심적인 역할을 수행합니다.",
+                practicalCases: [
+                    "넷플릭스·유튜브의 사용자 맞춤형 콘텐츠 추천 알고리즘 고도화",
+                    "이커머스 플랫폼의 실시간 상품 수요 예측 및 가격 최적화 시스템 구축",
+                    "은행 대출 심사 시 고객의 신용 리스크 자동 평가 모델 개발"
+                ],
+                majors: ["컴퓨터공학과", "인공지능학과", "데이터사이언스학과", "응용통계학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "서울대학교", dept: "데이터사이언스전공", gyogwaCut: 1.12, jonghabCut: 1.28 },
+                    { rank: 3, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 4, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 5, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 }
+                ],
+                highSchoolSubjects: { general: ["확률과 통계", "미적분", "정보"], advanced: ["인공지능 수학", "프로그래밍", "심화 수학 I·II"] },
+                competencies: ["파이썬 기반 머신러닝 라이브러리 활용 능력", "선형대수, 확률 통계 수리적 사고력", "대용량 데이터 전처리 역량"],
+                schoolProjects: ["도서 대여 데이터 기반 맞춤형 추천 모델 설계", "공공 데이터 미세먼지 예측 회귀 분석", "확률변수 단원 오차 감소 원리 탐구"],
+                roadmap: { highSchool: "수학 및 정보 프로그래밍 기초 다지기", university: "자료구조 및 머신러닝 이론 학습", junior: "오픈소스 프로젝트 및 깃허브 포트폴리오 구축", pro: "MLOps 연계 시니어 엔지니어 도약" }
+            },
+            {
+                id: "cv-researcher",
+                name: "컴퓨터 비전(CV) 연구원",
+                category: "시각 지능 및 영상 처리",
+                icon: "👁️",
+                summary: "컴퓨터가 인간처럼 이미지를 보고 이해할 수 있도록 이미지 및 영상 인식 기술을 연구·개발하는 전문가",
+                description: "딥러닝 합성곱 신경망(CNN)과 트랜스포머(Vision Transformer) 모델을 활용해 이미지 분류, 객체 탐지, 세그멘테이션 등의 기술을 고도화합니다.",
+                practicalCases: ["자율주행 자동차 보행자 및 차선 인식", "의료 X-ray 암세포 조기 진단 보조", "스마트팩토리 불량품 자동 감지 머신비전"],
+                majors: ["인공지능학과", "전자공학과", "컴퓨터공학과", "로봇공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "전기전자공학부", gyogwaCut: 1.18, jonghabCut: 1.39 },
+                    { rank: 4, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.20, jonghabCut: 1.42 },
+                    { rank: 5, name: "고려대학교", dept: "인공지능학과", gyogwaCut: 1.23, jonghabCut: 1.46 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "기하", "미적분", "정보"], advanced: ["인공지능 수학", "물리학 실험", "프로그래밍"] },
+                competencies: ["PyTorch, TensorFlow 딥러닝 프레임워크 숙달", "영상 처리 및 행렬 연산(선형대수) 이해", "실시간 연산 최적화 역량"],
+                schoolProjects: ["OpenCV 활용 얼굴 인식 및 모자이크 구현", "카메라 센서 원리 및 노이즈 제거 탐구", "의공학 분야 AI 진단 윤리 토론 보고서"],
+                roadmap: { highSchool: "물리 및 기하 학습, 파이썬 시각화 실습", university: "신호 및 시스템, 컴퓨터 비전 특론", junior: "YOLO 모델 파인튜닝 프로젝트", pro: "엣지 AI 및 자율주행 시각 지능 수석 연구원" }
+            },
+            {
+                id: "nlp-engineer",
+                name: "자연어 처리(NLP) 및 LLM 엔지니어",
+                category: "언어 지능 및 생성형 AI",
+                icon: "💬",
+                summary: "인간의 언어를 컴퓨터가 이해하고 생성할 수 있도록 대규모 언어 모델(LLM)과 챗봇 기술을 개발하는 전문가",
+                description: "텍스트 토큰화, 감성 분석, LLM 파인튜닝 및 RAG(검색 증강 생성) 시스템 구축까지 언어 기반 AI 서비스를 총괄합니다.",
+                practicalCases: ["고객 상담 AI 챗봇 및 콜센터 음성 인식", "다국어 실시간 동시 번역 및 문서 요약", "법률 및 금융 전문 질의응답 LLM 서비스"],
+                majors: ["인공지능학과", "국어국문·언어학과", "컴퓨터공학과", "인지과학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "서울대학교", dept: "언어학과(AI융합)", gyogwaCut: 1.18, jonghabCut: 1.35 },
+                    { rank: 3, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 4, name: "연세대학교", dept: "언어정보학과", gyogwaCut: 1.26, jonghabCut: 1.50 },
+                    { rank: 5, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.28, jonghabCut: 1.52 }
+                ],
+                highSchoolSubjects: { general: ["문학", "화법과 작문", "영어 I·II", "정보"], advanced: ["확률과 통계", "인공지능 수학", "철학"] },
+                competencies: ["트랜스포머 아키텍처 및 LLM 구조 이해", "Prompt Engineering 및 RAG 구축", "텍스트 정제 및 토큰화 역량"],
+                schoolProjects: ["형태소 분석기 원리 및 챗봇 대화 패턴 분석", "공공 민원 텍스트 감성 분석 보고서", "LLM 환각 현상 해결 방안 소논문"],
+                roadmap: { highSchool: "국어 및 외국어 학습, NLP 기초 라이브러리 실습", university: "자연어 처리 개론 및 딥러닝 응용", junior: "Hugging Face 소형 LLM 파인튜닝", pro: "초거대 언어 모델 설계 및 가드레일 전문가" }
+            },
+            {
+                id: "mlops-engineer",
+                name: "MLOps 및 인프라 엔지니어",
+                category: "AI 엔지니어링 및 배포",
+                icon: "⚙️",
+                summary: "AI 모델의 개발부터 배포, 모니터링, 유지보수까지의 전체 생명주기를 자동화하고 관리하는 전문가",
+                description: "AI 연구원이 만든 모델이 실제 서비스 환경에서 안정적으로 대규모 사용자에게 서비스될 수 있도록 클라우드 인프라와 CI/CD 파이프라인을 구축합니다.",
+                practicalCases: ["대규모 트래픽 AI 서비스 자동 확장 구축", "모델 성능 저하(Data Drift) 실시간 감지", "Docker와 Kubernetes 컨테이너화 배포"],
+                majors: ["컴퓨터공학과", "소프트웨어학과", "정보보호학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "시스템반도체공학과", gyogwaCut: 1.21, jonghabCut: 1.40 },
+                    { rank: 3, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 4, name: "고려대학교", dept: "사이버국방학과", gyogwaCut: 1.24, jonghabCut: 1.46 },
+                    { rank: 5, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.28, jonghabCut: 1.52 }
+                ],
+                highSchoolSubjects: { general: ["정보", "영어 I·II", "수학 I·II"], advanced: ["프로그래밍", "네트워크 보안", "운영체제 이해"] },
+                competencies: ["Docker, Kubernetes 오케스트레이션", "AWS, GCP 클라우드 활용", "CI/CD 파이프라인 구축"],
+                schoolProjects: ["Linux 환경 기본 서버 구축 및 웹 호스팅", "네트워크 단원 데이터 전송 최적화", "Docker를 이용한 AI 웹앱 컨테이너화"],
+                roadmap: { highSchool: "정보 교과 및 리눅스/Git 익히기", university: "운영체제, 네트워크, 데이터베이스 학습", junior: "클라우드 자격증 및 배포 파이프라인 구축", pro: "엔터프라이즈 AI 인프라 아키텍트 지향" }
+            },
+            {
+                id: "ai-ethics",
+                name: "AI 윤리 및 거버넌스 전문가",
+                category: "인문·법률 융합 AI",
+                icon: "⚖️",
+                summary: "인공지능 발전 속에서 발생할 수 있는 편향, 저작권, 프라이버시 침해를 예방하고 윤리적 가이드라인을 수립하는 전문가",
+                description: "기술적 지식을 바탕으로 AI가 사회에 미치는 영향을 평가하고, 공정하고 안전한 AI 생태계를 위한 법제도 및 기업 거버넌스를 설계합니다.",
+                practicalCases: ["AI 채용 면접 공정성 가이드라인 제정", "생성형 AI 저작권 분쟁 대응 정책 수립", "EU AI Act 등 글로벌 규제 컴플라이언스"],
+                majors: ["법학과", "철학과", "사회학과", "인공지능융합학과", "미디어커뮤니케이션학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "언론정보학과", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 2, name: "서울대학교", dept: "철학과", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 3, name: "연세대학교", dept: "미디어공간학과", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 4, name: "연세대학교", dept: "철학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 5, name: "고려대학교", dept: "자유전공학부", gyogwaCut: 1.22, jonghabCut: 1.45 }
+                ],
+                highSchoolSubjects: { general: ["생활과 윤리", "사회·문화", "현대 사회와 법"], advanced: ["철학", "정보", "확률과 통계"] },
+                competencies: ["인공지능 기본 메커니즘과 한계 이해", "비판적 사고력과 철학적·윤리적 분석", "국내외 법률 및 정책 독해력"],
+                schoolProjects: ["자율주행차 트롤리 딜레마 사례 연구", "AI 알고리즘 편향성 조사 및 공정 설계 제안", "생성형 AI 저작권 입법 동향 토론문"],
+                roadmap: { highSchool: "윤리, 사회, 법 과목 이수 및 독서", university: "법학/사회학/AI윤리 연구", junior: "기업 AI 윤리 위원회 및 공모전 참가", pro: "정부 AI 정책 자문관 또는 Ethics Lead" }
+            },
+            {
+                id: "robotics-ai",
+                name: "로보틱스 및 자율주행 AI 엔지니어",
+                category: "하드웨어 융합 지능",
+                icon: "🦾",
+                summary: "하드웨어 로봇과 자율주행 모빌리티에 인공지능 두뇌를 탑재하여 스스로 판단하고 움직이게 하는 전문가",
+                description: "센서(라이다, 카메라, 초음파) 데이터를 실시간 처리하고 강화학습을 결합해 로봇의 자율 주행 및 정밀 조작을 구현합니다.",
+                practicalCases: ["물류 창고 자율운반 물류 로봇(AGV/AMR)", "무인 자율주행 배달 로봇 시스템", "수술용 로봇 및 재난구조 4족 보행 로봇 제어"],
+                majors: ["로봇공학과", "기계공학과", "전자공학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "기계공학부", gyogwaCut: 1.09, jonghabCut: 1.23 },
+                    { rank: 2, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "기계공학부", gyogwaCut: 1.21, jonghabCut: 1.44 },
+                    { rank: 4, name: "고려대학교", dept: "스마트모빌리티학부", gyogwaCut: 1.24, jonghabCut: 1.47 },
+                    { rank: 5, name: "고려대학교", dept: "기계공학부", gyogwaCut: 1.26, jonghabCut: 1.49 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "기하", "미적분", "정보"], advanced: ["고급 물리학", "인공지능 수학", "프로그래밍"] },
+                competencies: ["ROS 및 임베디드 프로그래밍 능력", "제어공학 및 기구학·동역학 지식", "센서 융합 및 강화학습 구현"],
+                schoolProjects: ["아두이노 자율주행 소형 로봇 제작", "로봇 구동부 효율성 분석 탐구", "ROS 시뮬레이터 경로 계획 알고리즘 구현"],
+                roadmap: { highSchool: "물리 및 수학 심화, 아두이노 동아리", university: "제어공학 및 로봇 소프트웨어 학습", junior: "로봇 경진대회 및 오픈소스 프로젝트", pro: "휴머노이드 로봇 총괄 수석 엔지니어" }
+            },
+            {
+                id: "speech-audio-ai",
+                name: "음성 인식 및 오디오 AI 엔지니어",
+                category: "시각 지능 및 영상 처리",
+                icon: "🎤",
+                summary: "사람의 음성을 문자로 변환하고, 컴퓨터가 자연스러운 목소리를 합성하는 오디오 지능 기술 연구가",
+                description: "STT(Speech-to-Text), TTS(Text-to-Speech), 화자 분리 및 오디오 노이즈 억제 기술을 딥러닝으로 구현합니다.",
+                practicalCases: ["스마트폰 음성 비서(Siri, Bixby) 고도화", "오디오북 자동 성우 목소리 생성 AI", "실시간 회의 음성 자동 록 및 회의록 요약"],
+                majors: ["컴퓨터공학과", "전자공학과", "음향공학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "전기전자공학부", gyogwaCut: 1.18, jonghabCut: 1.39 },
+                    { rank: 3, name: "고려대학교", dept: "전기전자공학부", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "한양대학교", dept: "융합전자공학부", gyogwaCut: 1.30, jonghabCut: 1.60 },
+                    { rank: 5, name: "성균관대학교", dept: "전자전기공학부", gyogwaCut: 1.36, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I", "음악", "미적분", "정보"], advanced: ["음향 물리", "확률과 통계", "프로그래밍"] },
+                competencies: ["푸리에 변환 및 오디오 신호 처리 이해", "음성 합성 딥러닝 모델(Tacotron 등) 활용", "잡음 제거 필터링 기술"],
+                schoolProjects: ["물리 교과 '파동' 단원 음성 주파수 분석 탐구", "파이썬을 활용한 간단한 오디오 파형 시각화", "음성 인식 에러율 감소 방안 보고서 작성"],
+                roadmap: { highSchool: "물리 오디오 파동 원리 및 파이썬 기초", university: "신호처리 및 음향 신호 이론", junior: "오픈소스 TTS 모델 학습 및 테스트", pro: "차세대 음성 합성 및 오디오 AI 아키텍트" }
+            },
+            {
+                id: "recommender-systems",
+                name: "추천 시스템 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "🛍️",
+                summary: "사용자의 취향과 행동 패턴을 분석하여 맞춤형 상품, 콘텐츠, 광고를 제안하는 알고리즘 개발자",
+                description: "협업 필터링, 콘텐츠 기반 필터링 및 딥러닝 추천 모델을 통해 CTR(클릭률)과 구매 전환율을 극대화합니다.",
+                practicalCases: ["쿠팡·컬리 개인별 맞춤 상품 추천 배너", "웹툰 플랫폼 선호 장르 작품 큐레이션", "뉴스 기사 실시간 개인화 추천 피드"],
+                majors: ["컴퓨터공학과", "응용통계학과", "산업공학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "산업공학과", gyogwaCut: 1.12, jonghabCut: 1.30 },
+                    { rank: 2, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "응용통계학과", gyogwaCut: 1.20, jonghabCut: 1.42 },
+                    { rank: 4, name: "고려대학교", dept: "통계학과", gyogwaCut: 1.26, jonghabCut: 1.50 },
+                    { rank: 5, name: "성균관대학교", dept: "시스템경영공학과", gyogwaCut: 1.35, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["확률과 통계", "사회·문화", "정보"], advanced: ["인공지능 수학", "경제 수학", "프로그래밍"] },
+                competencies: ["행렬 연산 및 유사도 측정 알고리즘", "대규모 로그 데이터 분석 역량", "A/B 테스트 설계 및 통계 검정"],
+                schoolProjects: ["설문조사를 통한 친구들 취향 데이터 분석 및 추천", "쇼핑몰 로그 데이터 기반 연관 규칙 분석", "통계적 가설 검정을 통한 추천 효과 검증"],
+                roadmap: { highSchool: "확률과 통계 및 데이터 수집 기초", university: "통계학, 데이터베이스, 추천 알고리즘", junior: "영화/상품 추천 캐글(Kaggle) 경진대회 참가", pro: "글로벌 이커머스 추천 시스템 총괄" }
+            },
+            {
+                id: "generative-ai-architect",
+                name: "생성형 AI 모델 아키텍트",
+                category: "언어 지능 및 생성형 AI",
+                icon: "🎨",
+                summary: "텍스트, 이미지, 영상, 음악 등 새로운 형태의 콘텐츠를 창조하는 생성형 파운데이션 모델 구조 설계자",
+                description: "Diffusion 모델, GAN, Transformer 기반 멀티모달 모델의 아키텍처를 혁신하고 새로운 생성 패러다임을 연구합니다.",
+                practicalCases: ["Midjourney 같은 고품질 텍스트-이미지 생성", "Sora와 같은 초실감형 AI 비디오 생성", "AI 작곡 및 가상 보컬 음원 제작"],
+                majors: ["인공지능학과", "컴퓨터공학과", "수학과", "디지털미디어학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "인공지능학과", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.32, jonghabCut: 1.65 },
+                    { rank: 5, name: "성균관대학교", dept: "지능형소프트웨어학과", gyogwaCut: 1.40, jonghabCut: 1.72 }
+                ],
+                highSchoolSubjects: { general: ["미적분", "기하", "미술/음악", "정보"], advanced: ["심화 수학", "인공지능 수학", "프로그래밍"] },
+                competencies: ["딥러닝 생성 모델(GAN, Diffusion) 심층 이해", "고성능 GPU 분산 학습 클러스터링", "창의적 문제 해결 및 수학적 모델링"],
+                schoolProjects: ["미적분 미분 방정식과 생성 모델 손실함수 연계 탐구", "오픈소스 이미지 생성 모델 프롬프트 실험 보고서", "AI 예술 창작의 저작권 및 윤리적 고찰"],
+                roadmap: { highSchool: "수학 미적분 및 프로그래밍 숙달", university: "고급 인공지능, 생성 모델 특론", junior: "오픈 소스 생성형 모델 기여 및 파인튜닝", pro: "빅테크 기업 생성형 AI 파운데이션 모델 수석 연구원" }
+            },
+            {
+                id: "ai-hardware-engineer",
+                name: "AI 반도체 설계 엔지니어 (NPU)",
+                category: "하드웨어 융합 지능",
+                icon: "🧪",
+                summary: "인공지능 연산(딥러닝 행렬 곱 등)을 초고속으로 저전력 처리하는 전용 신경망 처리 장치(NPU) 반도체를 설계하는 전문가",
+                description: "GPU의 한계를 극복하고 AI 연산 효율을 극대화하기 위한 시스템 반도체 회로 및 아키텍처를 연구합니다.",
+                practicalCases: ["스마트폰 온디바이스 AI 구동을 위한 저전력 NPU 칩 설계", "데이터센터 전력 소모를 줄이는 AI 가속기 ASIC 개발", "자율주행용 실시간 차량용 AI 반도체 칩 개발"],
+                majors: ["반도체공학과", "전자공학과", "전기공학과", "물리학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "시스템반도체공학과", gyogwaCut: 1.21, jonghabCut: 1.40 },
+                    { rank: 3, name: "고려대학교", dept: "반도체공학과", gyogwaCut: 1.24, jonghabCut: 1.46 },
+                    { rank: 4, name: "성균관대학교", dept: "반도체시스템공학과", gyogwaCut: 1.35, jonghabCut: 1.62 },
+                    { rank: 5, name: "한양대학교", dept: "융합전자공학부", gyogwaCut: 1.30, jonghabCut: 1.60 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "화학 I", "미적분", "기하"], advanced: ["고급 물리", "전자회로 기초", "정보"] },
+                competencies: ["Verilog/VHDL 하드웨어 기술 언어(HDL)", "반도체 소자 및 회로 이론에 대한 깊은 지식", "AI 알고리즘 연산과 하드웨어 구조의 매핑"],
+                schoolProjects: ["물리 전자기학 단원과 연계한 반도체 트랜지스터 동작 원리 탐구", "디지털 논리 회로 시뮬레이션 실습", "AI 반도체 도입에 따른 에너지 효율성 비교 보고서"],
+                roadmap: { highSchool: "물리 및 수학 심화 학습", university: "전자회로, 반도체 공정, 디지털 시스템 설계", junior: "FPGA 보드를 활용한 하드웨어 구현 프로젝트", pro: "세계적 시스템 반도체 기업 칩 아키텍트" }
+            },
+            {
+                id: "medical-ai-researcher",
+                name: "의료 AI 진단 연구원",
+                category: "헬스케어 및 바이오 AI",
+                icon: "🩺",
+                summary: "의학 영상, 유전체 데이터, 임상 기록을 분석하여 질병의 조기 진단과 맞춤형 치료법을 제시하는 헬스케어 AI 전문가",
+                description: "CT, MRI, 초음파 및 병리 슬라이드 이미지를 학습하여 암, 심장질환 등을 의사보다 빠르고 정확하게 찾아내는 알고리즘을 개발합니다.",
+                practicalCases: ["폐암 진단 X-ray 실시간 판독 보조 소프트웨어", "유전자 변이 분석 기반 표적 항암제 추천", "당뇨환자 혈당 수치 예측 및 경고 앱"],
+                majors: ["의공학과", "컴퓨터공학과", "인공지능학과", "생명과학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "의예과", gyogwaCut: 1.02, jonghabCut: 1.15 },
+                    { rank: 2, name: "연세대학교", dept: "의예과", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 3, name: "고려대학교", dept: "의과대학", gyogwaCut: 1.08, jonghabCut: 1.25 },
+                    { rank: 4, name: "성균관대학교", dept: "의예과", gyogwaCut: 1.06, jonghabCut: 1.22 },
+                    { rank: 5, name: "한양대학교", dept: "의예과", gyogwaCut: 1.12, jonghabCut: 1.32 }
+                ],
+                highSchoolSubjects: { general: ["생명과학 I·II", "화학 I·II", "미적분", "확률과 통계"], advanced: ["생명과학 실험", "인공지능 수학", "고급 생물"] },
+                competencies: ["의학 데이터 특성에 대한 이해와 전처리", "바이오 인포매틱스 및 딥러닝 융합 역량", "의료 윤리 및 임상 데이터 보안 준수"],
+                schoolProjects: ["생명과학 '유전자의 발현' 단원과 AI 패턴 인식 접목 탐구", "공공 의료 데이터의 질병 발병 확률 통계 분석", "의료 AI 오진 시 책임 소재에 관한 윤리 토론"],
+                roadmap: { highSchool: "생물, 화학 및 수학 기초 다지기", university: "의공학, 분자생물학 및 딥러닝 응용 수강", junior: "의료 데이터톤(Medical Datathon) 참가", pro: "대학병원 부설 의료 AI 연구소 수석 연구원" }
+            },
+            {
+                id: "financial-ai-quant",
+                name: "금융 AI 퀀트 엔지니어",
+                category: "금융 및 비즈니스 AI",
+                icon: "📈",
+                summary: "인공지능과 통계 모델을 활용하여 금융 시장의 주가 움직임을 예측하고 알고리즘 트레이딩 전략을 수립하는 전문가",
+                description: "시계열 데이터 분석, 강화학습, 고속 거래 시스템을 결합하여 리스크를 관리하고 투자 수익을 극대화합니다.",
+                practicalCases: ["증권사 AI 기반 로보어드바이저 자산관리 서비스", "고빈도 매매(HFT)를 통한 실시간 차익거래 알고리즘", "뉴스 감성 분석을 통한 주식 시장 영향 예측"],
+                majors: ["금융공학과", "수학과", "응용통계학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "수리과학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "응용통계학과", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 3, name: "고려대학교", dept: "수학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 4, name: "성균관대학교", dept: "글로벌경제학과", gyogwaCut: 1.30, jonghabCut: 1.58 },
+                    { rank: 5, name: "한양대학교", dept: "파이낸스경영학과", gyogwaCut: 1.35, jonghabCut: 1.65 }
+                ],
+                highSchoolSubjects: { general: ["경제", "확률과 통계", "미적분", "정보"], advanced: ["경제 수학", "고급 수학", "프로그래밍"] },
+                competencies: ["시계열 데이터 분석 및 확률적 미적분학", "파이썬 기반 금융 데이터 분석 라이브러리(Pandas 등)", "리스크 관리 및 포트폴리오 최적화"],
+                schoolProjects: ["경제 교과 '금융 시장' 단원과 연계한 주가 이동평균선 백테스팅", "환율 및 금리 변동 데이터를 활용한 회귀 예측 모델", "알고리즘 트레이딩의 시장 교란 효과 윤리적 토론"],
+                roadmap: { highSchool: "수학(미적분, 확통) 및 경제 기본 소양", university: "금융공학, 확률과정론, 머신러닝 금융 응용", junior: "퀀트 투자 대회 참가 및 백테스팅 툴 제작", pro: "자산운용사 헤지펀드 AI 퀀트 포트폴리오 매니저" }
+            },
+            {
+                id: "game-ai-rl-engineer",
+                name: "게임 AI 및 강화학습 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "🎮",
+                summary: "플레이어와 대결하거나 게임 속에서 스스로 학습하는 지능형 NPC(Non-Player Character)를 개발하는 전문가",
+                description: "강화학습(Reinforcement Learning) 알고리즘을 적용하여 시행착오를 통해 최적의 행동 전략을 찾아내는 에이전트를 구현합니다.",
+                practicalCases: ["스타크래프트나 바둑을 정복한 알파고 같은 전략 AI", "FPS 게임 내에서 인간처럼 반응하는 고난도 적 NPC", "게임 밸런스 자동 조절을 위한 시뮬레이션 에이전트"],
+                majors: ["컴퓨터공학과", "게임공학과", "인공지능학과", "소프트웨어학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.32, jonghabCut: 1.62 },
+                    { rank: 5, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["미적분", "확률과 통계", "정보"], advanced: ["인공지능 수학", "게임 프로그래밍", "심화 수학"] },
+                competencies: ["마르코프 결정 과정(MDP) 및 강화학습 이론", "Unity 또는 Unreal 엔진 활용 능력", "시뮬레이션 환경 구축 및 보상 함수(Reward Function) 설계"],
+                schoolProjects: ["Unity 엔진을 활용한 간단한 장애물 회피 에이전트 구현", "미적분 교과 최적화 문제와 강화학습 보상 연계 탐구", "체스/오목 게임 규칙 기반 미니 AI 개발"],
+                roadmap: { highSchool: "수학 미적분 및 프로그래밍 기초", university: "자료구조, 알고리즘, 강화학습 특론 수강", junior: "OpenAI Gym 등을 활용한 강화학습 프로젝트", pro: "대형 게임 스튜디오 AI 리드 디벨로퍼" }
+            },
+            {
+                id: "data-engineer",
+                name: "데이터 엔지니어",
+                category: "AI 엔지니어링 및 배포",
+                icon: "🗄️",
+                summary: "AI 모델 학습에 필요한 방대한 데이터를 안정적으로 수집, 정제, 저장하고 파이프라인을 구축하는 데이터 인프라 전문가",
+                description: "ETL(추출·변환·적재) 파이프라인을 구축하고 분산 처리 시스템을 운영하여 데이터의 품질과 흐름을 책임집니다.",
+                practicalCases: ["실시간 사용자 로그 데이터를 하둡/스파크로 수집 및 저장", "대규모 이커머스 거래 데이터 웨어하우스(DWH) 구축", "AI 학습용 대용량 비정형 데이터 정제 자동화"],
+                majors: ["컴퓨터공학과", "소프트웨어학과", "산업공학과", "데이터사이언스학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "한양대학교", dept: "데이터사이언스학과", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "성균관대학교", dept: "데이터사이언스융합전공", gyogwaCut: 1.42, jonghabCut: 1.75 }
+                ],
+                highSchoolSubjects: { general: ["정보", "수학 I·II", "영어 I·II"], advanced: ["데이터베이스 개론", "SQL 활용", "프로그래밍"] },
+                competencies: ["SQL 및 관계형/비관계형 데이터베이스(NoSQL) 숙달", "Apache Spark, Kafka 등 분산 처리 기술", "안정적인 데이터 파이프라인 아키텍처 설계"],
+                schoolProjects: ["관계형 데이터베이스 설계 및 SQL 쿼리 최적화 실습", "공공 데이터 API 연동 및 자동 수집 스크립트 작성", "대용량 CSV 파일 정제 및 성능 비교 보고서"],
+                roadmap: { highSchool: "정보 교과 및 SQL 기본 문법 학습", university: "운영체제, 데이터베이스, 분산 시스템 학습", junior: "Airflow 및 클라우드 데이터 웨어하우스 실무", pro: "엔터프라이즈 데이터 플랫폼 수석 아키텍트" }
+            },
+            {
+                id: "data-scientist",
+                name: "데이터 사이언티스트",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "📈",
+                summary: "데이터 속에서 비즈니스 인사이트를 도출하고 통계적 기법과 머신러닝으로 의사결정을 지원하는 전문가",
+                description: "가설을 수립하고 데이터를 탐색적으로 분석(EDA)하며, 비즈니스 성장을 위한 예측 모델을 제안합니다.",
+                practicalCases: ["이탈 고객 예측 모델을 통한 마케팅 전략 수립", "신규 서비스 런칭 시 사용자 반응 코호트 분석", "매장 위치 선정 최적화 입지 분석"],
+                majors: ["응용통계학과", "데이터사이언스학과", "산업공학과", "수학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "데이터사이언스전공", gyogwaCut: 1.12, jonghabCut: 1.28 },
+                    { rank: 2, name: "서울대학교", dept: "통계학과", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "응용통계학과", gyogwaCut: 1.20, jonghabCut: 1.42 },
+                    { rank: 4, name: "고려대학교", dept: "데이터과학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 5, name: "성균관대학교", dept: "데이터사이언스융합전공", gyogwaCut: 1.42, jonghabCut: 1.75 }
+                ],
+                highSchoolSubjects: { general: ["확률과 통계", "사회·문화", "정보"], advanced: ["인공지능 수학", "경제 수학", "탐구 보고서 작성"] },
+                competencies: ["탐색적 데이터 분석(EDA) 및 시각화(Tableau 등)", "통계적 가설 검정 및 회귀 분석", "비즈니스 커뮤니케이션 및 스토리텔링"],
+                schoolProjects: ["학교 축제 만족도 설문조사 데이터 통계 분석 보고서", "국가별 경제 지표 상관관계 탐색적 시각화", "가설 수립 및 검정을 통한 교내 동아리 효과성 분석"],
+                roadmap: { highSchool: "확률과 통계 및 데이터 시각화 기초", university: "통계학, 회귀분석, 머신러닝 응용", junior: "데이터톤 대회 참가 및 실무 분석 포트폴리오", pro: "기업 데이터 총괄 디렉터(CDO)" }
+            },
+            {
+                id: "ai-security-privacy",
+                name: "AI 보안 및 프라이버시 전문가",
+                category: "AI 엔지니어링 및 배포",
+                icon: "🔒",
+                summary: "인공지능 모델을 대상으로 한 적대적 공격(Adversarial Attack)을 방어하고 개인정보를 보호하는 보안 전문가",
+                description: "AI 시스템의 취약점을 진단하고 연합 학습(Federated Learning)이나 차분 프라이버시 기술을 적용해 안전한 AI 환경을 만듭니다.",
+                practicalCases: ["자율주행 표지판 위장 공격(Adversarial Patch) 방어", "의료 데이터 학습 시 환자 프라이버시 유출 방지 암호화", "AI 챗봇 탈옥(Jailbreak) 프롬프트 차단 시스템"],
+                majors: ["정보보호학과", "컴퓨터공학과", "사이버국방학과", "암호학과"],
+                universities: [
+                    { rank: 1, name: "고려대학교", dept: "사이버국방학과", gyogwaCut: 1.24, jonghabCut: 1.46 },
+                    { rank: 2, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 4, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.40, jonghabCut: 1.72 },
+                    { rank: 5, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.35, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["정보", "영어 I·II", "법과 정치"], advanced: ["정보 보호와 윤리", "암호학 기초", "네트워크 보안"] },
+                competencies: ["네트워크 및 시스템 보안 취약점 분석", "적대적 머신러닝 공격 원리 이해", "암호화 알고리즘 및 익명화 기술 적용"],
+                schoolProjects: ["정보 교과 네트워크 보안 단원 연계 취약점 분석", "AI 모델 우회 공격(Jailbreak) 사례 조사 및 방어 대책", "개인정보 보호법 개정과 AI 프라이버시 토론문"],
+                roadmap: { highSchool: "정보 보안 기초 및 네트워크 학습", university: "암호학, 시스템 보안, AI 보안 특론", junior: "보안 취약점 분석 대회(CTF) 및 방어 프로젝트", pro: "글로벌 보안 기업 수석 CISO 및 AI 보안 리드" }
+            },
+            {
+                id: "3d-graphics-vision",
+                name: "컴퓨터 그래픽스 및 3D 비전 엔지니어",
+                category: "시각 지능 및 영상 처리",
+                icon: "🧊",
+                summary: "2D 이미지로부터 3D 공간과 객체를 복원하고 가상 현실(VR) 및 메타버스 환경을 구현하는 3D 비전 전문가",
+                description: "NeRF(Neural Radiance Fields), 3D Gaussian Splatting 기술을 활용하여 사진 몇 장으로 실사 같은 3D 공간을 재구성합니다.",
+                practicalCases: ["스마트폰으로 방안을 스캔하여 3D 모델로 즉시 변환", "메타버스 가상 공간 내 실시간 아바타 렌더링", "디지털 윈드스켈링 및 가상 피팅 시스템"],
+                majors: ["컴퓨터공학과", "가상현실학과", "인공지능학과", "시각디자인학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "성균관대학교", dept: "지능형소프트웨어학과", gyogwaCut: 1.42, jonghabCut: 1.75 }
+                ],
+                highSchoolSubjects: { general: ["기하", "물리학 I", "미술", "정보"], advanced: ["선형대수", "컴퓨터 그래픽스", "프로그래밍"] },
+                competencies: ["3차원 공간 기하학 및 선형대수 행렬 연산", "OpenGL, Three.js 또는 Unity 그래픽스 파이프라인", "NeRF 및 3D 딥러닝 모델 이해"],
+                schoolProjects: ["기하 교과 '벡터와 공간도형' 연계 3D 좌표 변환 탐구", "Three.js를 활용한 웹 기반 3D 가상 전시관 구현", "메타버스 3D 아바타 생성 기술 조사 보고서"],
+                roadmap: { highSchool: "수학 기하 및 공간 감각 키우기", university: "컴퓨터 그래픽스, 선형대수, 3D 비전", junior: "NeRF 오픈소스 구현 및 개인 프로젝트", pro: "메타버스 및 XR 3D 비전 수석 연구원" }
+            },
+            {
+                id: "slam-engineer",
+                name: "자율주행 맵핑 및 SLAM 엔지니어",
+                category: "하드웨어 융합 지능",
+                icon: "🗺️",
+                summary: "GPS가 닿지 않는 실내나 터널 속에서 로봇이나 자동차가 스스로 주변 지도를 그리며 자신의 위치를 파악하는 기술(SLAM) 전문가",
+                description: "라이다와 카메라 센서 데이터를 실시간 동기화하여 위치 추정과 지도 작성(Simultaneous Localization and Mapping)을 수행합니다.",
+                practicalCases: ["실내 자율주행 청소 로봇의 미지의 공간 맵핑", "지하 주차장 GPS 음영 지역 자율주행차 위치 추정", "드론의 미지의 재난 현장 탐색 및 지도 구축"],
+                majors: ["제어계측공학과", "로봇공학과", "기계공학과", "전자공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "기계공학부", gyogwaCut: 1.09, jonghabCut: 1.23 },
+                    { rank: 2, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "기계공학부", gyogwaCut: 1.21, jonghabCut: 1.44 },
+                    { rank: 4, name: "고려대학교", dept: "기계공학부", gyogwaCut: 1.26, jonghabCut: 1.49 },
+                    { rank: 5, name: "한양대학교", dept: "미래자동차공학과", gyogwaCut: 1.28, jonghabCut: 1.52 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "기하", "미적분", "정보"], advanced: ["확률과 통계", "센서 공학", "프로그래밍"] },
+                competencies: ["칼만 필터(Kalman Filter) 및 확률적 상태 추정", "라이다 및 카메라 센서 캘리브레이션", "C++ 및 ROS 기반 실시간 알고리즘 구현"],
+                schoolProjects: ["물리 교과 '역학'과 연계한 위치·속도 센서 오차 분석", "ROS 환경에서 가상 라이다 센서 데이터 시각화", "자율주행 맵핑 오류 원인 분석 보고서"],
+                roadmap: { highSchool: "물리 및 수학(기하) 기초 확립", university: "제어공학, 로봇공학, 센서 융합", junior: "ORB-SLAM 오픈소스 분석 및 적용", pro: "자율주행 모빌리티 내비게이션 수석 엔지니어" }
+            },
+            {
+                id: "smart-factory-vision",
+                name: "스마트팩토리 머신비전 엔지니어",
+                category: "시각 지능 및 영상 처리",
+                icon: "🏭",
+                summary: "공장 생산 라인에서 불량품을 초고속으로 검출하고 제조 공정을 자동화하는 산업용 비전 전문가",
+                description: "고해상도 카메라와 딥러닝 검사 알고리즘을 결합하여 미세한 스크래치나 조립 오차를 0.1초 만에 판정합니다.",
+                practicalCases: ["반도체 웨이퍼 표면 미세 결함 자동 검출", "스마트폰 디스플레이 패널 불량 화소 판정", "자동차 부품 조립 상태 비전 검사 시스템"],
+                majors: ["전자공학과", "제어계측공학과", "기계공학과", "산업공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "전기전자공학부", gyogwaCut: 1.18, jonghabCut: 1.39 },
+                    { rank: 3, name: "고려대학교", dept: "전기전자공학부", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "한양대학교", dept: "융합전자공학부", gyogwaCut: 1.30, jonghabCut: 1.60 },
+                    { rank: 5, name: "성균관대학교", dept: "전자전기공학부", gyogwaCut: 1.36, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I", "기하", "정보", "기술·가정"], advanced: ["산업 자동화", "머신비전 개론", "프로그래밍"] },
+                competencies: ["산업용 카메라 및 조명 세팅 노하우", "OpenCV 및 딥러닝 기반 이상 탐지(Anomaly Detection)", "PLC 연동 및 실시간 제어 통신"],
+                schoolProjects: ["빛의 반사 법칙을 응용한 최적의 조명 각도 탐구", "OpenCV를 이용한 간단한 제품 크기 측정 실습", "스마트팩토리 도입에 따른 불량률 감소 효과 분석"],
+                roadmap: { highSchool: "물리 광학 및 정보 프로그래밍 기초", university: "전자회로, 제어공학, 머신비전 특론", junior: "산업용 비전 솔루션 현장 실습 및 프로젝트", pro: "스마트제조 혁신 센터 수석 엔지니어" }
+            },
+            {
+                id: "edge-ondevice-ai",
+                name: "엣지 AI 및 온디바이스 엔지니어",
+                category: "AI 엔지니어링 및 배포",
+                icon: "📱",
+                summary: "클라우드 서버를 거치지 않고 스마트폰, 웨어러블, IoT 기기 자체에서 가벼운 AI 모델을 실시간 구동하는 경량화 전문가",
+                description: "모델 양자화(Quantization), 가지치기(Pruning) 기술을 통해 거대한 딥러닝 모델의 용량과 연산량을 획기적으로 줄입니다.",
+                practicalCases: ["스마트폰 카메라의 실시간 인물 배경 흐림(Portrait)", "인터넷 연결 없이 동작하는 스마트워치 낙상 감지", "IoT 홈캠의 프라이버시 보호형 침입자 감지"],
+                majors: ["컴퓨터공학과", "전자공학과", "임베디드공학과", "정보통신공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "한양대학교", dept: "융합전자공학부", gyogwaCut: 1.30, jonghabCut: 1.60 },
+                    { rank: 5, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["정보", "물리학 I", "수학 I·II"], advanced: ["임베디드 시스템", "프로그래밍", "운영체제"] },
+                competencies: ["모델 경량화(TensorRT, TFLite 등) 기술", "저전력 임베디드 칩셋(ARM 등) 아키텍처 이해", "메모리 및 연산 속도 최적화 역량"],
+                schoolProjects: ["라즈베리파이에 가벼운 이미지 분류 모델 탑재 실습", "모델 양자화(Quantization) 전후 정확도 및 용량 비교", "온디바이스 AI의 보안적 장점 탐구 보고서"],
+                roadmap: { highSchool: "임베디드 기초 및 파이썬 프로그래밍", university: "운영체제, 컴퓨터 구조, 임베디드 소프트웨어", junior: "스마트 기기용 AI 앱 경량화 프로젝트", pro: "글로벌 모바일 제조사 온디바이스 AI 아키텍트" }
+            },
+            {
+                id: "prompt-engineer",
+                name: "AI 프롬프트 엔지니어",
+                category: "언어 지능 및 생성형 AI",
+                icon: "✍️",
+                summary: "대형 언어 모델(LLM)과 생성형 AI로부터 가장 정확하고 유용한 답변과 결과물을 도출하는 대화 설계 전문가",
+                description: "AI의 작동 원리를 이해하고 구조화된 프롬프트(지시어) 체계를 디자인하여 기업의 생산성과 업무 효율을 극대화합니다.",
+                practicalCases: ["기업 사내 매뉴얼 질의응답 시스템의 최적 프롬프트 설계", "마케팅 카피라이팅 자동 생성을 위한 고도화된 템플릿 구축", "AI 코딩 도우미의 정확도 향상을 위한 컨텍스트 엔지니어링"],
+                majors: ["국어국문·언어학과", "인지과학과", "미디어커뮤니케이션학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "언어학과(AI융합)", gyogwaCut: 1.18, jonghabCut: 1.35 },
+                    { rank: 2, name: "연세대학교", dept: "언어정보학과", gyogwaCut: 1.26, jonghabCut: 1.50 },
+                    { rank: 3, name: "고려대학교", dept: "언어학과", gyogwaCut: 1.34, jonghabCut: 1.62 },
+                    { rank: 4, name: "이화여자대학교", dept: "인공지능학과", gyogwaCut: 1.55, jonghabCut: 1.88 },
+                    { rank: 5, name: "한국외국어대학교", dept: "AI데이터융합학부", gyogwaCut: 1.72, jonghabCut: 2.15 }
+                ],
+                highSchoolSubjects: { general: ["화법과 작문", "문학", "영어 I·II", "정보"], advanced: ["논리학", "인문학과 기술", "철학"] },
+                competencies: ["논리적 문장 구조화 및 명확한 지시문 작성 능력", "LLM의 강점과 한계(환각 등)에 대한 통찰", "도메인별 맞춤형 대화 시나리오 설계"],
+                schoolProjects: ["국어 교과 화법 단원 연계 효과적인 지시어 작성 실험", "동일 질문에 대한 LLM 응답 변화 분석 보고서", "생성형 AI와 협업하여 시나리오 작성 프로젝트"],
+                roadmap: { highSchool: "국어 작문 능력 및 생성형 AI 활용 숙련", university: "언어학, 인지과학, AI 개론 수강", junior: "기업 컨설팅 및 프롬프트 템플릿 라이브러리 구축", pro: "수석 AI 커뮤니케이션 및 프롬프트 디렉터" }
+            },
+            {
+                id: "conversational-agent-engineer",
+                name: "대화형 에이전트 및 챗봇 엔지니어",
+                category: "언어 지능 및 생성형 AI",
+                icon: "🤖",
+                summary: "사용자의 의도를 파악하고 자연스럽게 대화를 주고받는 지능형 가상 비서 및 챗봇 서비스를 구축하는 엔지니어",
+                description: "다이얼로그 플로우, RAG, API 연동을 결합하여 예약, 주문, 고객 응대 등을 자동화하는 대화형 인터페이스를 만듭니다.",
+                practicalCases: ["항공권 예약 및 변경을 처리하는 항공사 카카오톡 챗봇", "주민 센터 무인 키오스크 음성 대화형 안내 에이전트", "쇼핑몰 반품/환불 자동 처리 챗봇 시스템"],
+                majors: ["컴퓨터공학과", "소프트웨어학과", "인공지능학과", "문헌정보학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "성균관대학교", dept: "지능형소프트웨어학과", gyogwaCut: 1.42, jonghabCut: 1.75 }
+                ],
+                highSchoolSubjects: { general: ["정보", "화법과 작문", "영어 I"], advanced: ["프로그래밍", "웹 개발", "UX 디자인"] },
+                competencies: ["API 연동 및 백엔드 웹 개발 능력", "대화 상태 추적(Dialogue State Tracking) 이해", "사용자 경험(UX) 중심의 대화 시나리오 설계"],
+                schoolProjects: ["학교 도서관 대출 안내 파이썬 챗봇 구현", "사용자 시나리오별 예외 처리 분기 설계 보고서", "오픈 API를 활용한 날씨 안내 챗봇 서비스"],
+                roadmap: { highSchool: "파이썬 프로그래밍 및 웹 기초", university: "소프트웨어 공학, 웹 프로그래밍, 자연어 처리", junior: "실무형 고객 응대 챗봇 구축 프로젝트", pro: "대화형 인터페이스(VUI) 수석 아키텍트" }
+            },
+            {
+                id: "bioinformatics-ai",
+                name: "바이오인포매틱스 AI 연구원",
+                category: "헬스케어 및 바이오 AI",
+                icon: "🧬",
+                summary: "DNA, 단백질 서열 등 유전체 빅데이터를 인공지능으로 분석하여 생명의 원리를 규명하고 신약을 개발하는 연구자",
+                description: "알파폴드(AlphaFold)처럼 단백질 구조를 3차원으로 예측하고 질병 표적 치료제 후보 물질을 탐색합니다.",
+                practicalCases: ["AI 기반 코로나19 백신 및 치료제 후보 물질 탐색", "개인 맞춤형 유전체 분석을 통한 암 발병 위험 예측", "효소 단백질 구조 인공 설계 및 합성"],
+                majors: ["생명과학과", "바이오인포매틱스학과", "화학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "생명과학부", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 2, name: "연세대학교", dept: "시스템생물학과", gyogwaCut: 1.15, jonghabCut: 1.35 },
+                    { rank: 3, name: "고려대학교", dept: "생명공학부", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 4, name: "KAIST", dept: "바이오및뇌공학과", gyogwaCut: 1.02, jonghabCut: 1.15 },
+                    { rank: 5, name: "성균관대학교", dept: "글로벌바이오메디컬학부", gyogwaCut: 1.22, jonghabCut: 1.45 }
+                ],
+                highSchoolSubjects: { general: ["생명과학 I·II", "화학 I·II", "정보", "미적분"], advanced: ["고급 생물", "유전체학", "프로그래밍"] },
+                competencies: ["유전체 서열 데이터 분석 및 파이썬 활용", "분자 구조 및 생화학적 반응 이해", "딥러닝 기반 생물학적 네트워크 분석"],
+                schoolProjects: ["생명과학 '단백질 합성과 구조' 단원과 알파폴드 원리 탐구", "공공 유전체 데이터베이스 활용 유전자 변이 분석", "AI 신약 개발의 경제적·윤리적 파급효과 토론"],
+                roadmap: { highSchool: "생물 및 화학 심화, 파이썬 기초", university: "분자생물학, 생물정보학, 머신러닝", junior: "단백질 구조 예측 캐글 또는 바이오 경진대회", pro: "글로벌 제약사 AI 신약 연구소 수석 연구원" }
+            },
+            {
+                id: "agritech-ai",
+                name: "스마트팜 및 농업 AI 엔지니어",
+                category: "융합 응용 AI",
+                icon: "🌾",
+                summary: "농장 환경(온도, 습도, 일조량)을 실시간 센싱하고 AI로 최적 제어하여 농산물 생산성을 극대화하는 스마트농업 전문가",
+                description: "비닐하우스나 수직 농장에서 작물의 생육 상태를 컴퓨터 비전으로 모니터링하고 자동으로 물과 영양분을 공급합니다.",
+                practicalCases: ["AI 기반 스마트온실 자동 환기 및 관수 제어", "드론을 이용한 농경지 작황 상태 및 병해충 모니터링", "식물공장 내 LED 광량 및 양액 최적화 AI"],
+                majors: ["바이오시스템공학과", "스마트팜학과", "컴퓨터공학과", "농업생명공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "바이오소재공학전공", gyogwaCut: 1.15, jonghabCut: 1.35 },
+                    { rank: 2, name: "고려대학교", dept: "생명공학부", gyogwaCut: 1.20, jonghabCut: 1.42 },
+                    { rank: 3, name: "연세대학교", dept: "시스템생물학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "경희대학교", dept: "스마트팜과학과", gyogwaCut: 1.45, jonghabCut: 1.82 },
+                    { rank: 5, name: "충남대학교", dept: "스마트팜학과", gyogwaCut: 2.10, jonghabCut: 2.55 }
+                ],
+                highSchoolSubjects: { general: ["생명과학 I", "기술·가정", "정보", "확률과 통계"], advanced: ["환경 과학", "아두이노 제어", "프로그래밍"] },
+                competencies: ["IoT 센서 데이터 수집 및 제어 시스템", "작물 생육 환경 데이터 분석", "아두이노/라즈베리파이 기반 자동화 실습"],
+                schoolProjects: ["아두이노를 활용한 간이 자동 급수 장치 제작", "생명과학 교과 '식물의 생장' 환경 요인 탐구", "스마트팜 도입이 농가 소득에 미치는 경제적 분석"],
+                roadmap: { highSchool: "생물 및 IoT 하드웨어 기초", university: "바이오시스템공학, 센서 제어, 데이터 분석", junior: "스마트팜 통합 관제 시스템 구축 프로젝트", pro: "첨단 농업 기술 기업 스마트팜 총괄 엔지니어" }
+            },
+            {
+                id: "smart-city-traffic",
+                name: "스마트시티 및 교통 AI 엔지니어",
+                category: "모빌리티 및 자율주행",
+                icon: "🚦",
+                summary: "도시 전체의 교통 흐름, 에너지 소비, 방범 데이터를 실시간 분석하여 교통 체증과 사고를 예방하는 도시 AI 전문가",
+                description: "지능형 교통 체계(ITS)와 CCTV 영상을 활용하여 신호등을 실시간 제어하고 비상 상황을 감지합니다.",
+                practicalCases: ["실시간 교통량에 따른 AI 신호등 연동 제어 시스템", "도시 내 불법 주정차 및 교통사고 자동 감지", "대중교통 수요 예측을 통한 버스 배차 간격 최적화"],
+                majors: ["교통공학과", "도시공학과", "토목공학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "건설환경공학부", gyogwaCut: 1.15, jonghabCut: 1.35 },
+                    { rank: 2, name: "연세대학교", dept: "사회환경시스템공학부", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 3, name: "고려대학교", dept: "건축사회환경공학부", gyogwaCut: 1.30, jonghabCut: 1.55 },
+                    { rank: 4, name: "한양대학교", dept: "도시공학과", gyogwaCut: 1.40, jonghabCut: 1.72 },
+                    { rank: 5, name: "서울시립대학교", dept: "교통공학과", gyogwaCut: 1.52, jonghabCut: 1.90 }
+                ],
+                highSchoolSubjects: { general: ["수학 I·II", "확률과 통계", "정보", "사회·문화"], advanced: ["도시 계획", "교통 시뮬레이션", "프로그래밍"] },
+                competencies: ["교통 흐름 시뮬레이션 및 수리적 모델링", "CCTV 영상 기반 객체 계수 및 밀집도 분석", "GIS(지리정보시스템) 및 공간 데이터 활용"],
+                schoolProjects: ["교내 주변 교차로 통행량 조사 및 신호 체계 개선 제안", "확률과 통계 교과 교통사고 발생률 확률 분포 탐구", "스마트시티 교통 최적화 시뮬레이션 보고서"],
+                roadmap: { highSchool: "수학 및 사회 데이터 수집 기초", university: "교통공학, 도시 계획, 데이터 분석", junior: "교통 데이터 분석 공모전 및 시뮬레이션", pro: "지자체 스마트시티 교통 총괄 엔지니어" }
+            },
+            {
+                id: "sports-tech-analyst",
+                name: "스포츠 테크 및 데이터 분석가",
+                category: "융합 응용 AI",
+                icon: "⚽",
+                summary: "스포츠 경기 영상과 선수들의 생체 데이터를 인공지능으로 분석하여 전술을 수립하고 부상을 예방하는 전문가",
+                description: "컴퓨터 비전으로 선수의 움직임을 트래킹하고 패스 성공률, 활동량 등을 정량화하여 경기력을 향상시킵니다.",
+                practicalCases: ["축구 경기 선수들의 실시간 패스 맵 및 활동량 분석", "야구 투수의 투구폼 영상 분석을 통한 부상 위험 예측", "농구 선수 슈팅 궤적 자동 추적 및 피드백"],
+                majors: ["체육학과", "스포츠산업학과", "컴퓨터공학과", "데이터사이언스학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "체육교육과", gyogwaCut: 1.15, jonghabCut: 1.35 },
+                    { rank: 2, name: "연세대학교", dept: "스포츠응용산업학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 3, name: "고려대학교", dept: "체육교육과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "한양대학교", dept: "스포츠산업학과", gyogwaCut: 1.45, jonghabCut: 1.82 },
+                    { rank: 5, name: "한국체육대학교", dept: "스포츠산업학과", gyogwaCut: 1.80, jonghabCut: 2.30 }
+                ],
+                highSchoolSubjects: { general: ["체육", "생명과학 I", "확률과 통계", "정보"], advanced: ["운동 생리학", "스포츠 데이터 분석", "프로그래밍"] },
+                competencies: ["스포츠 생체 역학 및 운동 생리학 이해", "웨어러블 센서 데이터 분석 및 시각화", "비디오 트래킹 데이터 처리 기술"],
+                schoolProjects: ["체육 교과 '농구 슛 자세' 생체 역학 분석 탐구", "축구 경기 공공 데이터 기반 승패 요인 통계 분석", "웨어러블 기기 활용 일일 활동량 데이터 리포트"],
+                roadmap: { highSchool: "체육 과학 및 데이터 통계 기초", university: "스포츠 생체학, 데이터 분석, 파이썬", junior: "스포츠 구단 데이터 분석 인턴십 및 프로젝트", pro: "프로 스포츠 구단 데이터 전력 분석관" }
+            },
+            {
+                id: "legaltech-ai",
+                name: "법률 AI 및 리걸테크 개발자",
+                category: "인문·법률 융합 AI",
+                icon: "⚖️",
+                summary: "방대한 판례, 법령, 계약서 데이터를 AI로 학습시켜 법률 검색, 계약서 검토, 판결 예측을 지원하는 법률 기술 전문가",
+                description: "자연어 처리와 RAG 기술을 접목하여 변호사의 서면 작성과 판례 조사를 혁신적으로 보조합니다.",
+                practicalCases: ["유사 판례 검색 및 승소 확률 예측 서비스", "계약서 내 독소 조항 및 불리한 조건 자동 하이라이트", "간이 민사 분쟁 법률 상담 챗봇"],
+                majors: ["법학과", "컴퓨터공학과", "인공지능학과", "정치외교학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "법학발전연구", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 2, name: "연세대학교", dept: "법학과", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 3, name: "고려대학교", dept: "자유전공학부", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 4, name: "성균관대학교", dept: "글로벌리더학부", gyogwaCut: 1.32, jonghabCut: 1.60 },
+                    { rank: 5, name: "한양대학교", dept: "정책학과", gyogwaCut: 1.38, jonghabCut: 1.65 }
+                ],
+                highSchoolSubjects: { general: ["현대 사회와 법", "화법과 작문", "정보", "생활과 윤리"], advanced: ["법학 개론", "자연어 처리", "프로그래밍"] },
+                competencies: ["법률 문서 구조 및 법적 용어 이해", "NLP 기반 문서 요약 및 질의응답 시스템", "법적 데이터 보안 및 프라이버시 준수"],
+                schoolProjects: ["사회 교과 '재판과 법적 해결' 판례 조사 보고서", "AI 판결 도입에 따른 사법부의 변화 토론문", "계약서 표준 조항 키워드 추출 시뮬레이션"],
+                roadmap: { highSchool: "법과 사회 과목 이수 및 논리적 글쓰기", university: "법학 및 자연어 처리(NLP) 융합 학습", junior: "리걸테크 스타트업 법률 AI 개발 프로젝트", pro: "리걸테크 기업 법률 AI 서비스 수석 개발자" }
+            },
+            {
+                id: "edtech-ai-engineer",
+                name: "에듀테크 및 AI 맞춤형 학습 엔지니어",
+                category: "융합 응용 AI",
+                icon: "📚",
+                summary: "학생 개개인의 학습 수준, 취약점, 성향을 AI로 분석하여 1:1 맞춤형 커리큘럼과 문제를 추천하는 교육 기술 전문가",
+                description: "지식 추적(Knowledge Tracing) 모델을 활용하여 학생의 정답 예측과 맞춤형 학습 경로를 설계합니다.",
+                practicalCases: ["AI 수학교과서 기반 학생 맞춤형 문항 추천", "외국어 학습 앱의 AI 발음 교정 및 단어 암기 주기 조절", "학습 태도 인식 웹캠 모니터링 시스템"],
+                majors: ["교육공학과", "컴퓨터공학과", "인지과학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "교육학과", gyogwaCut: 1.15, jonghabCut: 1.35 },
+                    { rank: 2, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 3, name: "연세대학교", dept: "교육학부", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "고려대학교", dept: "교육학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 5, name: "이화여자대학교", dept: "교육공학과", gyogwaCut: 1.45, jonghabCut: 1.80 }
+                ],
+                highSchoolSubjects: { general: ["교육학", "정보", "심리학", "수학 I·II"], advanced: ["인지과학 개론", "학습 이론", "프로그래밍"] },
+                competencies: ["교육 심리학 및 지식 추적 알고리즘", "학습 로그 데이터(LMS) 분석 역량", "사용자 친화적 학습 인터페이스(UX) 설계"],
+                schoolProjects: ["교육학 교과 '가드너의 다중지능 이론' 적용 학습 분석", "온라인 퀴즈 정답률 데이터를 활용한 취약점 진단", "AI 튜터 도입이 학업 성취도에 미치는 영향 조사"],
+                roadmap: { highSchool: "교육 심리 및 파이썬 프로그래밍 기초", university: "교육공학, 러닝 머신, 지식 추적 모델", junior: "에듀테크 스타트업 AI 튜터 서비스 개발", pro: "글로벌 에듀테크 기업 최고 교육 책임자" }
+            },
+            {
+                id: "defense-ai-engineer",
+                name: "군사 및 국방 AI 시스템 엔지니어",
+                category: "하드웨어 융합 지능",
+                icon: "🛡️",
+                summary: "무인 전투기, 경계 감시 로봇, 지능형 지휘통제 체계 등 국방 안보 분야에 인공지능을 적용하는 특수 엔지니어",
+                description: "적의 위협을 실시간 탐지하고 군사 작전 시뮬레이션을 통해 최적의 의사결정을 지원하는 시스템을 개발합니다.",
+                practicalCases: ["전방 철책 이상 징후 자동 감지 열상 감시장비(TOD) AI", "무인 정찰 드론 편대 자율 비행 제어", "국방 전술 시뮬레이션 워게임(War Game) AI"],
+                majors: ["컴퓨터공학과", "사이버국방학과", "기계공학과", "항공우주공학과"],
+                universities: [
+                    { rank: 1, name: "고려대학교", dept: "사이버국방학과", gyogwaCut: 1.24, jonghabCut: 1.46 },
+                    { rank: 2, name: "서울대학교", dept: "기계공학부", gyogwaCut: 1.09, jonghabCut: 1.23 },
+                    { rank: 3, name: "연세대학교", dept: "시스템반도체공학과", gyogwaCut: 1.21, jonghabCut: 1.40 },
+                    { rank: 4, name: "KAIST", dept: "국방시스템공학", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 5, name: "한양대학교", dept: "미래자동차공학과", gyogwaCut: 1.28, jonghabCut: 1.52 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "정보", "한국사", "수학 I·II"], advanced: ["군사 과학", "시스템 보안", "프로그래밍"] },
+                competencies: ["임베디드 하드웨어 및 실시간 통신 보안", "국방 센서 데이터 융합 및 표적 탐지", "고신뢰성 및 결함 허용 시스템 설계"],
+                schoolProjects: ["물리학 교과 '전자기 유도'와 군사 레이더 원리 탐구", "무인 로봇 장애물 회피 제어 시뮬레이션", "국방 AI 도입에 따른 윤리적 쟁점 토론"],
+                roadmap: { highSchool: "물리 및 정보 보안 기초", university: "국방 시스템, 임베디드, 통신 공학", junior: "국방 연구소 및 방산 기업 SW 개발", pro: "국방과학연구소(ADD) 수석 연구원" }
+            },
+            {
+                id: "satellite-ai-researcher",
+                name: "위성 영상 및 원격탐사 AI 연구원",
+                category: "시각 지능 및 영상 처리",
+                icon: "🛰️",
+                summary: "인공위성이 촬영한 고해상도 지구 관측 영상을 분석하여 기후 변화, 도시 개발, 재난을 모니터링하는 전문가",
+                description: "다중 분광 위성 영상을 딥러닝으로 분석해 산불 피해 면적 산정, 해수면 온도 변화, 작물 작황을 정밀 추정합니다.",
+                practicalCases: ["산불 발생 시 위성 실시간 영상 분석을 통한 피해 범위 산정", "도시 팽창에 따른 녹지 면적 변화 추적", "해양 적조 현상 및 미세먼지 이동 경로 관측"],
+                majors: ["지구과학교육과", "천문우주학과", "지리학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "지구환경과학부", gyogwaCut: 1.12, jonghabCut: 1.30 },
+                    { rank: 2, name: "연세대학교", dept: "천문우주학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "지구환경과학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "경희대학교", dept: "우주탐사학과", gyogwaCut: 1.45, jonghabCut: 1.80 },
+                    { rank: 5, name: "서울시립대학교", dept: "공간정보공학과", gyogwaCut: 1.55, jonghabCut: 1.92 }
+                ],
+                highSchoolSubjects: { general: ["지구과학 I·II", "기하", "정보", "미적분"], advanced: ["위성 정보학", "GIS 분석", "프로그래밍"] },
+                competencies: ["원격탐사(Remote Sensing) 및 위성 데이터 처리", "초분광/다중분광 이미지 분석 딥러닝", "GIS 공간 정보 시각화"],
+                schoolProjects: ["지구과학 교과 '기후 변화' 위성 사진 분석 보고서", "공공 위성 오픈 데이터를 활용한 도시 열섬 현상 탐구", "인공위성 궤도 계산 및 미적분 응용 실습"],
+                roadmap: { highSchool: "지구과학 및 수학 기하 학습", university: "천문우주학, GIS, 컴퓨터 비전", junior: "항공우주 연구원 및 위성 데이터 분석 인턴", pro: "한국항공우주연구원(KARI) 위성 정보 수석" }
+            },
+            {
+                id: "knowledge-graph-engineer",
+                name: "지식 그래프 및 시맨틱 웹 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "🕸️",
+                summary: "세상 모든 개체(사람, 장소, 개념) 간의 관계를 거미줄처럼 연결하여 AI가 상식과 논리를 추론할 수 있게 돕는 전문가",
+                description: "지식베이스(Knowledge Base)를 구축하고 온톨로지(Ontology)를 설계하여 검색 엔진과 추천의 정확도를 높입니다.",
+                practicalCases: ["구글 검색 결과 우측에 나타나는 인물·장소 관련 정보 패널", "의료 질병과 증상 간의 연관 관계 추론", "대규모 기업 사내 지식 자산 통합 관리"],
+                majors: ["문헌정보학과", "컴퓨터공학과", "철학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "문헌정보학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "성균관대학교", dept: "문헌정보학과", gyogwaCut: 1.40, jonghabCut: 1.72 },
+                    { rank: 5, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.35, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["정보", "국어", "철학", "수학 I"], advanced: ["논리학", "데이터 구조", "프로그래밍"] },
+                competencies: ["RDF, SPARQL 등 시맨틱 웹 표준 언어 숙달", "그래프 데이터베이스(Neo4j 등) 활용", "개체명 인식 및 관계 추출 알고리즘"],
+                schoolProjects: ["교과서 속 역사적 인물과 사건 간의 관계 지식 그래프 시각화", "그래프 DB를 활용한 간단한 상식 추론 쿼리 작성", "지식 그래프가 검색 엔진에 미치는 영향 분석"],
+                roadmap: { highSchool: "정보 교과 및 논리적 분류 체계 학습", university: "자료구조, 데이터베이스, 지식 공학", junior: "그래프 신경망(GNN) 오픈소스 프로젝트 참여", pro: "빅테크 기업 지식 그래프 아키텍트" }
+            },
+            {
+                id: "timeseries-forecaster",
+                name: "시계열 데이터 예측 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "📈",
+                summary: "시간의 흐름에 따라 변화하는 데이터(주가, 기상, 전력 수요, 매출)의 패턴을 분석하여 미래를 예측하는 모델러",
+                description: "ARIMA, LSTM, Transformer 등 시계열 특화 딥러닝 모델을 사용하여 계절성과 트렌드를 정밀하게 예측합니다.",
+                practicalCases: ["여름철 전력 수요 급증 예측에 따른 발전소 가동 조절", "대형 마트의 품목별 다음 주 일일 판매량 예측", "기상청의 태풍 이동 경로 및 강수량 실시간 예측"],
+                majors: ["응용통계학과", "수학과", "산업공학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "통계학과", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "응용통계학과", gyogwaCut: 1.20, jonghabCut: 1.42 },
+                    { rank: 3, name: "고려대학교", dept: "통계학과", gyogwaCut: 1.26, jonghabCut: 1.50 },
+                    { rank: 4, name: "성균관대학교", dept: "시스템경영공학과", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "한양대학교", dept: "산업공학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["확률과 통계", "미적분", "정보"], advanced: ["시계열 분석", "경제 수학", "프로그래밍"] },
+                competencies: ["시계열 데이터의 정상성(Stationarity) 검정", "LSTM, Prophet 등 시계열 예측 모델 활용", "오차 지표(RMSE, MAE 등) 평가 역량"],
+                schoolProjects: ["지난 3년간 학교 급식 식재료 소비량 시계열 예측", "미적분 교과 변화율과 시계열 트렌드 연계 탐구", "날씨 변화에 따른 아이스크림 판매량 회귀 분석"],
+                roadmap: { highSchool: "확률과 통계 및 그래프 분석 기초", university: "수리통계학, 시계열 분석, 머신러닝", junior: "전력 수요 예측 캐글 경진대회 참가", pro: "에너지/유통 기업 데이터 예측 수석 전문가" }
+            },
+            {
+                id: "multimodal-researcher",
+                name: "멀티모달 AI 모델 연구원",
+                category: "언어 지능 및 생성형 AI",
+                icon: "🧩",
+                summary: "텍스트, 이미지, 오디오, 비디오 등 서로 다른 형태의 감각 데이터를 동시에 이해하고 통합 추론하는 차세대 AI 연구원",
+                description: "인간처럼 보고, 듣고, 말하는 방식을 통합한 GPT-4V, Gemini 같은 멀티모달 파운데이션 모델을 연구·개발합니다.",
+                practicalCases: ["시각 장애인을 위해 스마트폰 카메라로 비춘 풍경을 음성으로 설명", "영상을 보여주면 그 내용에 대해 사람과 자연스럽게 토론", "엑스레이 사진과 환자의 문진표를 동시에 분석하는 종합 진단"],
+                majors: ["인공지능학과", "컴퓨터공학과", "인지과학과", "전자공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "인공지능학과", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.32, jonghabCut: 1.65 },
+                    { rank: 5, name: "성균관대학교", dept: "지능형소프트웨어학과", gyogwaCut: 1.40, jonghabCut: 1.72 }
+                ],
+                highSchoolSubjects: { general: ["미적분", "기하", "영어 I·II", "정보"], advanced: ["인공지능 수학", "심화 물리", "프로그래밍"] },
+                competencies: ["텍스트와 비전 트랜스포머 아키텍처 결합 기술", "대규모 멀티모달 데이터셋 구축 및 정제", "크로스모달 임베딩 공간 최적화"],
+                schoolProjects: ["이미지와 텍스트를 함께 입력받는 간단한 멀티모달 모델 실험", "인간의 오감 인지 방식과 인공지능 멀티모달 비교 보고서", "멀티모달 AI 활용 사례 및 미래 전망 토론"],
+                roadmap: { highSchool: "수학(미적분, 기하) 및 프로그래밍", university: "딥러닝 특론, 컴퓨터 비전, 자연어 처리", junior: "오픈소스 멀티모달 모델 파인튜닝 프로젝트", pro: "빅테크 기업 멀티모달 AI 수석 아키텍트" }
+            },
+            {
+                id: "rpa-ai-consultant",
+                name: "로봇 프로세스 자동화(RPA) 및 AI 컨설턴트",
+                category: "AI 엔지니어링 및 배포",
+                icon: "👔",
+                summary: "기업의 반복적인 수작업 업무(서류 정리, 송장 입력 등)를 AI와 RPA로 자동화하여 업무 효율을 극대화하는 컨설턴트",
+                description: "기업 업무 프로세스를 분석하고 RPA 툴에 AI OCR, 챗봇을 결합하여 디지털 전환(DX)을 총괄합니다.",
+                practicalCases: ["은행 지점의 대출 서류 자동 분류 및 입력 프로세스 구축", "쇼핑몰 주문 접수부터 배송 접수까지의 전 과정 자동화", "인사(HR) 부서의 입사 지원서 1차 스크리닝 자동화"],
+                majors: ["산업공학과", "경영정보학과(MIS)", "컴퓨터공학과", "소프트웨어학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "산업공학과", gyogwaCut: 1.12, jonghabCut: 1.30 },
+                    { rank: 2, name: "연세대학교", dept: "정보산업공학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "산업경영공학부", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "성균관대학교", dept: "시스템경영공학과", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "한양대학교", dept: "산업공학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["정보", "확률과 통계", "사회·문화"], advanced: ["비즈니스 프로그래밍", "업무 프로세스 분석", "엑셀/SQL"] },
+                competencies: ["UiPath, Automation Anywhere 등 RPA 툴 활용", "기업 비즈니스 프로세스(BPR) 분석 능력", "AI OCR 및 자연어 처리 서비스 연동"],
+                schoolProjects: ["학교 행정 서류 처리 과정 중 반복 업무 자동화 아이디어 제안", "RPA 툴을 이용한 웹 크롤링 및 엑셀 자동 입력 실습", "디지털 전환(DX)이 고용에 미치는 영향 토론"],
+                roadmap: { highSchool: "정보 교과 및 파이썬 자동화 스크립트 기초", university: "산업공학, 경영정보, 소프트웨어 공학", junior: "기업 DX 프로젝트 참여 및 자격증 취득", pro: "글로벌 컨설팅펌 수석 DX/AI 컨설턴트" }
+            },
+            {
+                id: "ai-qa-engineer",
+                name: "AI 품질 관리 및 테스트 엔지니어",
+                category: "AI 엔지니어링 및 배포",
+                icon: "🧪",
+                summary: "인공지능 모델의 성능 오류, 편향, 취약점, 예기치 않은 오작동을 체계적으로 검증하고 품질을 보증하는 전문가",
+                description: "AI 모델의 테스트 자동화 셋을 구축하고 다양한 엣지 케이스 시나리오를 통해 모델의 안전성을 검증합니다.",
+                practicalCases: ["자율주행 AI가 악천후 상황에서 오작동하는지 사전 스트레스 테스트", "의료 AI 진단 모델의 오진율 검증 및 신뢰도 평가", "생성형 AI의 유해 답변 출력 확률 테스트"],
+                majors: ["컴퓨터공학과", "소프트웨어학과", "정보보호학과", "산업공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 3, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["정보", "수학 I·II", "영어 I"], advanced: ["소프트웨어 공학", "테스트 자동화", "프로그래밍"] },
+                competencies: ["소프트웨어 테스팅 방법론 및 테스트 케이스 설계", "AI 모델 성능 평가 지표(Precision, Recall 등) 숙달", "자동화 테스트 스크립트 작성 역량"],
+                schoolProjects: ["프로그램 버그 찾기 및 테스트 케이스 작성 실습", "AI 모델 입력값 변화에 따른 출력값 변동성 테스트", "소프트웨어 결함이 초래한 역사적 사고 사례 조사"],
+                roadmap: { highSchool: "프로그래밍 및 논리적 오류 검증 기초", university: "소프트웨어 공학, 알고리즘, 품질 관리", junior: "AI 서비스 QA 인턴 및 테스트 자동화 구축", pro: "빅테크 기업 AI 서비스 품질 총괄 디렉터" }
+            },
+            {
+                id: "synthetic-data-engineer",
+                name: "합성 데이터 생성 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "🧬",
+                summary: "개인정보 보호 문제나 데이터 부족 문제를 해결하기 위해 실제 데이터와 유사한 고품질의 가상(합성) 데이터를 인공지능으로 생성하는 전문가",
+                description: "생성형 모델과 시뮬레이션을 활용해 희귀 케이스나 대규모 학습용 합성 데이터를 만들어 AI 학습 효율을 높입니다.",
+                practicalCases: ["의환자 개인정보 노출 없이 의료 영상 학습용 합성 데이터 생성", "자율주행 학습을 위해 가상으로 폭우·폭설 날씨 시뮬레이션 데이터 생성", "금융 사기(FDS) 학습을 위한 가상 비정상 거래 데이터 생성"],
+                majors: ["컴퓨터공학과", "통계학과", "인공지능학과", "산업공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "응용통계학과", gyogwaCut: 1.20, jonghabCut: 1.42 },
+                    { rank: 3, name: "고려대학교", dept: "데이터과학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "성균관대학교", dept: "지능형소프트웨어학과", gyogwaCut: 1.40, jonghabCut: 1.72 },
+                    { rank: 5, name: "한양대학교", dept: "데이터사이언스학과", gyogwaCut: 1.35, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["확률과 통계", "정보", "미적분"], advanced: ["확률 과정", "생성 모델", "프로그래밍"] },
+                competencies: ["확률 분포 모델링 및 GAN/Diffusion 활용", "데이터 프라이버시 및 익명화 기술", "합성 데이터의 유효성 검증 역량"],
+                schoolProjects: ["확률과 통계 교과 정규 분포를 활용한 가상 데이터 생성", "GAN 모델을 이용한 간단한 2차원 점 데이터 생성 실습", "합성 데이터가 개인정보 보호에 기여하는 원리 보고서"],
+                roadmap: { highSchool: "확률과 통계 및 파이썬 프로그래밍", university: "통계학, 확률론, 딥러닝 생성 모델", junior: "합성 데이터 생성 스타트업 연구 프로젝트", pro: "데이터 프라이버시 및 합성 데이터 수석 아키텍트" }
+            },
+            {
+                id: "quantum-ml-researcher",
+                name: "양자 머신러닝(QML) 연구원",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "⚛️",
+                summary: "기존 슈퍼컴퓨터의 한계를 뛰어넘는 양자 컴퓨터의 연산 능력을 머신러닝 알고리즘과 결합하여 초고속 학습을 연구하는 최첨단 연구원",
+                description: "큐비트(Qubit)와 양자 중첩·얽힘 원리를 활용해 복잡한 최적화와 대규모 AI 연산을 혁신적으로 가속화합니다.",
+                practicalCases: ["신약 개발을 위한 초고속 분자 구조 최적화 양자 연산", "물류 최적화 및 금융 포트폴리오 초고속 계산", "초대형 암호 체계 해독 및 방어 양자 알고리즘"],
+                majors: ["물리학과", "수학과", "양자정보학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "물리학부", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 2, name: "KAIST", dept: "물리학과", gyogwaCut: 1.02, jonghabCut: 1.15 },
+                    { rank: 3, name: "연세대학교", dept: "물리학과", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 4, name: "고려대학교", dept: "물리학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 5, name: "성균관대학교", dept: "에너지과학과", gyogwaCut: 1.35, jonghabCut: 1.65 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "기하", "미적분", "정보"], advanced: ["양자 역학 기초", "선형대수 특강", "프로그래밍"] },
+                competencies: ["양자 역학 및 선형대수(행렬 연산) 심화 이해", "IBM Qiskit 등 양자 프로그래밍 프레임워크", "양자 알고리즘(Shor, Grover 등) 학습"],
+                schoolProjects: ["물리학 교과 '현대 물리' 양자 중첩 원리 탐구 보고서", "Qiskit 시뮬레이터를 활용한 간단한 양자 회로 구현", "양자 컴퓨터가 AI 발전에 미칠 파급효과 토론"],
+                roadmap: { highSchool: "물리 및 수학(미적분, 기하) 최상위 학습", university: "양자역학, 선형대수, 양자 컴퓨팅 특론", junior: "IBM 양자 해커톤 및 QML 연구 참여", pro: "글로벌 연구소 양자 AI 수석 과학자" }
+            },
+            {
+                id: "metaverse-digitaltwin-ai",
+                name: "메타버스 및 디지털 트윈 AI 엔지니어",
+                category: "하드웨어 융합 지능",
+                icon: "🌐",
+                summary: "현실 세계의 빌딩, 공장, 도시를 가상 공간에 완벽히 복제(Digital Twin)하고 AI로 시뮬레이션하여 최적의 운영 방안을 찾는 전문가",
+                description: "IoT 센서 데이터와 3D 모델링을 결합하여 가상 공간에서 현실의 재난 상황이나 시설 운영을 미리 테스트합니다.",
+                practicalCases: ["공장 전체를 가상으로 구현하여 기계 고장 시뮬레이션 예측", "스마트시티 디지털 트윈을 통한 홍수 범람 시뮬레이션", "메타버스 가상 가옥 내 인테리어 및 에너지 효율 테스트"],
+                majors: ["건축학과", "컴퓨터공학과", "기계공학과", "가상현실학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "건축학과", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "건축공학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "건축사회환경공학부", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "한양대학교", dept: "건축공학부", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I", "기하", "정보", "기술·가정"], advanced: ["3D 모델링", "시뮬레이션", "프로그래밍"] },
+                competencies: ["IoT 센서 데이터 스트리밍 처리 기술", "Unity 또는 Unreal 기반 디지털 트윈 구현", "AI 기반 시뮬레이션 최적화 분석"],
+                schoolProjects: ["학교 건물을 3D로 모델링하고 가상 시뮬레이션 구현", "물리학 교과 '열역학'과 건물 에너지 효율 시뮬레이션", "디지털 트윈이 제조업 혁신에 기여하는 원리 탐구"],
+                roadmap: { highSchool: "물리 및 3D 그래픽/프로그래밍 기초", university: "건축/기계공학, 그래픽스, 시뮬레이션", junior: "스마트팩토리 디지털 트윈 구축 프로젝트", pro: "스마트시티 및 메타버스 디지털 트윈 총괄 아키텍트" }
+            },
+            {
+                id: "cognitive-bci-researcher",
+                name: "인지과학 및 뇌-컴퓨터 인터페이스(BCI) 연구원",
+                category: "헬스케어 및 바이오 AI",
+                icon: "🧠",
+                summary: "인간의 뇌파(EEG)를 측정하고 인공지능으로 해독하여 생각만으로 컴퓨터나 의수를 조종할 수 있게 하는 BCI(Brain-Computer Interface) 전문가",
+                description: "신경 과학과 딥러닝을 융합하여 뇌 신호를 실시간 해석하고 마비 환자의 의사소통이나 로봇 팔 제어를 돕습니다.",
+                practicalCases: ["머리에 뇌파 측정기를 쓰고 생각만으로 컴퓨터 화면 커서 이동", "사지마비 환자가 생각으로 로봇 의수를 움직여 컵 집기", "수면 중 뇌파 분석을 통한 맞춤형 수면 개선 솔루션"],
+                majors: ["인지과학과", "심리학과", "뇌신경과학과", "의공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "심리학과", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "KAIST", dept: "바이오및뇌공학과", gyogwaCut: 1.02, jonghabCut: 1.15 },
+                    { rank: 3, name: "연세대학교", dept: "심리학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 4, name: "고려대학교", dept: "심리학부", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 5, name: "성균관대학교", dept: "글로벌바이오메디컬학부", gyogwaCut: 1.35, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["생명과학 I·II", "심리학", "정보", "확률과 통계"], advanced: ["신경과학 개론", "뇌파 신호 처리", "프로그래밍"] },
+                competencies: ["뇌파(EEG) 및 생체 신호 전처리 및 분석", "신경 회로망 및 딥러닝 디코딩 기술", "생명 윤리 및 인간 대상 실험 보안 준수"],
+                schoolProjects: ["생명과학 교과 '신경계의 구조와 기능' 탐구 보고서", "오픈 뇌파 데이터셋을 활용한 집중도 분석 실습", "BCI 기술 상용화에 따른 인간 정체성 윤리 토론"],
+                roadmap: { highSchool: "생물 및 심리학 기본 소양 함양", university: "뇌신경과학, 인지과학, 신호처리 학습", junior: "BCI 연구실 인턴십 및 뉴럴링크 관련 프로젝트", pro: "글로벌 뉴로테크 기업 BCI 수석 연구원" }
+            },
+            {
+                id: "social-media-trend-analyst",
+                name: "소셜 미디어 알고리즘 분석가 및 트렌드 데이터 엔지니어",
+                category: "핵심 알고리즘 및 모델링",
+                icon: "📱",
+                summary: "인스타그램, 틱톡, 엑스(X) 등 소셜 미디어 플랫폼의 바이럴 알고리즘과 트렌드 데이터를 분석하는 전문가",
+                description: "해시태그, 사용자 반응, 공유 확산 속도를 자연어 처리와 네트워크 분석으로 추적하여 실시간 트렌드를 예측합니다.",
+                practicalCases: ["틱톡 숏폼 영상 알고리즘의 노출 순위 결정 요인 분석", "트위터 실시간 트렌드 토픽 여론 형성 과정 분석", "브랜드 마케팅을 위한 소셜 버즈량(Buzz) 감성 분석"],
+                majors: ["미디어커뮤니케이션학과", "사회학과", "데이터사이언스학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "언론정보학과", gyogwaCut: 1.05, jonghabCut: 1.20 },
+                    { rank: 2, name: "연세대학교", dept: "언론홍보영상학부", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 3, name: "고려대학교", dept: "미디어학부", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "성균관대학교", dept: "미디어커뮤니케이션학과", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "서강대학교", dept: "지식융합미디어학부", gyogwaCut: 1.42, jonghabCut: 1.72 }
+                ],
+                highSchoolSubjects: { general: ["사회·문화", "화법과 작문", "정보", "영어 I"], advanced: ["소셜 네트워크 분석", "빅데이터 개론", "프로그래밍"] },
+                competencies: ["소셜 네트워크 분석(SNA) 및 그래프 이론", "텍스트 마이닝 및 감성 분석", "디지털 미디어 생태계에 대한 깊은 통찰력"],
+                schoolProjects: ["사회문화 교과 '대중매체와 여론' 소셜 데이터 분석", "유튜브 인기 동영상 제목 키워드 빈도 분석", "알고리즘 필터 버블 현상에 대한 비판적 에세이"],
+                roadmap: { highSchool: "사회 탐구 및 파이썬 크롤링 기초", university: "미디어학, 데이터 분석, 네트워크 이론", junior: "소셜 빅데이터 분석 공모전 참가", pro: "글로벌 소셜 미디어 플랫폼 트렌드 디렉터" }
+            },
+            {
+                id: "affective-computing-researcher",
+                name: "감성 컴퓨팅 및 정서 인식 AI 연구원",
+                category: "시각 지능 및 영상 처리",
+                icon: "😊",
+                summary: "인간의 표정, 목소리 톤, 심장박동 등을 AI로 분석하여 인간의 감정 상태를 파악하고 공감형 상호작용을 구현하는 연구원",
+                description: "멀티모달 센서와 표정 인식 모델을 통해 사용자의 분노, 기쁨, 슬픔 등을 읽어내고 맞춤형 반응을 제공합니다.",
+                practicalCases: ["자동차 운전자의 졸음이나 분노 상태를 감지하여 경고", "우울증 환자의 음성과 표정 변화를 추적하는 정신 건강 케어 앱", "감정 인식 AI가 사람의 표정을 보고 위로의 말을 건네는 기능"],
+                majors: ["심리학과", "인공지능학과", "컴퓨터공학과", "인지과학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "심리학과", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "인공지능학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "심리학부", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 4, name: "성균관대학교", dept: "지능형소프트웨어학과", gyogwaCut: 1.40, jonghabCut: 1.72 },
+                    { rank: 5, name: "한양대학교", dept: "컴퓨터소프트웨어학부", gyogwaCut: 1.35, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["심리학", "미술/음악", "정보", "생명과학 I"], advanced: ["감정 심리학", "컴퓨터 비전", "프로그래밍"] },
+                competencies: ["얼굴 표정 Action Unit(FACS) 및 음성 감정 특징 분석", "생체 신호(맥박 등)와 감정 상태 상관관계 이해", "공감형 인터페이스 UX 디자인"],
+                schoolProjects: ["심리학 교과 '정서와 동기' 감정 표현 탐구", "웹캠을 이용한 간단한 표정 인식 감정 분류 실험", "감정 인식 AI의 프라이버시 침해 우려 토론"],
+                roadmap: { highSchool: "심리학 기초 및 파이썬 시각화", university: "심리학, 인지과학, 컴퓨터 비전", junior: "감성 인식 오픈소스 모델 프로젝트 참여", pro: "소셜 로봇 및 헬스케어 AI 수석 연구원" }
+            },
+            {
+                id: "fleet-management-ai",
+                name: "모빌리티 플릿 매니지먼트 AI 엔지니어",
+                category: "모빌리티 및 자율주행",
+                icon: "🚚",
+                summary: "수백 대의 물류 트럭이나 공유 차량(쏘카 등)의 실시간 위치, 배차, 정비 주기를 AI로 최적화하는 플릿(Fleet) 관리 전문가",
+                description: "실시간 교통 상황과 수요 예측을 결합하여 차량 배치를 최적화하고 연료 소비와 유지보수 비용을 최소화합니다.",
+                practicalCases: ["택배 물류 차량의 가장 빠른 배송 경로 실시간 재조정", "공유 자전거/킥보드의 수요 밀집 지역 재배치 최적화", "법인 차량의 실시간 고장 예측 및 정비 알림"],
+                majors: ["산업공학과", "교통공학과", "컴퓨터공학과", "물류시스템학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "산업공학과", gyogwaCut: 1.12, jonghabCut: 1.30 },
+                    { rank: 2, name: "연세대학교", dept: "정보산업공학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "산업경영공학부", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "한양대학교", dept: "산업공학과", gyogwaCut: 1.38, jonghabCut: 1.70 },
+                    { rank: 5, name: "인하대학교", dept: "물류전문대학원", gyogwaCut: 1.85, jonghabCut: 2.30 }
+                ],
+                highSchoolSubjects: { general: ["수학 I·II", "확률과 통계", "정보", "경제"], advanced: ["물류 최적화", "운영 연구(OR)", "프로그래밍"] },
+                competencies: ["차량 경로 문제(VRP) 및 최적화 알고리즘", "실시간 GPS 위치 데이터 스트리밍 처리", "비용 최소화 및 배송 효율 수리 모델링"],
+                schoolProjects: ["수학 교과 최단 경로 알고리즘(다익스트라 등) 탐구", "학교 주변 배달 경로 시뮬레이션 실습", "물류 최적화 알고리즘의 탄소 배출 절감 효과 분석"],
+                roadmap: { highSchool: "수학 및 알고리즘 기초 다지기", university: "산업공학, 최적화 이론, 데이터베이스", junior: "모빌리티 물류 스타트업 플릿 시스템 개발", pro: "글로벌 물류 대기업 스마트 플릿 총괄" }
+            },
+            {
+                id: "energy-smartgrid-ai",
+                name: "스마트 그리드 및 에너지 AI 엔지니어",
+                category: "융합 응용 AI",
+                icon: "⚡",
+                summary: "전력 생산량(태양광, 풍력 등)과 소비량을 AI로 실시간 예측하고 전력망을 안정적으로 제어하는 에너지 전문가",
+                description: "날씨 예보 데이터와 전력 사용 패턴을 분석해 전력 공급의 과부족을 방지하고 신재생 에너지 효율을 극대화합니다.",
+                practicalCases: ["태양광 발전소의 일조량 변화에 따른 발전량 실시간 예측", "스마트홈의 전력 요금이 쌀 때 자동 충전 및 방전 제어", "전력망(Grid) 과부하로 인한 대규모 정전 사고 사전 예방"],
+                majors: ["전기공학과", "에너지공학과", "컴퓨터공학과", "환경공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "전기전자공학부", gyogwaCut: 1.18, jonghabCut: 1.39 },
+                    { rank: 3, name: "고려대학교", dept: "전기전자공학부", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "성균관대학교", dept: "에너지과학과", gyogwaCut: 1.35, jonghabCut: 1.65 },
+                    { rank: 5, name: "한양대학교", dept: "융합전자공학부", gyogwaCut: 1.30, jonghabCut: 1.60 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "미적분", "정보", "지구과학 I"], advanced: ["회로 이론", "전력 시스템", "프로그래밍"] },
+                competencies: ["전력 계통 및 회로 이론에 대한 이해", "기상 및 시계열 데이터 결합 예측 모델링", "에너지 저장 장치(ESS) 제어 알고리즘"],
+                schoolProjects: ["물리학 교과 '전력과 에너지' 단원과 태양광 발전 탐구", "일일 기온 변화에 따른 가정용 전력 사용량 회귀 분석", "스마트 그리드가 탄소 중립에 기여하는 원리 보고서"],
+                roadmap: { highSchool: "물리 전자기학 및 수학 미적분 기초", university: "전기공학, 제어공학, 스마트 그리드 특론", junior: "에너지 공기업 및 스마트그리드 연구 프로젝트", pro: "한국전력 및 에너지 기업 스마트그리드 수석" }
+            },
+            {
+                id: "supply-chain-ai",
+                name: "물류 및 공급망(SCM) 최적화 AI 엔지니어",
+                category: "금융 및 비즈니스 AI",
+                icon: "📦",
+                summary: "원자재 조달부터 제조, 창고 보관, 최종 소비자 배송까지의 공급망 전체 흐름을 AI로 예측하고 최적화하는 SCM 전문가",
+                description: "글로벌 공급망 교란 요인(팬데믹, 해상 운송 지연 등)을 예측하여 재고 비용을 줄이고 납기를 준수하도록 돕습니다.",
+                practicalCases: ["글로벌 반도체 공장의 원자재 부족 위험 사전 감지 및 대체 공급처 추천", "창고 내 재고 보유 비용을 최소화하는 자동 발주 AI", "해상 컨테이너 운송 선박 스케줄 최적화"],
+                majors: ["산업공학과", "경영학과", "물류통학과", "데이터사이언스학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "산업공학과", gyogwaCut: 1.12, jonghabCut: 1.30 },
+                    { rank: 2, name: "연세대학교", dept: "정보산업공학과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "고려대학교", dept: "산업경영공학부", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 4, name: "성균관대학교", dept: "시스템경영공학과", gyogwaCut: 1.35, jonghabCut: 1.68 },
+                    { rank: 5, name: "한양대학교", dept: "파이낸스경영학과", gyogwaCut: 1.35, jonghabCut: 1.65 }
+                ],
+                highSchoolSubjects: { general: ["경제", "확률과 통계", "정보", "수학 I·II"], advanced: ["공급망 관리", "시뮬레이션", "프로그래밍"] },
+                competencies: ["공급망 운영 연구(OR) 및 선형 계획법", "수요 예측 및 재고 관리 통계 모델", "글로벌 물류 데이터 분석 역량"],
+                schoolProjects: ["경제 교과 '수요와 공급' 법칙과 SCM 재고 모델 연계", "간단한 EOQ(경제적 주문량) 계산 시뮬레이션", "글로벌 공급망 위기 사례 분석 보고서"],
+                roadmap: { highSchool: "경제 및 확률과 통계 기초", university: "산업공학, SCM, 최적화 이론", junior: "제조/유통 대기업 SCM 인턴십 및 프로젝트", pro: "글로벌 제조사 SCM 혁신 총괄 디렉터" }
+            },
+            {
+                id: "fashion-beauty-ai",
+                name: "패션 및 뷰티 AI 추천 엔지니어",
+                category: "융합 응용 AI",
+                icon: "👗",
+                summary: "사용자의 체형, 피부톤, 취향을 분석하여 어울리는 옷과 화장품을 추천하고 가상 피팅을 제공하는 패션테크 전문가",
+                description: "컴퓨터 비전으로 의류 스타일을 분류하고 증강 현실(AR)로 가상 착용 핏을 실시간 시각화합니다.",
+                practicalCases: ["AI가 얼굴형과 피부톤을 진단하여 맞춤 립스틱 컬러 추천", "사진 한 장으로 내 체형에 딱 맞는 사이즈의 의류 추천", "온라인 쇼핑몰 가상 피팅룸(Virtual Fitting Room) 서비스"],
+                majors: ["의류학과", "컴퓨터공학과", "시각디자인학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "의류학과", gyogwaCut: 1.15, jonghabCut: 1.32 },
+                    { rank: 2, name: "연세대학교", dept: "의류환경학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 3, name: "고려대학교", dept: "디자인조형학부", gyogwaCut: 1.30, jonghabCut: 1.55 },
+                    { rank: 4, name: "이화여자대학교", dept: "의류산업학과", gyogwaCut: 1.40, jonghabCut: 1.72 },
+                    { rank: 5, name: "한양대학교", dept: "응용미술학과", gyogwaCut: 1.45, jonghabCut: 1.80 }
+                ],
+                highSchoolSubjects: { general: ["미술", "정보", "생명과학 I", "영어 I"], advanced: ["패션 디자인", "컴퓨터 그래픽스", "프로그래밍"] },
+                competencies: ["의류 패턴 및 체형 데이터 분석", "AR(증강현실) 및 3D 의복 시뮬레이션", "패션 트렌드 데이터 마이닝"],
+                schoolProjects: ["미술 교과 '색채학과 피부톤' 분석 탐구", "오픈소스 가상 피팅 오픈 API 활용 실습", "패션 AI가 패스트 패션의 환경 오염을 줄이는 방안 보고서"],
+                roadmap: { highSchool: "미술 및 정보 프로그래밍 기초", university: "의류학, 컴퓨터 비전, 그래픽스", junior: "패션테크 스타트업 AR 가상 피팅 프로젝트", pro: "글로벌 패션 브랜드 AI 테크 디렉터" }
+            },
+            {
+                id: "music-audio-generation",
+                name: "음악 생성 및 오디오 합성 AI 연구원",
+                category: "언어 지능 및 생성형 AI",
+                icon: "🎵",
+                summary: "장르, 분위기, 악기 구성을 입력하면 AI가 오리지널 배경음악과 노래를 작곡하고 연주하는 음악 생성 전문가",
+                description: "MIDI 데이터와 오디오 웨이브폼을 학습하는 생성형 모델을 통해 광고 음악, 게임 OST, 대중음악을 자동 작곡합니다.",
+                practicalCases: ["유튜브 영상 분위기에 맞는 저작권 없는 배경음악 자동 작곡", "사용자가 입력한 가사에 어울리는 멜로디와 보컬 음원 생성", "AI 가수가 부르는 버추얼 아이돌 음반 제작"],
+                majors: ["작곡과", "음향공학과", "컴퓨터공학과", "인공지능학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "작곡과", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "연세대학교", dept: "작곡과", gyogwaCut: 1.22, jonghabCut: 1.45 },
+                    { rank: 3, name: "한양대학교", dept: "작곡과", gyogwaCut: 1.32, jonghabCut: 1.65 },
+                    { rank: 4, name: "경희대학교", dept: "포스트모던음악학과", gyogwaCut: 1.45, jonghabCut: 1.85 },
+                    { rank: 5, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["음악", "정보", "미적분", "영어 I"], advanced: ["화성학", "디지털 오디오", "프로그래밍"] },
+                competencies: ["음악 이론(화성학, 대위법) 및 MIDI 포맷 이해", "오디오 생성형 모델(Jukebox 등) 활용", "사운드 디자인 및 믹싱 엔지니어링"],
+                schoolProjects: ["음악 교과 '화성 진행' 원리와 AI 자동 작곡 비교 탐구", "파이썬을 이용한 간단한 MIDI 노트 생성 실습", "AI 작곡 음악의 저작권 귀속 문제 토론"],
+                roadmap: { highSchool: "음악 이론 및 파이썬 기초", university: "작곡, 음향 신호 처리, 딥러닝 응용", junior: "AI 작곡 서비스 개발 및 음원 발매 프로젝트", pro: "엔터테인먼트 사내 AI 음악 스튜디오 총괄" }
+            },
+            {
+                id: "indoor-positioning-ai",
+                name: "실내 네비게이션 및 위치인식 AI 엔지니어",
+                category: "모빌리티 및 자율주행",
+                icon: "📍",
+                summary: "GPS 전파가 닿지 않는 대형 쇼핑몰, 지하철역, 공항 실내에서 Wi-Fi, 블루투스, 스마트폰 센서로 정확한 위치를 찾아내는 전문가",
+                description: "지문인식 같은 무선 신호(Wi-Fi Fingerprinting)와 관성 센서(IMU) 데이터를 인공지능으로 보정하여 실내 길찾기를 구현합니다.",
+                practicalCases: ["복잡한 대형 쇼핑몰 지하 주차장에서 내 차량 위치 찾기", "대형 병원 내에서 진료실까지 안내하는 실내 AR 내비게이션", "공항 면세점 내 위치 기반 맞춤형 쿠폰 자동 발송"],
+                majors: ["정보통신공학과", "전자공학과", "컴퓨터공학과", "지리학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "전기전자공학부", gyogwaCut: 1.18, jonghabCut: 1.39 },
+                    { rank: 3, name: "고려대학교", dept: "전기전자공학부", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "한양대학교", dept: "융합전자공학부", gyogwaCut: 1.30, jonghabCut: 1.60 },
+                    { rank: 5, name: "성균관대학교", dept: "전자전기공학부", gyogwaCut: 1.36, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I", "기하", "정보", "수학 I"], advanced: ["무선 통신", "신호 처리", "프로그래밍"] },
+                competencies: ["무선 신호 세기(RSSI) 및 IMU 센서 데이터 필터링", "실내 공간 지도 데이터베이스 구축", "스마트폰 센서 API 활용 프로그래밍"],
+                schoolProjects: ["물리학 교과 '파동과 통신' 실내 전파 감쇠 현상 탐구", "스마트폰 가속도 센서 활용 걸음 수 측정 앱 제작", "실내 내비게이션 상용화의 기술적 난제 보고서"],
+                roadmap: { highSchool: "물리 통신 및 정보 프로그래밍", university: "무선 통신, 신호 처리, 임베디드", junior: "실내 위치인식 스타트업 알고리즘 개발", pro: "위치기반 서비스(LBS) 기업 수석 엔지니어" }
+            },
+            {
+                id: "sensor-fusion-engineer",
+                name: "자율주행 센서 융합(Sensor Fusion) 엔지니어",
+                category: "하드웨어 융합 지능",
+                icon: "📡",
+                summary: "카메라, 라이다(LiDAR), 레이더(Radar) 등 서로 다른 특성을 가진 센서들의 데이터를 실시간으로 결합(Fusion)하여 완벽한 주변 환경 인식을 만드는 엔지니어",
+                description: "악천후(안개, 폭우)에서도 카메라와 레이더의 단점을 상호 보완하여 자율주행차가 사고 없이 주행하도록 합니다.",
+                practicalCases: ["폭우 속에서 카메라가 보지 못하는 보행자를 레이더로 정확히 감지", "터널 출구 급격한 눈부심 상황에서 센서 간 정보 보완", "자율주행차의 360도 주변 장애물 통합 입체 지도 생성"],
+                majors: ["전자공학과", "제어계측공학과", "기계공학과", "컴퓨터공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "전기·정보공학부", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "전기전자공학부", gyogwaCut: 1.18, jonghabCut: 1.39 },
+                    { rank: 3, name: "고려대학교", dept: "전기전자공학부", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 4, name: "한양대학교", dept: "미래자동차공학과", gyogwaCut: 1.28, jonghabCut: 1.52 },
+                    { rank: 5, name: "성균관대학교", dept: "전자전기공학부", gyogwaCut: 1.36, jonghabCut: 1.68 }
+                ],
+                highSchoolSubjects: { general: ["물리학 I·II", "기하", "미적분", "정보"], advanced: ["확률과 통계", "센서 공학", "프로그래밍"] },
+                competencies: ["확률적 필터링(칼만 필터, 파티클 필터) 숙달", "멀티 센서 캘리브레이션 및 동기화 기술", "C++ 기반 고성능 실시간 처리 프로그래밍"],
+                schoolProjects: ["물리학 교과 '파동과 도플러 효과' 레이더 원리 탐구", "파이썬을 이용한 다중 센서 데이터 동기화 시뮬레이션", "자율주행 센서 오작동 사례 분석 및 대책 보고서"],
+                roadmap: { highSchool: "물리 및 수학(기하, 미적분) 기초", university: "제어공학, 신호처리, 자율주행 시스템", junior: "자율주행 경진대회 센서 융합 파트 참가", pro: "글로벌 자율주행 솔루션 기업 수석 엔지니어" }
+            },
+            {
+                id: "anomaly-detection-engineer",
+                name: "인프라 보안 및 이상 탐지(Anomaly Detection) AI 엔지니어",
+                category: "AI 엔지니어링 및 배포",
+                icon: "🚨",
+                summary: "서버 다운, 해킹 시도, 공장 설비 고장, 금융 사기 등 정상 범주를 벗어난 희귀한 이상 징후를 실시간으로 탐지하는 AI 전문가",
+                description: "비지도 학습과 오토인코더(Autoencoder) 모델을 사용하여 평소와 다른 미세한 패턴의 변화를 놓치지 않고 경고합니다.",
+                practicalCases: ["클라우드 서버에 발생하는 디도스(DDoS) 해킹 공격 실시간 차단", "발전소 터빈의 미세한 진동 이상을 감지하여 대형 사고 예방", "신용카드 해외 부정 결제 실시간 탐지 및 승인 차단"],
+                majors: ["컴퓨터공학과", "정보보호학과", "소프트웨어학과", "산업공학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "컴퓨터공학부", gyogwaCut: 1.10, jonghabCut: 1.25 },
+                    { rank: 2, name: "고려대학교", dept: "사이버국방학과", gyogwaCut: 1.24, jonghabCut: 1.46 },
+                    { rank: 3, name: "연세대학교", dept: "컴퓨터과학과", gyogwaCut: 1.20, jonghabCut: 1.40 },
+                    { rank: 4, name: "고려대학교", dept: "컴퓨터학과", gyogwaCut: 1.25, jonghabCut: 1.48 },
+                    { rank: 5, name: "성균관대학교", dept: "소프트웨어학과", gyogwaCut: 1.38, jonghabCut: 1.70 }
+                ],
+                highSchoolSubjects: { general: ["정보", "확률과 통계", "수학 I·II"], advanced: ["이상 탐지 알고리즘", "네트워크 보안", "프로그래밍"] },
+                competencies: ["오토인코더 및 비지도 머신러닝 알고리즘 숙달", "대규모 로그 및 스트리밍 데이터 실시간 분석", "오탐지(False Positive) 최소화 튜닝 역량"],
+                schoolProjects: ["정보 교과 네트워크 트래픽 로그 분석 실습", "확률과 통계 교과 '이상치(Outlier)' 판정 기준 탐구", "신용카드 사기 탐지 머신러닝 모델 구현"],
+                roadmap: { highSchool: "정보 교과 및 통계 기초", university: "운영체제, 네트워크, 머신러닝 이상 탐지", junior: "보안 관제 및 이상 탐지 오픈소스 프로젝트", pro: "글로벌 클라우드 보안 수석 아키텍트" }
+            },
+            {
+                id: "ai-product-manager",
+                name: "AI 서비스 기획자 및 프로덕트 오너 (AI PM/PO)",
+                category: "AI 엔지니어링 및 배포",
+                icon: "📋",
+                summary: "인공지능 기술의 가능성과 한계를 정확히 이해하고, 시장이 원하는 AI 제품(Product)의 비전과 로드맵을 총괄하는 기획자",
+                description: "개발자, 디자이너, 경영진 사이의 가교 역할을 하며 사용자 요구사항을 정의하고 AI 제품의 라이프사이클을 리드합니다.",
+                practicalCases: ["신규 생성형 AI 사진 편집 앱의 기획부터 출시까지 총괄", "기업용 AI 챗봇 서비스의 가격 정책 및 기능 정의", "AI 추천 서비스 도입에 따른 비즈니스 성과(KPI) 측정"],
+                majors: ["경영학과", "산업공학과", "컴퓨터공학과", "심리학과"],
+                universities: [
+                    { rank: 1, name: "서울대학교", dept: "경영학과", gyogwaCut: 1.08, jonghabCut: 1.22 },
+                    { rank: 2, name: "연세대학교", dept: "경영학과", gyogwaCut: 1.15, jonghabCut: 1.35 },
+                    { rank: 3, name: "고려대학교", dept: "경영학과", gyogwaCut: 1.18, jonghabCut: 1.38 },
+                    { rank: 4, name: "성균관대학교", dept: "글로벌경영학과", gyogwaCut: 1.25, jonghabCut: 1.50 },
+                    { rank: 5, name: "한양대학교", dept: "파이낸스경영학과", gyogwaCut: 1.35, jonghabCut: 1.65 }
+                ],
+                highSchoolSubjects: { general: ["사회·문화", "경제", "영어 I·II", "정보"], advanced: ["비즈니스 모델", "UX/UI 디자인", "프로젝트 관리"] },
+                competencies: ["인공지능 기술 트렌드에 대한 폭넓은 이해", "사용자 데이터 분석 및 요구사항 정의서 작성", "애자일(Agile) 프로젝트 관리 및 리더십"],
+                schoolProjects: ["학교생활 속 불편함을 해소하는 AI 서비스 기획서 작성", "경영 교과 '새로운 제품 출시 전략' 케이스 스터디", "AI 서비스 와이어프레임(UX) 프로토타이핑 실습"],
+                roadmap: { highSchool: "경제, 사회 및 IT 트렌드 독서", university: "경영학, 소프트웨어 개론, 사용자 경험(UX)", junior: "IT 스타트업 서비스 기획 인턴 및 PM 활동", pro: "테크 기업 CPO(최고제품책임자) 및 AI 사업총괄" }
+            }
+        ];
+
+        // 33~50번째 직업군 동적 추가
+        const extraCareers = [
+            { id: "ai-patent-attorney", name: "AI 특허 및 지식재산권 전문 변리사", category: "인문·법률 융합 AI", icon: "📜", summary: "인공지능 알고리즘과 소프트웨어 발명에 대한 특허를 심사하고 권리를 보호하는 전문가", description: "AI 기술의 특허성 검토, 선행기술 조사, 특허 출원 및 분쟁 대응을 수행합니다.", practicalCases: ["생성형 AI 모델 아키텍처 특허 출원", "딥러닝 알고리즘 침해 소송 대리"], majors: ["법학과", "전자공학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"전기·정보공학부", gyogwaCut:1.08, jonghabCut:1.22},{rank:2, name:"연세대학교", dept: "법학과", gyogwaCut: 1.18, jonghabCut: 1.38}], highSchoolSubjects: {general:["현대 사회와 법", "정보", "영어 I"], advanced:["특허법", "프로그래밍"]}, competencies: ["법률 문서 작성", "기술 이해도"], schoolProjects: ["AI 특허 분쟁 사례 조사"], roadmap: {highSchool:"법과 정보 학습", university:"법학/공학 복전", junior:"특허법인 근무", pro: "수석 변리사"} },
+            { id: "ai-ui-ux-designer", name: "AI 인터페이스 UI/UX 디자이너", category: "융합 응용 AI", icon: "🎨", summary: "인공지능 서비스와 인간이 직관적으로 소통할 수 있는 사용자 경험(UX)과 인터페이스를 디자인하는 전문가", description: "챗봇, 음성 비서, 생성형 편집 툴 등의 상호작용 디자인을 설계합니다.", practicalCases: ["AI 챗봇 대화 UI 디자인", "생성형 이미지 편집 툴 사용자 경험 최적화"], majors: ["시각디자인학과", "산업디자인학과", "인공지능학과"], universities: [{rank:1, name:"서울대학교", dept:"디자인과", gyogwaCut:1.15, jonghabCut:1.35},{rank:2, name:"홍익대학교", dept:"시각디자인학과", gyogwaCut:1.20, jonghabCut:1.42}], highSchoolSubjects: {general:["미술", "정보", "심리학"], advanced:["UX 디자인", "프로토타이핑"]}, competencies: ["Figma 활용", "사용자 조사"], schoolProjects: ["AI 앱 와이어프레임 제작"], roadmap: {highSchool:"미술 및 디자인 기초", university: "디자인 전공", junior: "UI/UX 디자이너", pro: "Head of Design"} },
+            { id: "ai-energy-grid", name: "신재생에너지 발전량 예측 AI 엔지니어", category: "융합 응용 AI", icon: "☀️", summary: "풍력 및 태양광 발전소의 기상 연동 발전량을 AI로 정밀 예측하는 전문가", description: "기상청 데이터와 발전소 센서 데이터를 결합하여 전력망 안정화를 도모합니다.", practicalCases: ["태양광 발전 수익 극대화 예측", "풍력 발전기 최적 각도 제어"], majors: ["에너지공학과", "지구과학교육과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"에너지자원공학과", gyogwaCut:1.15, jonghabCut:1.35},{rank:2, name:"연세대학교", dept:"기계공학부", gyogwaCut:1.21, jonghabCut:1.44}], highSchoolSubjects: {general:["지구과학 I", "물리학 I", "정보"], advanced:["신재생에너지"]}, competencies: ["시계열 예측", "기상 데이터 분석"], schoolProjects: ["태양광 발전량 예측 모델"], roadmap: {highSchool:"과학 및 정보 기초", university: "에너지공학", junior: "에너지 AI 연구원", pro: "수석 엔지니어"} },
+            { id: "ai-logistics-robotics", name: "스마트 물류 로봇 제어 엔지니어", category: "하드웨어 융합 지능", icon: "📦", summary: "택배 터미널과 풀필먼트 센터에서 상하차 및 분류를 수행하는 로봇을 제어하는 전문가", description: "AGV/AMR 로봇의 주행 제어와 물류 창고 관리 시스템을 연동합니다.", practicalCases: ["풀필먼트 센터 무인 로봇 운행", "택배 상자 자동 분류 로봇 제어"], majors: ["로봇공학과", "기계공학과", "물류시스템학과"], universities: [{rank:1, name:"서울대학교", dept:"기계공학부", gyogwaCut:1.09, jonghabCut:1.23},{rank:2, name:"한양대학교", dept:"로봇공학과", gyogwaCut:1.30, jonghabCut:1.58}], highSchoolSubjects: {general:["물리학 I", "기하", "정보"], advanced:["로봇 제어"]}, competencies: ["ROS", "제어공학"], schoolProjects: ["물류 로봇 시뮬레이션"], roadmap: {highSchool:"물리 및 코딩", university: "로봇공학", junior: "물류 로봇 엔지니어", pro: "CTO"} },
+            { id: "ai-gov-policy", name: "정부·공공기관 AI 정책 기획 주무관", category: "인문·법률 융합 AI", icon: "🏛️", summary: "국가 차원의 인공지능 진흥 및 규제 법안을 기획하고 행정 정책을 수립하는 공공 전문가", description: "국내외 AI 생태계 동향을 파악하고 국가 경쟁력 강화를 위한 정책을 입안합니다.", practicalCases: ["국가 AI 기본법 제정 기획", "지자체 스마트시티 AI 도입 정책 수립"], majors: ["행정학과", "정치외교학과", "법학과"], universities: [{rank:1, name:"서울대학교", dept:"정치외교학부", gyogwaCut:1.05, jonghabCut:1.20},{rank:2, name:"연세대학교", dept:"행정학과", gyogwaCut:1.15, jonghabCut:1.35}], highSchoolSubjects: {general:["사회·문화", "현대 사회와 법", "국어"], advanced:["정책학", "행정법"]}, competencies: ["정책 문서 작성", "이해관계 조정"], schoolProjects: ["AI 규제 정책 토론문"], roadmap: {highSchool:"사회 및 논술", university: "행정/정외과", junior: "행정고시 합격", pro: "고위 공무원"} },
+            { id: "ai-game-balancing", name: "게임 밸런스 및 경제 시스템 AI 분석가", category: "핵심 알고리즘 및 모델링", icon: "🎲", summary: "다양한 아이템과 캐릭터 간의 밸런스를 AI 시뮬레이션으로 테스트하고 경제 시스템을 설계하는 전문가", description: "몬테카를로 시뮬레이션과 강화학습으로 게임 내 인플레이션을 방지합니다.", practicalCases: ["MMORPG 게임 내 골드 인플레이션 예측", "캐릭터 승률 50% 맞춤 밸런스 조정"], majors: ["산업공학과", "통계학과", "게임공학과"], universities: [{rank:1, name:"서울대학교", dept:"산업공학과", gyogwaCut:1.12, jonghabCut:1.30},{rank:2, name:"고려대학교", dept:"통계학과", gyogwaCut:1.26, jonghabCut:1.50}], highSchoolSubjects: {general:["확률과 통계", "경제", "정보"], advanced:["시뮬레이션"]}, competencies: ["확률 모델링", "데이터 분석"], schoolProjects: ["확률 분포 게임 밸런스 분석"], roadmap: {highSchool:"확통 및 프로그래밍", university: "산업공학/통계", junior: "게임사 데이터 분석가", pro: "게임 디렉터"} },
+            { id: "ai-archaeology-restorer", name: "AI 문화재 복원 및 역사 기록 분석가", category: "인문·법률 융합 AI", icon: "🏺", summary: "훼손된 고대 벽화, 문서, 유물을 컴퓨터 비전과 생성형 AI로 정밀 복원하고 역사적 의미를 분석하는 전문가", description: "결손된 텍스트를 LLM으로 복원하고 고화질 비전 모델로 벽화 색채를 되살립니다.", practicalCases: ["훼손된 고대 삼국시대 목간 판독", "파괴된 고대 유적 3D 디지털 복원"], majors: ["고고미술사학과", "역사학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"고고미술사학과", gyogwaCut:1.12, jonghabCut:1.30},{rank:2, name:"고려대학교", dept: "한국사학과", gyogwaCut: 1.25, jonghabCut: 1.48}], highSchoolSubjects: {general:["한국사", "세계사", "정보"], advanced:["디지털 헤리티지"]}, competencies: ["역사적 사료 해석", "이미지 복원 딥러닝"], schoolProjects: ["역사 사료 디지털 아카이빙 탐구"], roadmap: {highSchool:"역사 및 IT", university: "고고학/컴퓨터", junior: "문화재연구소 연구원", pro: "수석 연구관"} },
+            { id: "ai-sound-designer", name: "AI 기반 사운드 이펙트 및 음향 디자이너", category: "시각 지능 및 영상 처리", icon: "🔔", summary: "영화, 게임, 메타버스 환경에 필요한 특수 효과음과 음향을 AI 오디오 생성 모델로 제작하는 전문가", description: "장면에 딱 맞는 실감나는 효과음을 프롬프트나 스케치로 자동 생성합니다.", practicalCases: ["영화 폭발 장면에 어울리는 입체 음향 자동 생성", "SF 영화 우주선 엔진 사운드 합성"], majors: ["음향공학과", "작곡과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"전기·정보공학부", gyogwaCut:1.08, jonghabCut:1.22},{rank:2, name:"한양대학교", dept:"융합전자공학부", gyogwaCut:1.30, jonghabCut:1.60}], highSchoolSubjects: {general:["물리학 I", "음악", "정보"], advanced:["오디오 신호처리"]}, competencies: ["사운드 믹싱", "오디오 생성 AI"], schoolProjects: ["물리 파동과 사운드 합성"], roadmap: {highSchool:"물리 및 음악", university: "음향/전자공학", junior: "사운드 디자이너", pro: "오디오 디렉터"} },
+            { id: "ai-weather-forecaster", name: "기상 및 기후변화 예측 AI 연구원", category: "융합 응용 AI", icon: "⛅", summary: "전 세계 대기 및 해양 빅데이터를 AI로 분석하여 폭우, 태풍, 폭염 등 기상 이변을 예측하는 기상청 전문가", description: "수치 예보 모델의 한계를 극복하는 AI 기반 기상 예측 모델(GraphCast 등)을 연구합니다.", practicalCases: ["태풍 상륙 위치 및 강수량 3일 전 정밀 예측", "이상 기후로 인한 가뭄 장기 전망 분석"], majors: ["대기과학과", "지구환경과학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"지구환경과학부", gyogwaCut:1.12, jonghabCut:1.30},{rank:2, name:"연세대학교", dept: "대기과학과", gyogwaCut: 1.20, jonghabCut: 1.42}], highSchoolSubjects: {general:["지구과학 I", "미적분", "정보"], advanced:["대기역학", "시계열 예측"]}, competencies: ["기상 데이터 분석", "시계열 딥러닝"], schoolProjects: ["기상청 오픈 데이터 날씨 예측"], roadmap: {highSchool:"지구과학 및 수학", university: "대기과학", junior: "기상연구소 연구원", pro: "기상청 수석 예보관"} },
+            { id: "ai-space-exploration", name: "우주 탐사 및 천체 관측 AI 엔지니어", category: "하드웨어 융합 지능", icon: "🌌", summary: "망원경이 포착한 우주 방사선, 외계행성 탐색 데이터, 은하 충돌 영상을 AI로 분석하는 천문 우주 전문가", description: "방대한 우주 관측 데이터 속에서 외계 행성 신호를 자동으로 탐지합니다.", practicalCases: ["케플러 우주망원경 데이터 기반 외계행성 발견", "은하 형태 자동 분류 알고리즘 개발"], majors: ["천문우주학과", "물리학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept: "물리학부", gyogwaCut: 1.05, jonghabCut: 1.20},{rank:2, name:"연세대학교", dept:"천문우주학과", gyogwaCut:1.22, jonghabCut:1.45}], highSchoolSubjects: {general:["물리학 I", "지구과학 I", "정보"], advanced:["천체 물리", "머신러닝"]}, competencies: ["천문 데이터 분석", "딥러닝 분류 모델"], schoolProjects: ["우주 망원경 이미지 분류 실습"], roadmap: {highSchool:"물리 및 지구과학", university: "천문학", junior: "천문연구원 연구원", pro: "수석 천문학자"} },
+            { id: "ai-smart-ports", name: "스마트 항만 및 해운 물류 AI 엔지니어", category: "모빌리티 및 자율주행", icon: "🚢", summary: "항만에 입항하는 대형 컨테이너 선박의 자동 하역, 크레인 제어, 야드 컨테이너 배치 등을 AI로 최적화하는 해운 물류 전문가", description: "무인 크레인과 야물류 자동화 시스템을 인공지능으로 제어하여 항만 처리 용량을 극대화합니다.", practicalCases: ["부산항 신항 무인 크레인 자동 컨테이너 적재", "선박 입항 시간에 따른 야드 컨테이너 최적 배치"], majors: ["조선해양공학과", "산업공학과", "물류시스템학과"], universities: [{rank:1, name:"서울대학교", dept:"조선해양공학과", gyogwaCut:1.10, jonghabCut:1.25},{rank:2, name:"부산대학교", dept:"조선해양공학과", gyogwaCut:1.45, jonghabCut:1.80}], highSchoolSubjects: {general:["물리학 I", "확률과 통계", "정보"], advanced:["항만 물류", "최적화"]}, competencies: ["물류 최적화", "IoT 제어"], schoolProjects: ["항만 물류 시뮬레이션"], roadmap: {highSchool:"물리 및 수학", university: "조선해양/산업공학", junior: "항만 공사 엔지니어", pro: "스마트항만 총괄"} },
+            { id: "ai-translation-localization", name: "AI 다국어 번역 및 로컬라이제이션 전문가", category: "언어 지능 및 생성형 AI", icon: "🌐", summary: "인공지능 번역 모델의 문화적 뉘앙스 오류를 교정하고 게임, 영화, 소프트웨어의 글로벌 현지화를 총괄하는 언어 전문가", description: "기계 번역 결과물을 정제하고 각 국가별 문화적 맥락에 맞게 로컬라이징합니다.", practicalCases: ["글로벌 OTT 드라마 자막 AI 번역 품질 교정", "글로벌 게임 출시 다국어 대사 현지화"], majors: ["통번역학과", "영어영문학과", "인공지능융합학과"], universities: [{rank:1, name:"한국외국어대학교", dept:"AI데이터융합학부", gyogwaCut:1.72, jonghabCut:2.15},{rank:2, name:"서울대학교", dept:"언어학과", gyogwaCut:1.18, jonghabCut:1.35}], highSchoolSubjects: {general:["영어 I", "문학", "정보"], advanced:["번역 실습", "NLP 개론"]}, competencies: ["고급 외국어 능력", "기계 번역 후편집(MTPE)"], schoolProjects: ["기계 번역 오류 분석 보고서"], roadmap: {highSchool:"외국어 및 작문", university: "통번역/언어학", junior: "글로벌 로컬라이제이션 매니저", pro: "글로벌 콘텐츠 디렉터"} },
+            { id: "ai-pet-healthcare", name: "반려동물 헬스케어 및 동물 행동 분석 AI 연구원", category: "헬스케어 및 바이오 AI", icon: "🐶", summary: "반려동물의 울음소리, 행동, 생체 데이터를 AI로 분석하여 질병을 조기 진단하고 감정을 파악하는 펫테크 전문가", description: "강아지의 짖는 소리 주파수를 분석해 아픈 곳을 파악하거나 고양이의 행동을 모니터링합니다.", practicalCases: ["반려견 분리불안 음성 진단 앱", "반려동물 안과 질환 사진 진단 AI"], majors: ["수의학과", "생명과학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"수의예과", gyogwaCut:1.02, jonghabCut:1.15},{rank:2, name:"건국대학교", dept:"수의예과", gyogwaCut:1.06, jonghabCut:1.22}], highSchoolSubjects: {general:["생명과학 I", "화학 I", "정보"], advanced:["동물 행동학", "프로그래밍"]}, competencies: ["수의학적 지식", "생체 신호 처리"], schoolProjects: ["반려동물 행동 패턴 AI 분석 보고서"], roadmap: {highSchool:"생물 및 화학", university: "수의학/생명공학", junior: "펫테크 스타트업 연구원", pro: "펫헬스케어 CTO"} },
+            { id: "ai-smart-packaging", name: "친환경 패키징 및 스마트 포장 AI 엔지니어", category: "융합 응용 AI", icon: "📦", summary: "유통기한 연장, 신선도 유지, 친환경 소재 최적화를 인공지능 시뮬레이션으로 설계하는 패키징 전문가", description: "식품 부패 예측 모델과 친환경 신소재 배합 비율을 인공지능으로 최적화합니다.", practicalCases: ["신선식품 배송 박스 온도 변화 예측 및 포장재 최적화", "생분해성 플라스틱 최적 배합 AI 설계"], majors: ["화학공학과", "식품공학과"], universities: [{rank:1, name:"연세대학교", dept:"화공생명공학부", gyogwaCut:1.18, jonghabCut:1.39},{rank:2, name:"고려대학교", dept:"화공생명공학과", gyogwaCut:1.22, jonghabCut:1.45}], highSchoolSubjects: {general:["화학 I", "생명과학 I", "정보"], advanced:["고분자 화학", "물류 포장"]}, competencies: ["소재 화학 지식", "물리 시뮬레이션"], schoolProjects: ["친환경 포장재 수명 예측 탐구"], roadmap: {highSchool:"화학 및 생물 기초", university: "화공/식품공학", junior: "유통 대기업 R&D", pro: "패키징 수석 연구원"} },
+            { id: "ai-disaster-prevention", name: "재난 방재 및 안전사고 예측 AI 엔지니어", category: "융합 응용 AI", icon: "🌋", summary: "지진, 산사태, 홍수, 건물 붕괴 등 대형 재난의 징후를 센서와 영상으로 실시간 포착하여 경고하는 안전 전문가", description: "지반 변위 센서 데이터와 기상 특보를 연계하여 재난 발생 위험을 사전에 예측합니다.", practicalCases: ["지하차도 침수 위험 실시간 감지 및 자동 차단", "노후 교량 미세 균열 진동 데이터 이상 탐지"], majors: ["건설환경공학과", "안전공학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"건설환경공학부", gyogwaCut:1.15, jonghabCut:1.35},{rank:2, name:"서울시립대학교", dept:"토목공학과", gyogwaCut:1.50, jonghabCut:1.88}], highSchoolSubjects: {general:["지구과학 I", "물리학 I", "정보"], advanced:["재난 안전", "프로그래밍"]}, competencies: ["구조물 진동 데이터 분석", "위험성 평가 모델링"], schoolProjects: ["지진파 데이터 시각화 및 분석 실습"], roadmap: {highSchool:"물리 및 지구과학", university: "방재/토목공학", junior: "재난안전연구원 연구원", pro: "국가 재난안전 수석 전문가"} },
+            { id: "ai-space-debris", name: "우주 쓰레기 궤도 추적 및 회피 AI 연구원", category: "하드웨어 융합 지능", icon: "🛰️", summary: "지구궤도를 떠도는 수십만 개의 우주 쓰레기와 인공위성의 충돌 위험을 AI로 예측하고 회피 기동을 돕는 우주 전문가", description: "천체 레이더 관측 데이터를 머신러닝으로 분석해 위성 충돌 경로를 실시간 계산합니다.", practicalCases: ["무궁화 위성과 우주 파편 충돌 위험 사전 경고", "군집 위성 자율 회피 기동 제어"], majors: ["항공우주공학과", "천문우주학과", "컴퓨터공학과"], universities: [{rank:1, name:"서울대학교", dept:"항공우주공학과", gyogwaCut:1.06, jonghabCut:1.20},{rank:2, name:"KAIST", dept: "항공우주공학과", gyogwaCut: 1.02, jonghabCut: 1.15}], highSchoolSubjects: {general:["물리학 I", "기하", "정보"], advanced:["우주 역학", "궤도 계산"]}, competencies: ["우주 역학 및 궤도 계산", "실시간 충돌 확률 예측"], schoolProjects: ["물리 교과 만유인력과 궤도 운동 탐구"], roadmap: {highSchool:"물리 및 수학 최상위", university: "항공우주공학", junior: "항우연 우주위성센터 연구원", pro: "우주 교통관제 수석 연구원"} },
+            { id: "ai-biometric-auth", name: "생체 인식 및 신원 인증 AI 엔지니어", category: "시각 지능 및 영상 처리", icon: "👤", summary: "얼굴, 지문, 홍채, 정맥 등 고유의 생체 정보를 인공지능으로 판독하여 강력한 보안 인증 시스템을 구축하는 전문가", description: "딥페이크(Deepfake) 위조 공격을 판별하고 초고속 신원 확인 인증을 수행합니다.", practicalCases: ["공항 자동출입국 심사대 얼굴 인식 통과", "스마트폰 얼굴 인식을 통한 모바일뱅킹 보안 로그인"], majors: ["정보보호학과", "컴퓨터공학과", "전자공학과"], universities: [{rank:1, name:"고려대학교", dept:"사이버국방학과", gyogwaCut:1.24, jonghabCut:1.46},{rank:2, name:"서울대학교", dept:"컴퓨터공학부", gyogwaCut:1.10, jonghabCut:1.25}], highSchoolSubjects: {general:["정보", "물리학 I", "영어 I"], advanced:["암호학", "생체인식 보안"]}, competencies: ["생체 특징점 추출 알고리즘", "딥페이크 탐지 기술"], schoolProjects: ["간이 지문/얼굴 특징점 비교 실습"], roadmap: {highSchool:"정보 및 수학 기초", university: "정보보호/컴퓨터", junior: "보안 인증 스타트업 개발자", pro: "글로벌 생체인증 보안 수석"} },
+            { id: "ai-future-strategist", name: "테크 트렌드 및 AI 미래 전략가", category: "인문·법률 융합 AI", icon: "🔮", summary: "인공지능 기술의 발전 속도와 사회적 파급 효과를 거시적으로 전망하고 기업과 정부의 장기 미래 전략을 수립하는 싱크탱크 전문가", description: "기술 가트너(Gartner) 커브와 경제 지표를 분석해 미래 산업 지형도를 예측합니다.", practicalCases: ["향후 10년간 생성형 AI가 노동 시장에 미치는 영향 보고서 작성", "대기업 신사업 진출을 위한 AI 기술 로드맵 수립"], majors: ["경영학과", "경제학과"], universities: [{rank:1, name:"서울대학교", dept:"경영학과", gyogwaCut:1.08, jonghabCut:1.22},{rank:2, name:"KAIST", dept:"기술경영학부", gyogwaCut:1.05, jonghabCut:1.20}], highSchoolSubjects: {general:["경제", "사회·문화", "세계사", "영어 I"], advanced:["기술경영", "미래학 개론"]}, competencies: ["거시 경제 및 기술 트렌드 통찰력", "보고서 작성 및 프레젠테이션 역량"], schoolProjects: ["미래 기술 발전 시나리오 플래닝 보고서 작성"], roadmap: {highSchool:"경제 및 인문학 독서", university: "경영/기술경영", junior: "대기업 전략기획실 / 싱크탱크", pro: "글로벌 테크 싱크탱크 수석 연구위원"} }
+        ];
+
+        careerData.push(...extraCareers);
+
+        let currentTab = 'explorer';
+
+        window.onload = function() {
+            renderCareers(careerData);
+            populateSelectOptions();
+            setupTypingEffect();
+            setupScrollReveal();
+            switchTab('explorer');
+        };
+
+        function setupTypingEffect() {
+            const text = "50가지 AI 세부 직업군, 당신의 미래를 비출 나침반을 만나보세요.";
+            const element = document.getElementById('typingHeader');
+            if(!element) return;
+            element.innerHTML = "";
+            let index = 0;
+
+            function typeNextChar() {
+                if (index < text.length) {
+                    element.innerHTML += text.charAt(index);
+                    index++;
+                    setTimeout(typeNextChar, 40);
+                }
+            }
+            typeNextChar();
+        }
+
+        function setupScrollReveal() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
+        }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            const tabs = ['explorer', 'compare', 'roadmap', 'subject-ai'];
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const sec = document.getElementById(`section-${t}`);
+                if (t === tabId) {
+                    if(btn) btn.className = "px-3.5 py-2 text-xs sm:text-sm font-extrabold rounded-xl transition-all duration-300 flex items-center gap-1.5 bg-white text-brand-dark shadow-md";
+                    if(sec) sec.classList.remove('hidden');
+                } else {
+                    if(btn) btn.className = "px-3.5 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all duration-300 flex items-center gap-1.5 text-white/80 hover:text-white hover:bg-white/10";
+                    if(sec) sec.classList.add('hidden');
+                }
+            });
+
+            if (tabId === 'compare') updateComparison();
+            else if (tabId === 'roadmap') renderRoadmap();
+
+            setTimeout(setupScrollReveal, 100);
+        }
+
+        function renderCareers(data) {
+            const grid = document.getElementById('careerGrid');
+            if(!grid) return;
+            if (data.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-16 text-center glass-card rounded-2xl border border-white/60">
+                        <p class="text-slate-500 font-bold text-sm">🔍 검색 조건에 알맞은 AI 직업이 없습니다.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = data.map(career => `
+                <div onclick="openModal('${career.id}')" class="glass-card interactive-card rounded-3xl p-6 border border-white/80 cursor-pointer flex flex-col justify-between group relative overflow-hidden reveal-element">
+                    <div class="absolute top-0 right-0 w-28 h-28 bg-gradient-to-br from-brand-purple/20 to-brand-coral/10 rounded-bl-full pointer-events-none transition-all duration-300 group-hover:scale-125"></div>
+
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="text-4xl p-3 bg-white/90 rounded-2xl shadow-sm border border-slate-100 icon-bounce inline-block">${career.icon}</span>
+                            <span class="text-[10px] font-black px-2.5 py-1 bg-brand-purple/20 text-indigo-900 rounded-full border border-brand-purple/30 max-w-[140px] truncate">${career.category}</span>
+                        </div>
+                        <h3 class="text-lg font-black text-slate-900 group-hover:text-brand-coral transition-colors">${career.name}</h3>
+                        <p class="text-xs text-slate-600 mt-2 line-clamp-2 leading-relaxed">${career.summary}</p>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-200/60 flex items-center justify-between text-xs font-bold text-brand-coral">
+                        <span>상세 입결 & 생기부 주제 보기</span>
+                        <span class="w-6 h-6 rounded-full bg-brand-coral/10 flex items-center justify-center group-hover:translate-x-1.5 transition-transform">➔</span>
+                    </div>
+                </div>
+            `).join('');
+
+            setupScrollReveal();
+        }
+
+        function filterCareers() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+
+            const filtered = careerData.filter(c => {
+                const matchQuery = c.name.toLowerCase().includes(query) ||
+                                   c.summary.toLowerCase().includes(query) ||
+                                   c.description.toLowerCase().includes(query);
+                const matchCategory = (category === 'ALL') || (c.category === category);
+                return matchQuery && matchCategory;
+            });
+
+            renderCareers(filtered);
+        }
+
+        function openModal(id) {
+            const career = careerData.find(c => c.id === id);
+            if (!career) return;
+
+            const sortedUniversities = [...career.universities].sort((a, b) => a.gyogwaCut - b.gyogwaCut);
+
+            document.getElementById('modalCategory').innerText = career.category;
+            document.getElementById('modalTitle').innerText = `${career.icon} ${career.name}`;
+
+            const body = document.getElementById('modalBody');
+            body.innerHTML = `
+                <div>
+                    <h4 class="text-xs font-black uppercase tracking-wider text-brand-coral mb-1 flex items-center gap-1.5">
+                        <span>📌</span> 직무 상세 개요 및 주요 실무
+                    </h4>
+                    <p class="text-xs sm:text-sm text-slate-700 leading-relaxed bg-brand-peach/40 p-4 rounded-2xl border border-brand-peach mb-3">${career.description}</p>
+                    <ul class="space-y-1.5">
+                        ${career.practicalCases.map(item => `
+                            <li class="flex items-start text-xs text-slate-700">
+                                <span class="text-brand-coral font-bold mr-2">✔</span>
+                                <span>${item}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+
+                <div class="bg-slate-900 text-white p-5 rounded-2xl shadow-xl border border-slate-700 space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-700 pb-3">
+                        <div>
+                            <h4 class="text-sm font-black text-brand-mint flex items-center gap-1.5">
+                                🏛️ 서울권 주요 대학 및 학과별 70% Cutoff 등급
+                            </h4>
+                            <p class="text-[11px] text-slate-400 mt-0.5">※ 합격자 70% Cutoff 등급이 높은 순서로 개별 대학+학과로 표출됩니다.</p>
+                        </div>
+                        <a href="https://www.adiga.kr" target="_blank" rel="noopener noreferrer" class="text-[11px] text-brand-purple underline hover:text-white bg-slate-800 px-3 py-1 rounded-lg border border-slate-700 flex items-center gap-1">
+                            🔗 어디가(adiga.kr) ↗
+                        </a>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="text-[11px] text-brand-purple uppercase bg-slate-800 border-b border-slate-700">
+                                <tr>
+                                    <th class="py-2.5 px-3 text-center">순위</th>
+                                    <th class="py-2.5 px-3">대학교</th>
+                                    <th class="py-2.5 px-3">학과명</th>
+                                    <th class="py-2.5 px-3 text-center text-emerald-400">교과 70%컷</th>
+                                    <th class="py-2.5 px-3 text-center text-sky-400">종합 70%컷</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-800/80">
+                                ${sortedUniversities.map((u, i) => `
+                                    <tr class="hover:bg-slate-800/60 transition-colors">
+                                        <td class="py-2.5 px-3 text-center font-bold text-brand-peach">${i + 1}위</td>
+                                        <td class="py-2.5 px-3 font-extrabold text-white">${u.name}</td>
+                                        <td class="py-2.5 px-3 text-slate-300 font-medium">${u.dept}</td>
+                                        <td class="py-2.5 px-3 text-center font-extrabold text-emerald-400 bg-emerald-950/40 rounded-lg">${u.gyogwaCut.toFixed(2)} 등급</td>
+                                        <td class="py-2.5 px-3 text-center font-extrabold text-sky-400 bg-sky-950/40 rounded-lg">${u.jonghabCut.toFixed(2)} 등급</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-brand-mint/30 p-4 rounded-2xl border border-brand-mint">
+                        <h4 class="text-xs font-black text-slate-900 mb-2">📚 추천 고교 선택 과목</h4>
+                        <p class="text-xs text-slate-700"><strong>일반선택:</strong> ${career.highSchoolSubjects.general.join(', ')}</p>
+                        <p class="text-xs text-slate-700 mt-1"><strong>진로/심화:</strong> ${career.highSchoolSubjects.advanced.join(', ')}</p>
+                    </div>
+
+                    <div class="bg-brand-purple/20 p-4 rounded-2xl border border-brand-purple/30">
+                        <h4 class="text-xs font-black text-indigo-900 mb-2">⚡ 핵심 요망 역량</h4>
+                        <ul class="space-y-1">
+                            ${career.competencies.map(c => `<li class="text-xs text-slate-700">▫ ${c}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-gradient-to-r from-brand-peach to-white p-5 rounded-2xl border border-brand-peach shadow-sm">
+                    <h4 class="text-xs font-black text-slate-900 mb-3 flex items-center gap-1.5">
+                        <span>💡</span> 생기부 세특 연계 추천 탐구 주제
+                    </h4>
+                    <div class="space-y-2">
+                        ${career.schoolProjects.map(proj => `
+                            <div class="bg-white p-3 rounded-xl border border-slate-200/80 text-xs text-slate-800 shadow-sm font-medium flex items-start gap-2">
+                                <span class="bg-brand-coral text-white font-bold px-1.5 py-0.5 rounded text-[10px] shrink-0">추천</span>
+                                <span>${proj}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            const modal = document.getElementById('careerModal');
+            const container = document.getElementById('modalContainer');
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                container.classList.remove('scale-95');
+                container.classList.add('scale-100');
+            }, 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('careerModal');
+            const container = document.getElementById('modalContainer');
+            container.classList.remove('scale-100');
+            container.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }, 200);
+        }
+
+        function populateSelectOptions() {
+            const sel1 = document.getElementById('compareSelect1');
+            const sel2 = document.getElementById('compareSelect2');
+            const roadmapSel = document.getElementById('roadmapSelect');
+            const genCareerSel = document.getElementById('generatorCareer');
+
+            const optionsHTML = careerData.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+
+            if(sel1) sel1.innerHTML = optionsHTML;
+            if(sel2) sel2.innerHTML = careerData.map((c, idx) => `<option value="${c.id}" ${idx === 1 ? 'selected' : ''}>${c.name}</option>`).join('');
+            if(roadmapSel) roadmapSel.innerHTML = optionsHTML;
+            if(genCareerSel) genCareerSel.innerHTML = optionsHTML;
+        }
+
+        function updateComparison() {
+            const id1 = document.getElementById('compareSelect1').value;
+            const id2 = document.getElementById('compareSelect2').value;
+
+            const c1 = careerData.find(c => c.id === id1);
+            const c2 = careerData.find(c => c.id === id2);
+
+            const container = document.getElementById('comparisonResult');
+            if (!c1 || !c2 || !container) return;
+
+            const sortedU1 = [...c1.universities].sort((a,b) => a.gyogwaCut - b.gyogwaCut)[0];
+            const sortedU2 = [...c2.universities].sort((a,b) => a.gyogwaCut - b.gyogwaCut)[0];
+
+            container.innerHTML = `
+                <div class="glass-card p-6 rounded-3xl border border-white/80 shadow-md flex flex-col justify-between reveal-element">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="text-4xl p-3 bg-brand-purple/20 rounded-2xl">${c1.icon}</span>
+                            <div>
+                                <span class="text-[10px] font-extrabold text-indigo-900 bg-brand-purple/30 px-2.5 py-0.5 rounded-full">${c1.category}</span>
+                                <h4 class="text-xl font-black text-slate-900 mt-1">${c1.name}</h4>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">${c1.summary}</p>
+
+                        <div class="space-y-3 pt-3 border-t border-slate-200">
+                            <div class="bg-white/80 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[11px] font-bold text-slate-500 block">🏛️ 최고Cut 학과 (70% 컷 기준)</span>
+                                <p class="text-xs font-black text-indigo-900 mt-0.5">${sortedU1.name} ${sortedU1.dept} (${sortedU1.gyogwaCut.toFixed(2)} 등급)</p>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-bold text-slate-800 mb-1">⚡ 핵심 역량</h5>
+                                <ul class="space-y-1">
+                                    ${c1.competencies.map(comp => `<li class="text-xs text-slate-600">▪ ${comp}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-6 rounded-3xl border border-white/80 shadow-md flex flex-col justify-between reveal-element">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="text-4xl p-3 bg-brand-mint/50 rounded-2xl">${c2.icon}</span>
+                            <div>
+                                <span class="text-[10px] font-extrabold text-teal-900 bg-brand-mint px-2.5 py-0.5 rounded-full">${c2.category}</span>
+                                <h4 class="text-xl font-black text-slate-900 mt-1">${c2.name}</h4>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-600 mb-4 leading-relaxed">${c2.summary}</p>
+
+                        <div class="space-y-3 pt-3 border-t border-slate-200">
+                            <div class="bg-white/80 p-3 rounded-xl border border-slate-200">
+                                <span class="text-[11px] font-bold text-slate-500 block">🏛️ 최고Cut 학과 (70% 컷 기준)</span>
+                                <p class="text-xs font-black text-teal-900 mt-0.5">${sortedU2.name} ${sortedU2.dept} (${sortedU2.gyogwaCut.toFixed(2)} 등급)</p>
+                            </div>
+                            <div>
+                                <h5 class="text-xs font-bold text-slate-800 mb-1">⚡ 핵심 역량</h5>
+                                <ul class="space-y-1">
+                                    ${c2.competencies.map(comp => `<li class="text-xs text-slate-600">▪ ${comp}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-span-full glass-card p-6 rounded-3xl border border-white/80 shadow-lg bg-gradient-to-br from-slate-900 to-indigo-950 text-white reveal-element">
+                    <h4 class="text-base font-black mb-3 flex items-center gap-2 text-brand-peach">
+                        <span>🔍</span> 비교 요약 리포트
+                    </h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs leading-relaxed">
+                        <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-md">
+                            <strong class="text-brand-mint block mb-1 text-sm font-bold">🤝 공통점</strong>
+                            <p class="text-slate-200">두 직무 모두 인공지능 기술에 대한 이해와 데이터 기반 문제 해결 능력이 기본적으로 요구됩니다.</p>
+                        </div>
+                        <div class="bg-white/10 p-4 rounded-2xl backdrop-blur-md">
+                            <strong class="text-brand-coral block mb-1 text-sm font-bold">⚡ 차이점</strong>
+                            <p class="text-slate-200"><strong>${c1.name}</strong>은(는) 해당 분야의 핵심 알고리즘과 모델링에 집중하는 반면, <strong>${c2.name}</strong>은(는) 도메인 특화 응용 및 인프라 구축에 차별화된 전문성을 가집니다.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            setupScrollReveal();
+        }
+
+        function renderRoadmap() {
+            const id = document.getElementById('roadmapSelect').value;
+            const career = careerData.find(c => c.id === id);
+            const container = document.getElementById('roadmapContainer');
+
+            if (!career || !container) return;
+
+            container.innerHTML = `
+                <div class="text-center max-w-xl mx-auto mb-10 reveal-element">
+                    <span class="text-5xl animate-float inline-block">${career.icon}</span>
+                    <h3 class="text-2xl font-black text-slate-900 mt-3">${career.name} 성장 로드맵</h3>
+                    <p class="text-xs text-slate-600 mt-1">고등학교부터 전문 리더로 도약하는 단계별 성취 과정</p>
+                </div>
+
+                <div class="relative border-l-4 border-brand-purple/40 ml-4 md:ml-28 space-y-8 pb-4">
+                    <div class="relative pl-6 md:pl-10 reveal-element">
+                        <div class="absolute -left-[18px] top-0 w-8 h-8 gradient-btn-primary text-white rounded-full flex items-center justify-center font-black text-xs shadow-lg">1</div>
+                        <div class="bg-white/80 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-extrabold text-brand-coral uppercase tracking-wider bg-brand-coral/10 px-2.5 py-0.5 rounded-full">High School</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-2 mb-1">수학·과학 기초 및 프로그래밍 입문</h4>
+                            <p class="text-xs text-slate-700 leading-relaxed">${career.roadmap.highSchool}</p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-6 md:pl-10 reveal-element">
+                        <div class="absolute -left-[18px] top-0 w-8 h-8 bg-brand-purple text-white rounded-full flex items-center justify-center font-black text-xs shadow-lg">2</div>
+                        <div class="bg-white/80 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-extrabold text-indigo-900 uppercase tracking-wider bg-brand-purple/30 px-2.5 py-0.5 rounded-full">University</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-2 mb-1">전공 심화 및 이론 연구</h4>
+                            <p class="text-xs text-slate-700 leading-relaxed">${career.roadmap.university}</p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-6 md:pl-10 reveal-element">
+                        <div class="absolute -left-[18px] top-0 w-8 h-8 bg-teal-500 text-white rounded-full flex items-center justify-center font-black text-xs shadow-lg">3</div>
+                        <div class="bg-white/80 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-extrabold text-teal-900 uppercase tracking-wider bg-brand-mint px-2.5 py-0.5 rounded-full">Junior Engineer</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-2 mb-1">실무 프로젝트 구축</h4>
+                            <p class="text-xs text-slate-700 leading-relaxed">${career.roadmap.junior}</p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-6 md:pl-10 reveal-element">
+                        <div class="absolute -left-[18px] top-0 w-8 h-8 bg-slate-900 text-white rounded-full flex items-center justify-center font-black text-xs shadow-lg">4</div>
+                        <div class="bg-white/80 p-5 rounded-2xl border border-slate-200 shadow-sm">
+                            <span class="text-[10px] font-extrabold text-slate-900 uppercase tracking-wider bg-slate-200 px-2.5 py-0.5 rounded-full">Professional</span>
+                            <h4 class="text-base font-bold text-slate-900 mt-2 mb-1">수석 전문가 도약</h4>
+                            <p class="text-xs text-slate-700 leading-relaxed">${career.roadmap.pro}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            setupScrollReveal();
+        }
+
+        function generateProjectIdea() {
+            const subject = document.getElementById('generatorSubject').value;
+            const careerId = document.getElementById('generatorCareer').value;
+            const career = careerData.find(c => c.id === careerId);
+            const resultBox = document.getElementById('generatedIdeaResult');
+
+            if (!career || !resultBox) return;
+
+            showToast("✨ 맞춤형 세특 탐구 주제가 생성되었습니다!");
+
+            resultBox.innerHTML = `
+                <div class="bg-gradient-to-r from-brand-peach/80 via-white to-brand-mint/50 p-6 rounded-2xl border border-brand-purple/40 shadow-lg space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-black text-brand-coral bg-white px-3 py-1 rounded-full border border-brand-coral/20">💡 AI 세특 가이드 생성 완료</span>
+                        <span class="text-xs font-extrabold text-slate-500">${subject} × ${career.name}</span>
+                    </div>
+
+                    <h4 class="text-base font-black text-slate-900">
+                        "[${subject}] 연계 ${career.name} 맞춤형 세부능력 및 특기사항 탐구 주제"
+                    </h4>
+
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed space-y-2">
+                        <p><strong>주제 제안:</strong> ${subject} 교과의 핵심 이론을 바탕으로 ${career.name} 직무에서 접목되는 최신 알고리즘 원리를 분석하는 심화 소논문 작성</p>
+                        <p><strong>실행 가이드:</strong> 관련 오픈 데이터를 활용하여 교과서 지식을 실제 인공지능 문제 해결에 적용해보고 그 과정을 보고서로 정리하기</p>
+                    </div>
+                </div>
+            `;
+            resultBox.classList.remove('hidden');
+        }
+
+        function showToast(msg) {
+            const box = document.getElementById('msgBox');
+            const txt = document.getElementById('msgText');
+            if(!box || !txt) return;
+            txt.innerText = msg;
+
+            box.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                box.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
